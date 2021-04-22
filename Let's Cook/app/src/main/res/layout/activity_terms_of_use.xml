@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".TermsOfUseActivity">
+    <include android:id="@+id/tool" layout="@layout/toolbar" />
+
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/login_view"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:background="@color/background"
+        android:layout_gravity="end"
+        app:headerLayout="@layout/activity_login"
+        android:visibility="invisible"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/tool"
+        android:layout_above="@id/bottom_nav"
+        android:background="@color/background">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="16dp">
+
+            <include
+                android:id="@+id/action_bar"
+                layout="@layout/action_bar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/ownership"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@id/action_bar"
+                android:layout_marginStart="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginRight="16dp"
+                android:text="@string/ownership"
+                android:textColor="@color/black" />
+
+            <TextView
+                android:id="@+id/ownership_info"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@id/ownership"
+                android:layout_marginStart="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginRight="16dp"
+                android:text="@string/ownership_info"
+                android:textColor="@color/black" />
+
+            <TextView
+                android:id="@+id/general_terms"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@id/ownership_info"
+                android:layout_marginStart="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginRight="16dp"
+                android:text="@string/general_terms"
+                android:textColor="@color/black" />
+
+            <TextView
+                android:id="@+id/general_terms_info"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@id/general_terms"
+                android:layout_marginStart="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginRight="16dp"
+                android:text="@string/general_terms_info"
+                android:textColor="@color/black" />
+
+            <TextView
+                android:id="@+id/liable"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@id/general_terms_info"
+                android:layout_marginStart="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginRight="16dp"
+                android:text="@string/liable"
+                android:textColor="@color/black" />
+
+            <TextView
+                android:id="@+id/liable_info"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@id/liable"
+                android:layout_marginStart="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginRight="16dp"
+                android:text="@string/liable_info"
+                android:textColor="@color/black" />
+
+            <TextView
+                android:id="@+id/confidentiality"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@id/liable_info"
+                android:layout_marginStart="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginRight="16dp"
+                android:text="@string/confidentiality"
+                android:textColor="@color/black" />
+
+            <TextView
+                android:id="@+id/confidentiality_info"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@id/confidentiality"
+                android:layout_marginStart="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginRight="16dp"
+                android:text="@string/confidentiality_info"
+                android:textColor="@color/black" />
+        </RelativeLayout>
+    </ScrollView>
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/bottom_nav"
+        app:itemBackground="@color/beige"
+        app:itemIconTint="@color/black"
+        app:menu="@menu/bottom_menu"
+        android:layout_alignParentBottom="true"
+        app:labelVisibilityMode="unlabeled"/>
+
+</RelativeLayout>

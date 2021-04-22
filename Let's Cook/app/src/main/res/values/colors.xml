@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="beige">#d2a57f</color>
+    <color name="dark_beige">#D5A57C</color>
+    <color name="background">#fef6d8</color>
+    <color name="listBackground">#36FFCFA6</color>
+    <color name="backgroundBtn">#FCFFCFA6</color>
+    <color name="link">#304FFE</color>
+    <color name="highlight">#3754F9</color>
+    <color name="visitedLink">#55067D</color>
+    <color name="secondLink">#FFAB00</color>
+    <color name="required">#890303</color>
+    <color name="editTextBackground">#56FFCFA6</color>
+    <color name="inputText">#4E4E4E</color>
+    <color name="green">#06D55C</color>
+    <color name="red">#D03A3A</color>
+</resources>

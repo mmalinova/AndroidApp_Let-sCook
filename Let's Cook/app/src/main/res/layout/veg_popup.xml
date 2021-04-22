@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding="16dp"
+    android:background="@color/beige"
+    tools:context=".SearchActivity">
+
+    <TextView
+        android:id="@+id/veg_question"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:text="@string/vegetarianQuestion"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/yesBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/veg_question"
+        android:layout_marginStart="54dp"
+        android:layout_marginLeft="54dp"
+        android:background="@android:color/transparent"
+        android:gravity="center"
+        android:text="@string/yes"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        app:iconPadding="2dp"
+        app:layout_constraintStart_toStartOf="@+id/veg_question"
+        app:layout_constraintTop_toBottomOf="@+id/veg_question" />
+
+    <Button
+        android:id="@+id/noBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/veg_question"
+        android:layout_marginEnd="54dp"
+        android:layout_marginRight="54dp"
+        android:layout_toEndOf="@id/yesBtn"
+        android:layout_toRightOf="@id/yesBtn"
+        android:background="@android:color/transparent"
+        android:gravity="center"
+        android:text="@string/no"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        app:iconPadding="2dp"
+        app:layout_constraintEnd_toEndOf="@+id/veg_question"
+        app:layout_constraintTop_toBottomOf="@+id/veg_question" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
