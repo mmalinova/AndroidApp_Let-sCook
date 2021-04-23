@@ -3,12 +3,16 @@ package com.example.letscook;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -25,7 +29,10 @@ public class ContactsActivity extends AppCompatActivity {
     private TextView actionText;
     private ImageView profile, my_products;
     private NavigationView navigationView = null;
+    private Button sendBtn;
+    private EditText message;
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -84,6 +91,23 @@ public class ContactsActivity extends AppCompatActivity {
         });
         actionText.setText(CONTACTS);
 
+        sendBtn = findViewById(R.id.button);
+        sendBtn.setEnabled(false);
+        message = (EditText) findViewById(R.id.textViewMess);
+        message.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (v.getId() == R.id.textViewMess) {
+                    v.getParent().requestDisallowInterceptTouchEvent(true);
+                    switch (event.getAction()&MotionEvent.ACTION_MASK){
+                        case MotionEvent.ACTION_UP:
+                            v.getParent().requestDisallowInterceptTouchEvent(false);
+                            break;
+                    }
+                }
+                return false;
+            }
+        });
         // Initialize and assign variable
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_nav);
 

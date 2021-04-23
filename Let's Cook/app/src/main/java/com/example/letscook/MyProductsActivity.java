@@ -7,10 +7,12 @@ import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -46,6 +48,7 @@ public class MyProductsActivity extends AppCompatActivity implements AdapterView
     private MainAdapter mainAdapter;
 
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -98,7 +101,21 @@ public class MyProductsActivity extends AppCompatActivity implements AdapterView
 
         // Initialize attributes
         addBtn = findViewById(R.id.addProdBtn);
-        name = findViewById(R.id.editTextProduct);
+        name = (EditText) findViewById(R.id.editTextProduct);
+        name.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (v.getId() == R.id.editTextProduct) {
+                    v.getParent().requestDisallowInterceptTouchEvent(true);
+                    switch (event.getAction()&MotionEvent.ACTION_MASK){
+                        case MotionEvent.ACTION_UP:
+                            v.getParent().requestDisallowInterceptTouchEvent(false);
+                            break;
+                    }
+                }
+                return false;
+            }
+        });
         quantity = findViewById(R.id.editTextQuantity);
         textView = findViewById(R.id.textView);
         addBtn.setOnClickListener(new View.OnClickListener() {
@@ -110,7 +127,7 @@ public class MyProductsActivity extends AppCompatActivity implements AdapterView
                 ConstraintLayout constraintLayout = findViewById(R.id.constraint);
                 ConstraintSet constraintSet = new ConstraintSet();
                 constraintSet.clone(constraintLayout);
-                constraintSet.connect(R.id.recycler_view, ConstraintSet.TOP, R.id.delAllProd, ConstraintSet.BOTTOM,520);
+                constraintSet.connect(R.id.recycler_view, ConstraintSet.TOP, R.id.delAllProd, ConstraintSet.BOTTOM,560);
                 constraintSet.applyTo(constraintLayout);
             }
         });
@@ -231,6 +248,8 @@ public class MyProductsActivity extends AppCompatActivity implements AdapterView
     public void onBackPressed() {
         if (constraintLayout != null ) {
             if (constraintLayout.getVisibility() == View.VISIBLE) {
+                findViewById(R.id.firstTextView).setVisibility(View.INVISIBLE);
+                findViewById(R.id.secondTextView).setVisibility(View.INVISIBLE);
                 constraintLayout.setVisibility(View.INVISIBLE);
                 ConstraintLayout constraintLayout = findViewById(R.id.constraint);
                 ConstraintSet constraintSet = new ConstraintSet();

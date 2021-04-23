@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/beige"
+    tools:context=".SignUpActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp">
+
+        <TextView
+            android:id="@+id/policy_info"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="@string/policy_info"
+            android:textColor="@color/black"/>
+
+        <TextView
+            android:id="@+id/data_title"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="@string/data_title"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:layout_below="@id/policy_info"/>
+
+        <TextView
+            android:id="@+id/data_info"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="@string/data_info"
+            android:textColor="@color/black"
+            android:layout_below="@id/data_title"/>
+
+        <TextView
+            android:id="@+id/processing_title"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="@string/processing_title"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:layout_below="@id/data_info"/>
+
+        <TextView
+            android:id="@+id/processing_info"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="@string/processing_info"
+            android:textColor="@color/black"
+            android:layout_below="@id/processing_title"/>
+
+        <TextView
+            android:id="@+id/providing_title"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="@string/providing_title"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:layout_below="@id/processing_info"/>
+
+        <TextView
+            android:id="@+id/providing_info"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="@string/providing_info"
+            android:textColor="@color/black"
+            android:layout_below="@id/providing_title"/>
+
+        <TextView
+            android:id="@+id/rights_title"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="@string/rights_title"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:layout_below="@id/providing_info"/>
+
+        <TextView
+            android:id="@+id/rights_info"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="@string/rights_info"
+            android:textColor="@color/black"
+            android:layout_below="@id/rights_title"/>
+
+        <TextView
+            android:id="@+id/connection_title"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="@string/connection_title"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:layout_below="@id/rights_info"/>
+
+        <TextView
+            android:id="@+id/connection_info"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="@string/connection_info"
+            android:textColor="@color/black"
+            android:layout_below="@id/connection_title"/>
+
+        <Button
+            android:id="@+id/register_okBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/connection_info"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:background="@android:color/transparent"
+            android:text="@string/ok"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            app:iconPadding="2dp">
+        </Button>
+    </RelativeLayout>
+</ScrollView>

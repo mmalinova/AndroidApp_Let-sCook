@@ -26,7 +26,9 @@
     <string name="facebook_login">Влизане чрез Facebook</string>
     <string name="instagram_login">Влизане чрез Instagram</string>
     <string name="register_text">С регистрацията си приемам</string>
-    <string name="register_link"><a href="">условията за ползване</a></string>
+    <string name="terms_link"><a href="">условията за ползване</a></string>
+    <string name="and">и</string>
+    <string name="policy_link"><a href="">политиката за поверителност на данните</a>.</string>
     <string name="ok">Добре</string>
     <!-- Login activity -->
     <string name="login_btn">Вход</string>
@@ -69,7 +71,7 @@
     <!-- Shopping list activity -->
     <string name="productsList">(Все още нямате добавени продукти)</string>
     <string name="toAddBtn">Добави</string>
-    <string name="product">Продукт:</string>
+    <string name="product">Име на продукта:</string>
     <string name="quantity">Количество:</string>
     <string name="deleteAllBtn">Изтрий всички</string>
     <string name="addBtn">Добавяне</string>
@@ -106,11 +108,11 @@
     <string name="my_photo">Моя снимка</string>
     <!-- Contact activity -->
     <string name="contact_title">Контакти</string>
-    <string name="myEmail">E-mail: mmalinova@mydigitalassistant.bg</string>
+    <string name="myEmail">E-mail: mmalinova@mydigitalassistant.bg/malinova29@gmail.com</string>
     <string name="myFacebook">Facebook: <a href="">mihaela.malinova.98</a></string>
     <string name="myLinkedIn">LinkedIn: <a href="">mihaela-malinova-72352319a</a></string>
     <string name="myInstagram">Instagram: <a href="">mihaellamalinova</a></string>
-    <string name="contactInfo">За връзка с мен или запитване за реклама може да използвате e-mail: malinova29@gmail.com/mmalinova@mydigitalassistant.bg или популярните социални мрежи:</string>
+    <string name="contactInfo">За връзка с мен или запитване за реклама може да използвате E-mail: malinova29@gmail.com/mmalinova@mydigitalassistant.bg или популярните социални мрежи:</string>
     <string name="contactForm">Също така може да попълните формуляра, даден по-долу:</string>
     <string name="required">(Всички полета са задължителни)</string>
     <string name="message">Съобщение*</string>
@@ -137,8 +139,23 @@
     <string name="confidentiality_info">Собственикът гарантира и се застрахова с това, че единствената информация, която ще пази в своята база данни, относно потребителя е: име, e-mail и парола, както и допълнително добавените от потребителя с течение на използването на приложението рецепти, продукти и снимки/картинки.
         \nСобственикът може да предоставя събраната статистическа информация, както и да изготвя вътрешни статистики за целите на маркетинга(своите и на свои партньори).
         \nОтварянето на "страниците" и/или линковете в приложението, както и влизането и регистрацията в него представляват декларация от страна на потребителя, че е запознат и приема уловията за ползване.</string>
+    <!-- Policy activity -->
+    <string name="policy_title">Поверителност на данните</string>
+    <string name="policy_info">Настоящият \"документ\" има за цел да Ви уведоми, че ценим високо Вашите лични данни и, че полагаме всички необходими усилия за тяхното опазване.
+        \nС развитието на технологиите и приложението е възможно да се наложи промяна в Политиката за поверителност. Препоръчваме Ви редовно да преглеждате нейното съдържание.</string>
+    <string name="data_title">Какви данни събираме?</string>
+    <string name="data_info">Това са само данни, които ни предоставяте при регистрирането/влизането в приложението чрез индивидуален профил, както и при връзка със Собственика чрез формуляра в секция \"Контакти\".</string>
+    <string name="processing_title">Защо обработваме личните Ви данни?</string>
+    <string name="processing_info">Обработваме Вашите лични данни, за да изпълним задълженията си съгласно закона.
+        \nВсички най-важни данни, като парола, са криптирани и неразчетими от трети лица.
+        \nСъхраняването на данните Ви е необходимо за така наречената потребителска сесия, за да не се налага при всяко отваряне на приложението да влизате в профила си отново и отново.</string>
+    <string name="providing_title">Предоставяме ли лични данни на други лица?</string>
+    <string name="providing_info">Данните, които можем да предоставим на други лица, са единствено под формата на събрана статистическа информация за целите на маркетинга.</string>
+    <string name="rights_title">Какви са Вашите права относно личните Ви данни?</string>
+    <string name="rights_info">В случай, че решите да не ни предоставите личните си данни, то услугите, които сме в състояние да Ви предложим, ще бъдат ограничени.</string>
+    <string name="connection_title">Как може да се свържете с нас?</string>
+    <string name="connection_info">Ако имате въпроси или коментари относно съдържаниео на настоящата Политика, може да се свържете със Собственика чрез E-mail: <b>malinova29@gmail.com/mmalinova@mydigitalassistant.bg</b> или в случай, че вече сте влезли в приложението - чрез секцията \"Контакти\".</string>
     <!-- Add recipe activity -->
-    <string name="required_add">Всички полета са задължителни</string>
     <string name="recipeName">Име на\nрецептата:</string>
     <string name="inWhichCategoryToAdd">За коя категория е най-подходящо ястието ти?</string>
     <string name="isItVegetarian">Вегетарианска ли е рецептата?</string>

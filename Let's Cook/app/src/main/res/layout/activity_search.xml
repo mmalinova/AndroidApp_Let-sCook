@@ -40,6 +40,8 @@
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
             android:layout_marginRight="16dp"
+            android:overScrollMode="always"
+            android:scrollbars="horizontal"
             android:background="@color/editTextBackground"
             android:drawableEnd="@drawable/ic_search"
             android:drawableRight="@drawable/ic_search"

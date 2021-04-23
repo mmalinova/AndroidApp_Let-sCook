@@ -47,6 +47,8 @@
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginRight="8dp"
+                android:overScrollMode="always"
+                android:scrollbars="horizontal"
                 android:background="@color/editTextBackground"
                 android:drawableEnd="@drawable/ic_product_add"
                 android:drawableRight="@drawable/ic_product_add"

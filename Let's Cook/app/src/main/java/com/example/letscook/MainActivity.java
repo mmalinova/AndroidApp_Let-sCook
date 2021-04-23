@@ -32,9 +32,9 @@ import java.util.Deque;
 import static com.example.constants.Messages.*;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
-    private CardView whatToCookCard, searchCard, myRecipesCard, favCard, addRecipeCard,
-            shoppingListCard, myProductsCard, lastViewedCard, lastAddedCard, contactsCard,
-            infoCard, termsCard;
+    private CardView whatToCookCard, searchCard, myRecipesCard, favCard, shoppingListCard,
+            myProductsCard, addRecipeCard, profileCard, lastViewedCard, lastAddedCard, contactsCard,
+            infoCard, policyCard, termsCard;
     private ImageView profile, my_products;
     private NavigationView navigationView = null;
 
@@ -88,13 +88,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         searchCard = findViewById(R.id.search_card);
         myRecipesCard = findViewById(R.id.myRecipes_card);
         favCard = findViewById(R.id.fav_card);
-        addRecipeCard = findViewById(R.id.addRecipe_card);
-        myProductsCard = findViewById(R.id.myProducts_card);
         shoppingListCard = findViewById(R.id.shopping_card);
+        myProductsCard = findViewById(R.id.myProducts_card);
+        addRecipeCard = findViewById(R.id.addRecipe_card);
+        profileCard = findViewById(R.id.myProfile_card);
         lastViewedCard = findViewById(R.id.lastViewed_card);
         lastAddedCard = findViewById(R.id.lastAdded_card);
         contactsCard = findViewById(R.id.contacts_card);
         infoCard = findViewById(R.id.info_card);
+        policyCard = findViewById(R.id.policy_card);
         termsCard = findViewById(R.id.terms_card);
 
         // Add click listeners to the cards
@@ -102,13 +104,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         searchCard.setOnClickListener(this);
         myRecipesCard.setOnClickListener(this);
         favCard.setOnClickListener(this);
-        addRecipeCard.setOnClickListener(this);
-        myProductsCard.setOnClickListener(this);
         shoppingListCard.setOnClickListener(this);
+        myProductsCard.setOnClickListener(this);
+        addRecipeCard.setOnClickListener(this);
+        profileCard.setOnClickListener(this);
         lastViewedCard.setOnClickListener(this);
         lastAddedCard.setOnClickListener(this);
         contactsCard.setOnClickListener(this);
         infoCard.setOnClickListener(this);
+        policyCard.setOnClickListener(this);
         termsCard.setOnClickListener(this);
 
         // Initialize and assign variable
@@ -166,16 +170,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 i = new Intent(this, FavoriteActivity.class);
                 startActivity(i);
                 break;
-            case R.id.addRecipe_card:
-                i = new Intent(this, AddRecipeActivity.class);
+            case R.id.shopping_card:
+                i = new Intent(this, ShoppingListActivity.class);
                 startActivity(i);
                 break;
             case R.id.myProducts_card:
                 i = new Intent(this, MyProductsActivity.class);
                 startActivity(i);
                 break;
-            case R.id.shopping_card:
-                i = new Intent(this, ShoppingListActivity.class);
+            case R.id.addRecipe_card:
+                i = new Intent(this, AddRecipeActivity.class);
+                startActivity(i);
+                break;
+            case R.id.myProfile_card:
+                i = new Intent(this, ProfileActivity.class);
+                //i = new Intent(this, LoginActivity.class);
                 startActivity(i);
                 break;
             case R.id.lastViewed_card:
@@ -192,6 +201,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.info_card:
                 i = new Intent(this, InfoActivity.class);
+                startActivity(i);
+                break;
+            case R.id.policy_card:
+                i = new Intent(this, DataPolicyActivity.class);
                 startActivity(i);
                 break;
             case R.id.terms_card:

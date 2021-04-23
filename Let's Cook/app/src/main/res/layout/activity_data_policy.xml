@@ -34,7 +34,7 @@
                 android:layout_height="wrap_content" />
 
             <TextView
-                android:id="@+id/ownership"
+                android:id="@+id/policy_info"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_below="@id/action_bar"
@@ -43,92 +43,128 @@
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
                 android:layout_marginRight="16dp"
-                android:text="@string/ownership"
-                android:textColor="@color/black" />
+                android:text="@string/policy_info"
+                android:textColor="@color/black"/>
 
             <TextView
-                android:id="@+id/ownership_info"
+                android:id="@+id/data_title"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_below="@id/ownership"
+                android:text="@string/data_title"
+                android:textColor="@color/black"
                 android:layout_marginStart="16dp"
                 android:layout_marginLeft="16dp"
                 android:layout_marginEnd="16dp"
                 android:layout_marginRight="16dp"
-                android:text="@string/ownership_info"
-                android:textColor="@color/black" />
+                android:layout_below="@id/policy_info"/>
 
             <TextView
-                android:id="@+id/general_terms"
+                android:id="@+id/data_info"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_below="@id/ownership_info"
+                android:text="@string/data_info"
+                android:textColor="@color/black"
                 android:layout_marginStart="16dp"
                 android:layout_marginLeft="16dp"
                 android:layout_marginEnd="16dp"
                 android:layout_marginRight="16dp"
-                android:text="@string/general_terms"
-                android:textColor="@color/black" />
+                android:layout_below="@id/data_title"/>
 
             <TextView
-                android:id="@+id/general_terms_info"
+                android:id="@+id/processing_title"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_below="@id/general_terms"
+                android:text="@string/processing_title"
+                android:textColor="@color/black"
                 android:layout_marginStart="16dp"
                 android:layout_marginLeft="16dp"
                 android:layout_marginEnd="16dp"
                 android:layout_marginRight="16dp"
-                android:text="@string/general_terms_info"
-                android:textColor="@color/black" />
+                android:layout_below="@id/data_info"/>
 
             <TextView
-                android:id="@+id/liable"
+                android:id="@+id/processing_info"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_below="@id/general_terms_info"
+                android:text="@string/processing_info"
+                android:textColor="@color/black"
                 android:layout_marginStart="16dp"
                 android:layout_marginLeft="16dp"
                 android:layout_marginEnd="16dp"
                 android:layout_marginRight="16dp"
-                android:text="@string/liable"
-                android:textColor="@color/black" />
+                android:layout_below="@id/processing_title"/>
 
             <TextView
-                android:id="@+id/liable_info"
+                android:id="@+id/providing_title"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_below="@id/liable"
+                android:text="@string/providing_title"
+                android:textColor="@color/black"
                 android:layout_marginStart="16dp"
                 android:layout_marginLeft="16dp"
                 android:layout_marginEnd="16dp"
                 android:layout_marginRight="16dp"
-                android:text="@string/liable_info"
-                android:textColor="@color/black" />
+                android:layout_below="@id/processing_info"/>
 
             <TextView
-                android:id="@+id/confidentiality"
+                android:id="@+id/providing_info"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_below="@id/liable_info"
+                android:text="@string/providing_info"
+                android:textColor="@color/black"
                 android:layout_marginStart="16dp"
                 android:layout_marginLeft="16dp"
                 android:layout_marginEnd="16dp"
                 android:layout_marginRight="16dp"
-                android:text="@string/confidentiality"
-                android:textColor="@color/black" />
+                android:layout_below="@id/providing_title"/>
 
             <TextView
-                android:id="@+id/confidentiality_info"
+                android:id="@+id/rights_title"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_below="@id/confidentiality"
+                android:text="@string/rights_title"
+                android:textColor="@color/black"
                 android:layout_marginStart="16dp"
                 android:layout_marginLeft="16dp"
                 android:layout_marginEnd="16dp"
                 android:layout_marginRight="16dp"
-                android:text="@string/confidentiality_info"
-                android:textColor="@color/black" />
+                android:layout_below="@id/providing_info"/>
+
+            <TextView
+                android:id="@+id/rights_info"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="@string/rights_info"
+                android:textColor="@color/black"
+                android:layout_marginStart="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_below="@id/rights_title"/>
+
+            <TextView
+                android:id="@+id/connection_title"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="@string/connection_title"
+                android:textColor="@color/black"
+                android:layout_marginStart="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_below="@id/rights_info"/>
+
+            <TextView
+                android:id="@+id/connection_info"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="@string/connection_info"
+                android:textColor="@color/black"
+                android:layout_marginStart="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_below="@id/connection_title"/>
         </RelativeLayout>
     </ScrollView>
 

@@ -4,15 +4,18 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Message;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
@@ -34,7 +37,10 @@ public class AddRecipeActivity extends AppCompatActivity implements AdapterView.
     private ImageView profile, my_products;
     private NavigationView navigationView = null;
     private Spinner spinner;
+    private Button addProduct, addRecipe;
+    private EditText steps;
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -93,6 +99,11 @@ public class AddRecipeActivity extends AppCompatActivity implements AdapterView.
         });
         actionText.setText(ADD_RECIPE);
 
+        addProduct = findViewById(R.id.addProduct);
+        addProduct.setEnabled(false);
+        addRecipe = findViewById(R.id.addBtn);
+        addRecipe.setEnabled(false);
+
         // Get data
         String[] units = {MEASURING_UNITS_REQ, ML, L, GR, KG, GLASS, SMALL_GLASS, SPOON, SMALL_SPOON, PINCH, PINCHES, PACKET, PACKETS};
         spinner = findViewById(R.id.spinner);
@@ -102,6 +113,21 @@ public class AddRecipeActivity extends AppCompatActivity implements AdapterView.
         spinner.setAdapter(adapter);
         spinner.setOnItemSelectedListener(this);
 
+        steps = findViewById(R.id.editTextPrep);
+        steps.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (v.getId() == R.id.editTextPrep) {
+                    v.getParent().requestDisallowInterceptTouchEvent(true);
+                    switch (event.getAction()&MotionEvent.ACTION_MASK){
+                        case MotionEvent.ACTION_UP:
+                            v.getParent().requestDisallowInterceptTouchEvent(false);
+                            break;
+                    }
+                }
+                return false;
+            }
+        });
         // Initialize and assign variable
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_nav);
 

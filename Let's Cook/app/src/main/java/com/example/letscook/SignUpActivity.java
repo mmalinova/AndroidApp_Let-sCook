@@ -17,10 +17,10 @@ import static com.example.constants.Messages.EXTRA_MESSAGE;
 
 public class SignUpActivity extends AppCompatActivity {
 
-    private TextView textView, login;
+    private TextView termsTextView, policyTextView, login;
     private AlertDialog.Builder dialogBuilder;
     private AlertDialog dialog;
-    private Button okButton;
+    private Button okButton, registerBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,12 +32,23 @@ public class SignUpActivity extends AppCompatActivity {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         setContentView(R.layout.activity_sign_up);
-        textView = findViewById(R.id.terms_textView);
-        textView.setOnClickListener(new View.OnClickListener() {
+        registerBtn = findViewById(R.id.register_btn);
+        //registerBtn.setEnabled(false);
+
+        termsTextView = findViewById(R.id.terms_textView);
+        policyTextView = findViewById(R.id.data_policy);
+        termsTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 termsDialog();
-                textView.setLinkTextColor(Color.parseColor("#FFFFFF"));
+                termsTextView.setLinkTextColor(Color.parseColor("#FFFFFF"));
+            }
+        });
+        policyTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                policyDialog();
+                policyTextView.setLinkTextColor(Color.parseColor("#FFFFFF"));
             }
         });
         login = findViewById(R.id.haveAccount_textView);
@@ -73,7 +84,26 @@ public class SignUpActivity extends AppCompatActivity {
 
     public void termsDialog() {
         dialogBuilder = new AlertDialog.Builder(this);
-        final View popupView = getLayoutInflater().inflate(R.layout.register_popup, null);
+        final View popupView = getLayoutInflater().inflate(R.layout.terms_popup, null);
+
+        okButton = popupView.findViewById(R.id.register_okBtn);
+
+        dialogBuilder.setView(popupView);
+        dialog = dialogBuilder.create();
+        dialog.show();
+
+        okButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Close the dialog
+                dialog.dismiss();
+            }
+        });
+    }
+
+    public void policyDialog() {
+        dialogBuilder = new AlertDialog.Builder(this);
+        final View popupView = getLayoutInflater().inflate(R.layout.policy_popup, null);
 
         okButton = popupView.findViewById(R.id.register_okBtn);
 

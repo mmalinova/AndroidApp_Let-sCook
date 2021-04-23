@@ -11,13 +11,13 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.constants.Messages;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 
-import static com.example.constants.Messages.*;
+import static com.example.constants.Messages.POLICY_MESSAGE;
+import static com.example.constants.Messages.TERMS_MESSAGE;
 
-public class TermsOfUseActivity extends AppCompatActivity {
+public class DataPolicyActivity extends AppCompatActivity {
     private int id;
     private ImageView backIcon;
     private TextView actionText;
@@ -27,7 +27,7 @@ public class TermsOfUseActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_terms_of_use);
+        setContentView(R.layout.activity_data_policy);
 
         // Initialize profile  and my products links
         profile = findViewById(R.id.profile);
@@ -79,7 +79,7 @@ public class TermsOfUseActivity extends AppCompatActivity {
                 overridePendingTransition(0, 0);
             }
         });
-        actionText.setText(TERMS_MESSAGE);
+        actionText.setText(POLICY_MESSAGE);
 
         // Initialize and assign variable
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_nav);

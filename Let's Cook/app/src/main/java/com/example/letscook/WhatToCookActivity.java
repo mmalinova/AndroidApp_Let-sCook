@@ -23,14 +23,12 @@ import static com.example.constants.Messages.*;
 
 public class WhatToCookActivity extends AppCompatActivity {
     private int id;
-    private ImageView backIcon;
     private TextView actionText;
-    private ImageView profile, my_products;
+    private ImageView backIcon, profile, my_products;
     private NavigationView navigationView = null;
-    private Button searchBtn;
     private AlertDialog.Builder dialogBuilder;
     private AlertDialog dialog = null;
-    private Button yesButton, noButton;
+    private Button yesButton, noButton, searchBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,6 +90,7 @@ public class WhatToCookActivity extends AppCompatActivity {
 
         // Initialize search
         searchBtn = findViewById(R.id.searchBtn);
+        searchBtn.setEnabled(false);
         searchBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

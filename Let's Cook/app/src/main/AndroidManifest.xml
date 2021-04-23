@@ -9,6 +9,7 @@
         android:roundIcon="@mipmap/logo_round"
         android:supportsRtl="true"
         android:theme="@style/MainTheme">
+
         <activity
             android:name=".SliderActivity"
             android:screenOrientation="portrait"
@@ -37,24 +38,24 @@
         <activity
             android:name=".WhatToCookActivity"
             android:parentActivityName=".MainActivity"
-            android:windowSoftInputMode="adjustPan|adjustResize"/>
+            android:windowSoftInputMode="adjustPan|adjustResize" />
         <activity
             android:name=".TermsOfUseActivity"
             android:parentActivityName=".MainActivity" />
         <activity
             android:name=".ShoppingListActivity"
             android:parentActivityName=".MainActivity"
-            android:windowSoftInputMode="adjustPan|adjustResize"/>
+            android:windowSoftInputMode="adjustPan|adjustResize" />
         <activity
             android:name=".ContactsActivity"
-            android:parentActivityName=".MainActivity"/>
+            android:parentActivityName=".MainActivity" />
         <activity
             android:name=".AddRecipeActivity"
-            android:parentActivityName=".MainActivity"/>
+            android:parentActivityName=".MainActivity" />
         <activity
             android:name=".MyProductsActivity"
             android:parentActivityName=".MainActivity"
-            android:windowSoftInputMode="adjustPan|adjustResize"/>
+            android:windowSoftInputMode="adjustPan|adjustResize" />
         <activity
             android:name=".InfoActivity"
             android:parentActivityName=".MainActivity" />
@@ -73,12 +74,14 @@
         <activity
             android:name=".SearchActivity"
             android:parentActivityName=".MainActivity"
-            android:windowSoftInputMode="adjustPan|adjustResize"/>
+            android:windowSoftInputMode="adjustPan|adjustResize" />
         <activity
             android:name=".ProfileActivity"
             android:parentActivityName=".MainActivity" />
         <activity
             android:name=".RecipesActivity"
+            android:parentActivityName=".MainActivity" />
+        <activity android:name=".DataPolicyActivity"
             android:parentActivityName=".MainActivity" />
 
         <meta-data
