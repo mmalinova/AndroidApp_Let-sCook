@@ -11,11 +11,16 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.constants.Messages;
+import com.example.letscook.view.home.MainActivity;
+import com.example.letscook.view.products.MyProductsActivity;
+import com.example.letscook.view.products.ShoppingListActivity;
+import com.example.letscook.view.profile.ProfileActivity;
+import com.example.letscook.view.search.SearchActivity;
+import com.example.letscook.view.search.WhatToCookActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 
-import static com.example.constants.Messages.*;
+import static com.example.letscook.constants.Messages.*;
 
 public class LastAddedActivity extends AppCompatActivity {
     private int id;

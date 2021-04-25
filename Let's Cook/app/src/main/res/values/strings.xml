@@ -4,15 +4,18 @@
     <string name="app_subname">Да хапнем</string>
     <string name="searchBtn">Търси</string>
     <string name="main_src">Изображение</string>
+    <string name="main_icon">Иконка</string>
     <string name="back_arrow">Стрелка назад</string>
     <string name="logo">Лого</string>
     <string name="prof_photo_desc">Профил</string>
     <string name="smile">Усмивка</string>
-    <!-- Phrases -->
+    <!-- Phrases
     <string name="breakfast_title">Добро утро пожелай с чаша чай</string>
     <string name="lunch_title">Мохабетче на обедче</string>
     <string name="dinner_title">Чаша вино си сипи и се отпусни</string>
     <string name="dessert_title">А без десерт не може</string>
+    <string name="appropriate_recipes">Подходящи рецепти</string>
+    -->
     <!-- Sign up activity -->
     <string name="skip_btn">Пропусни</string>
     <string name="registrationText">Регистрация</string>
@@ -67,7 +70,7 @@
     <string name="prepare_time">Време за приготвяне:</string>
     <string name="portions">Порции:</string>
     <string name="ingredients">Необходими продукти:</string>
-    <string name="steps">Начин на\nприготвяне:</string>
+    <string name="steps">Начин на приготвяне:</string>
     <!-- Shopping list activity -->
     <string name="productsList">(Все още нямате добавени продукти)</string>
     <string name="toAddBtn">Добави</string>
@@ -83,10 +86,11 @@
     <!-- Profile -->
     <string name="myData">Лични данни:</string>
     <string name="name">Име:</string>
-    <string name="shareWith">Сподели приложението с приятел</string>
+    <string name="shareWith">Сподели приложението</string>
     <string name="email">E-mail:</string>
     <string name="photo_desc">Профилна снимка</string>
     <string name="share_icon">Икона</string>
+    <string name="floating_desc">Бутон \"Сподели с\"</string>
     <!-- Info activity -->
     <string name="aboutApp_title">За приложението</string>
     <string name="aboutMe">Добре дошъл в приложението \"Да сготвим\".</string>
@@ -173,11 +177,11 @@
     <string name="h_req">Брой часове*</string>
     <string name="min_req">Брой минути*</string>
     <string name="delimiter">:</string>
-    <!-- My recipes activity -->
+    <!-- My recipes activity
     <string name="myRes">(Все още няма добавяни от Вас рецепти)</string>
-    <!-- Last viewed activity -->
+     Last viewed activity
     <string name="lastViewed">(Все още няма отваряни от Вас рецепти)</string>
-    <!-- Favourite activity -->
+     Favourite activity
     <string name="favourite">(Все още нямате рецепти, отбелязани като любими)</string>
-
+    -->
 </resources>

@@ -6,7 +6,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:padding="16dp"
     android:background="@color/beige"
-    tools:context=".SearchActivity">
+    tools:context=".view.search.SearchActivity">
 
     <TextView
         android:id="@+id/textViewCategory"

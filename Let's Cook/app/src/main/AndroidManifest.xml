@@ -11,7 +11,7 @@
         android:theme="@style/MainTheme">
 
         <activity
-            android:name=".SliderActivity"
+            android:name=".view.slider.SliderActivity"
             android:screenOrientation="portrait"
             android:theme="@style/SplashScreen">
             <intent-filter>
@@ -21,68 +21,70 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".SignUpActivity"
+            android:name=".view.register.SignUpActivity"
             android:theme="@style/Register" />
         <activity
-            android:name=".MainActivity"
+            android:name=".view.home.MainActivity"
             android:theme="@style/MainTheme">
 
             <!-- The meta-data tag is required if you support API level 15 and lower -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity" />
+                android:value=".view.home.MainActivity" />
         </activity>
         <activity
-            android:name=".LoginActivity"
-            android:parentActivityName=".MainActivity" />
+            android:name=".view.login.LoginActivity"
+            android:parentActivityName=".view.home.MainActivity" />
         <activity
-            android:name=".WhatToCookActivity"
-            android:parentActivityName=".MainActivity"
+            android:name=".view.search.WhatToCookActivity"
+            android:parentActivityName=".view.home.MainActivity"
             android:windowSoftInputMode="adjustPan|adjustResize" />
         <activity
-            android:name=".TermsOfUseActivity"
-            android:parentActivityName=".MainActivity" />
+            android:name=".view.info.TermsOfUseActivity"
+            android:parentActivityName=".view.home.MainActivity" />
         <activity
-            android:name=".ShoppingListActivity"
-            android:parentActivityName=".MainActivity"
+            android:name=".view.products.ShoppingListActivity"
+            android:parentActivityName=".view.home.MainActivity"
             android:windowSoftInputMode="adjustPan|adjustResize" />
         <activity
             android:name=".ContactsActivity"
-            android:parentActivityName=".MainActivity" />
+            android:parentActivityName=".view.home.MainActivity" />
         <activity
             android:name=".AddRecipeActivity"
-            android:parentActivityName=".MainActivity" />
+            android:parentActivityName=".view.home.MainActivity" />
         <activity
-            android:name=".MyProductsActivity"
-            android:parentActivityName=".MainActivity"
+            android:name=".view.products.MyProductsActivity"
+            android:parentActivityName=".view.home.MainActivity"
             android:windowSoftInputMode="adjustPan|adjustResize" />
         <activity
-            android:name=".InfoActivity"
-            android:parentActivityName=".MainActivity" />
+            android:name=".view.info.InfoActivity"
+            android:parentActivityName=".view.home.MainActivity" />
         <activity
             android:name=".LastAddedActivity"
-            android:parentActivityName=".MainActivity" />
+            android:parentActivityName=".view.home.MainActivity" />
         <activity
-            android:name=".LastViewedActivity"
-            android:parentActivityName=".MainActivity" />
+            android:name=".view.userRecipes.LastViewedActivity"
+            android:parentActivityName=".view.home.MainActivity" />
         <activity
-            android:name=".FavoriteActivity"
-            android:parentActivityName=".MainActivity" />
+            android:name=".view.userRecipes.FavoriteActivity"
+            android:parentActivityName=".view.home.MainActivity" />
         <activity
-            android:name=".MyRecipesActivity"
-            android:parentActivityName=".MainActivity" />
+            android:name=".view.userRecipes.MyRecipesActivity"
+            android:parentActivityName=".view.home.MainActivity" />
         <activity
-            android:name=".SearchActivity"
-            android:parentActivityName=".MainActivity"
+            android:name=".view.search.SearchActivity"
+            android:parentActivityName=".view.home.MainActivity"
             android:windowSoftInputMode="adjustPan|adjustResize" />
         <activity
-            android:name=".ProfileActivity"
-            android:parentActivityName=".MainActivity" />
+            android:name=".view.profile.ProfileActivity"
+            android:parentActivityName=".view.home.MainActivity" />
         <activity
-            android:name=".RecipesActivity"
-            android:parentActivityName=".MainActivity" />
-        <activity android:name=".DataPolicyActivity"
-            android:parentActivityName=".MainActivity" />
+            android:name=".view.recipesDashboard.RecipesActivity" />
+        <activity
+            android:name=".view.recipeDetails.RecipeActivity" />
+        <activity
+            android:name=".view.info.DataPolicyActivity"
+            android:parentActivityName=".view.home.MainActivity" />
 
         <meta-data
             android:name="preloaded_fonts"

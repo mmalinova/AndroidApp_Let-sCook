@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/backgroundBtn"
-    tools:context=".WhatToCookActivity">
+    tools:context=".view.search.WhatToCookActivity">
 
     <include
         android:id="@+id/tool"
@@ -38,36 +38,41 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
-            <EditText
+            <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/editText"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginLeft="16dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="11dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginRight="8dp"
-                android:overScrollMode="always"
-                android:scrollbars="horizontal"
-                android:background="@color/editTextBackground"
-                android:drawableEnd="@drawable/ic_product_add"
-                android:drawableRight="@drawable/ic_product_add"
-                android:drawablePadding="8dp"
                 android:hint="@string/addProductEditText"
-                android:importantForAutofill="no"
-                android:inputType="textCapSentences"
-                android:paddingStart="8dp"
-                android:paddingLeft="8dp"
-                android:paddingTop="8dp"
-                android:paddingEnd="8dp"
-                android:paddingRight="8dp"
-                android:paddingBottom="8dp"
-                android:textColor="@color/inputText"
                 android:textColorHint="@color/inputText"
-                android:textSize="15sp"
+                app:boxBackgroundColor="@color/editTextBackground"
                 app:layout_constraintEnd_toStartOf="@id/searchBtn"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/action_bar" />
+                app:layout_constraintTop_toBottomOf="@+id/action_bar">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableEnd="@drawable/ic_product_add"
+                    android:drawableRight="@drawable/ic_product_add"
+                    android:drawablePadding="8dp"
+                    android:inputType="textCapSentences"
+                    android:overScrollMode="always"
+                    android:paddingStart="8dp"
+                    android:paddingLeft="8dp"
+                    android:paddingTop="8dp"
+                    android:paddingEnd="8dp"
+                    android:paddingRight="8dp"
+                    android:paddingBottom="8dp"
+                    android:scrollbars="horizontal"
+                    android:textColor="@color/inputText"
+                    android:textSize="15sp" />
+            </com.google.android.material.textfield.TextInputLayout>
 
             <Button
                 android:id="@+id/searchBtn"

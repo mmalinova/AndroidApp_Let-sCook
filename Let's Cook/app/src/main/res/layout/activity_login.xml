@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".LoginActivity"
+    tools:context=".view.login.LoginActivity"
     android:background="@color/background">
 
     <RelativeLayout
@@ -77,8 +77,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:overScrollMode="always"
-                android:scrollbars="horizontal"
                 app:boxBackgroundColor="@color/editTextBackground"
                 android:hint="@string/passwordEditText"
                 android:textColorHint="@color/inputText"
@@ -89,6 +87,8 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:overScrollMode="always"
+                    android:scrollbars="horizontal"
                     android:inputType="textPassword"
                     android:textColor="@color/inputText"
                     android:textColorHint="@color/black" />

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".TermsOfUseActivity">
+    tools:context=".view.info.TermsOfUseActivity">
     <include android:id="@+id/tool" layout="@layout/toolbar" />
 
     <com.google.android.material.navigation.NavigationView

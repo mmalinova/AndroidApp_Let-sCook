@@ -1,15 +1,12 @@
 package com.example.letscook;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.os.Message;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
@@ -22,13 +19,16 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.constants.Messages;
-import com.example.topnav.BottomNavigation;
-import com.example.topnav.TopNavigation;
+import com.example.letscook.view.home.MainActivity;
+import com.example.letscook.view.products.MyProductsActivity;
+import com.example.letscook.view.products.ShoppingListActivity;
+import com.example.letscook.view.profile.ProfileActivity;
+import com.example.letscook.view.search.SearchActivity;
+import com.example.letscook.view.search.WhatToCookActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 
-import static com.example.constants.Messages.*;
+import static com.example.letscook.constants.Messages.*;
 
 public class AddRecipeActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
     private int id;
