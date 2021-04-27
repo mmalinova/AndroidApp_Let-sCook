@@ -24,7 +24,6 @@ public class LoginActivity extends AppCompatActivity {
         button = findViewById(R.id.login_btn);
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Toast.makeText(getApplicationContext(),"Clicked", Toast.LENGTH_SHORT).show();
             }
         });
     }

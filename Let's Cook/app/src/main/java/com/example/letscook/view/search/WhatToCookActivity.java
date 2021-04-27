@@ -15,6 +15,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
+import com.blogspot.atifsoftwares.animatoolib.Animatoo;
 import com.example.letscook.AddRecipeActivity;
 import com.example.letscook.view.products.MyProductsActivity;
 import com.example.letscook.R;
@@ -35,6 +36,7 @@ public class WhatToCookActivity extends AppCompatActivity {
     private AlertDialog.Builder dialogBuilder;
     private AlertDialog dialog = null;
     private Button yesButton, noButton, searchBtn;
+    private BottomNavigationView bottomNavigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +71,7 @@ public class WhatToCookActivity extends AppCompatActivity {
                     }
                 } else {
                     startActivity(new Intent(getApplicationContext(), ProfileActivity.class));
+                    Animatoo.animateSlideDown(WhatToCookActivity.this);
                     profile.setColorFilter(Color.parseColor("#FFFEF6D8"));
                 }
             }
@@ -77,6 +80,7 @@ public class WhatToCookActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(getApplicationContext(), MyProductsActivity.class));
+                Animatoo.animateSlideDown(WhatToCookActivity.this);
                 my_products.setColorFilter(Color.parseColor("#FFFEF6D8"));
             }
         });
@@ -89,7 +93,6 @@ public class WhatToCookActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(getApplicationContext(), MainActivity.class));
-                overridePendingTransition(0, 0);
             }
         });
         actionText.setText(WHAT_TO_COOK);
@@ -105,9 +108,9 @@ public class WhatToCookActivity extends AppCompatActivity {
         });
 
         // Initialize and assign variable
-        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_nav);
+        bottomNavigationView = findViewById(R.id.bottom_nav);
 
-        // Set home selected
+        // Set selected
         bottomNavigationView.setSelectedItemId(R.id.what_to_cook);
 
         // Perform item selected list
@@ -115,27 +118,26 @@ public class WhatToCookActivity extends AppCompatActivity {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 id = item.getItemId();
+                Intent intent = null;
                 switch (id) {
                     case R.id.home:
-                        startActivity(new Intent(getApplicationContext(), MainActivity.class));
-                        overridePendingTransition(0, 0);
-                        return true;
+                        intent = new Intent(getApplicationContext(), MainActivity.class);
+                        break;
                     case R.id.what_to_cook:
                         return true;
                     case R.id.add_recipe:
-                        startActivity(new Intent(getApplicationContext(), AddRecipeActivity.class));
-                        overridePendingTransition(0, 0);
-                        return true;
+                        intent = new Intent(getApplicationContext(), AddRecipeActivity.class);
+                        break;
                     case R.id.search:
-                        startActivity(new Intent(getApplicationContext(), SearchActivity.class));
-                        overridePendingTransition(0, 0);
-                        return true;
+                        intent = new Intent(getApplicationContext(), SearchActivity.class);
+                        break;
                     case R.id.shopping_list:
-                        startActivity(new Intent(getApplicationContext(), ShoppingListActivity.class));
-                        overridePendingTransition(0, 0);
-                        return true;
+                        intent = new Intent(getApplicationContext(), ShoppingListActivity.class);
+                        break;
                 }
-                return false;
+                startActivity(intent);
+                Animatoo.animateZoom(WhatToCookActivity.this);
+                return true;
             }
         });
     }
@@ -260,6 +262,7 @@ public class WhatToCookActivity extends AppCompatActivity {
     protected void onStart() {
         profile.setColorFilter(Color.parseColor("#000000"));
         my_products.setColorFilter(Color.parseColor("#000000"));
+        bottomNavigationView.setSelectedItemId(R.id.what_to_cook);
         super.onStart();
     }
 
@@ -270,14 +273,16 @@ public class WhatToCookActivity extends AppCompatActivity {
                 navigationView.setVisibility(View.INVISIBLE);
                 profile.setColorFilter(Color.parseColor("#000000"));
             } else {
-                startActivity(new Intent(getApplicationContext(), MainActivity.class));
-                overridePendingTransition(0, 0);
-                id = R.id.home;
+                super.onBackPressed();
+                if (!getIntent().getBooleanExtra("isFromMain", false)) {
+                    overridePendingTransition(0,0);
+                }
             }
         } else {
-            startActivity(new Intent(getApplicationContext(), MainActivity.class));
-            overridePendingTransition(0, 0);
-            id = R.id.home;
+            super.onBackPressed();
+            if (!getIntent().getBooleanExtra("isFromMain", false)) {
+                overridePendingTransition(0,0);
+            }
         }
     }
 }

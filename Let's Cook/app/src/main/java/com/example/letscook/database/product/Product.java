@@ -1,5 +1,6 @@
 package com.example.letscook.database.product;
 
+import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Embedded;
 import androidx.room.Entity;
@@ -14,8 +15,9 @@ import java.util.List;
 //Define table
 @Entity(tableName = "product")
 public class Product implements Serializable {
-    @ColumnInfo(name = "product_id")
+    @NonNull
     @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "product_id")
     private long ID;
     @ColumnInfo(name = "name")
     private String name;
@@ -84,16 +86,5 @@ public class Product implements Serializable {
 
     public void setOwnerId(long ownerId) {
         this.ownerId = ownerId;
-    }
-
-    // One-to-many relationship
-    public class ProductHasOwner {
-        @Embedded
-        public Product product;
-        @Relation(
-                parentColumn = "owner_id",
-                entityColumn = "user_id"
-        )
-        public List<User> userList;
     }
 }

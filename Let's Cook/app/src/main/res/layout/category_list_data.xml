@@ -22,9 +22,7 @@
         android:layout_height="95dp"
         android:layout_centerVertical="true"
         android:layout_marginStart="7dp"
-        android:layout_marginLeft="7dp"
         android:layout_toEndOf="@id/cat"
-        android:layout_toRightOf="@id/cat"
         android:src="@drawable/breakfast"
         android:contentDescription="@string/main_src" />
 
@@ -33,7 +31,6 @@
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:contentDescription="@string/main_src"
         android:src="@drawable/ic_forward" />

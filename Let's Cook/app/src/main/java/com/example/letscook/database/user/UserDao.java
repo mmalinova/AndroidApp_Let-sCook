@@ -12,6 +12,6 @@ import java.util.List;
 public interface UserDao {
     // One-to-one relationship
     @Transaction
-    @Query("SELECT my_session FROM user WHERE user_id = :sID")
-    public List<User.UserCreatesSession> getUserSession(long sID);
+    @Query("SELECT * FROM user WHERE user_id = :sID")
+    public User getUserSession(long sID);
 }

@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.blogspot.atifsoftwares.animatoolib.Animatoo;
 import com.example.letscook.R;
 import com.example.letscook.view.home.MainActivity;
 import com.example.letscook.view.login.LoginActivity;
@@ -60,6 +61,7 @@ public class SignUpActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+                Animatoo.animateSlideRight(SignUpActivity.this);
                 login.setLinkTextColor(Color.parseColor("#FFFFFF"));
             }
         });
@@ -83,6 +85,7 @@ public class SignUpActivity extends AppCompatActivity {
         EditText editTextRePass = findViewById(R.id.rePass_editText);
         String rePass = editTextRePass.getText().toString();
         intent.putExtra(EXTRA_MESSAGE, rePass);
+
         startActivity(intent);
     }
 

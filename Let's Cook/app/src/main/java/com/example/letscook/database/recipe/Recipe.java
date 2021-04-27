@@ -1,5 +1,6 @@
 package com.example.letscook.database.recipe;
 
+import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Embedded;
 import androidx.room.Entity;
@@ -16,8 +17,9 @@ import java.util.List;
 //Define table
 @Entity(tableName = "recipe")
 public class Recipe implements Serializable {
-    @ColumnInfo(name = "recipe_id")
+    @NonNull
     @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "recipe_id")
     private long ID;
     @ColumnInfo(name = "name")
     private String name;
@@ -136,16 +138,5 @@ public class Recipe implements Serializable {
 
     public void setIngredients(long ingredients) {
         this.ingredients = ingredients;
-    }
-
-    // One-to-many relationship
-    public class RecipeHasOwner {
-        @Embedded
-        public User user;
-        @Relation(
-                parentColumn = "user_id",
-                entityColumn = "owner_id"
-        )
-        public List<Recipe> recipeList;
     }
 }

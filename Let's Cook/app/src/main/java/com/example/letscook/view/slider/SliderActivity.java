@@ -3,6 +3,7 @@ package com.example.letscook.view.slider;
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.blogspot.atifsoftwares.animatoolib.Animatoo;
 import com.example.letscook.R;
 import com.example.letscook.view.register.SignUpActivity;
 import com.example.letscook.adapter.SliderAdp;
@@ -66,7 +67,6 @@ public class SliderActivity extends AppCompatActivity {
         sliderView.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
             @Override
             public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
-
                 if (sliderView.getCurrentPagePosition() == images.length - 1) {
                     loadLastScreen();
                 } else {
@@ -88,6 +88,7 @@ public class SliderActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 openSignActivity(v);
+                Animatoo.animateFade(SliderActivity.this);
             }
         });
     }

@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.blogspot.atifsoftwares.animatoolib.Animatoo;
 import com.example.letscook.AddRecipeActivity;
 import com.example.letscook.view.products.MyProductsActivity;
 import com.example.letscook.R;
@@ -63,6 +64,7 @@ public class DataPolicyActivity extends AppCompatActivity {
                     }
                 } else {
                     startActivity(new Intent(getApplicationContext(), ProfileActivity.class));
+                    Animatoo.animateSlideDown(DataPolicyActivity.this);
                     profile.setColorFilter(Color.parseColor("#FFFEF6D8"));
                 }
             }
@@ -71,6 +73,7 @@ public class DataPolicyActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(getApplicationContext(), MyProductsActivity.class));
+                Animatoo.animateSlideDown(DataPolicyActivity.this);
                 my_products.setColorFilter(Color.parseColor("#FFFEF6D8"));
             }
         });
@@ -96,29 +99,27 @@ public class DataPolicyActivity extends AppCompatActivity {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 id = item.getItemId();
+                Intent intent = null;
                 switch(id) {
                     case R.id.home:
-                        startActivity(new Intent(getApplicationContext(), MainActivity.class));
-                        overridePendingTransition(0, 0);
-                        return true;
+                        intent = new Intent(getApplicationContext(), MainActivity.class);
+                        break;
                     case R.id.what_to_cook:
-                        startActivity(new Intent(getApplicationContext(), WhatToCookActivity.class));
-                        overridePendingTransition(0, 0);
-                        return true;
+                        intent = new Intent(getApplicationContext(), WhatToCookActivity.class);
+                        break;
                     case R.id.add_recipe:
-                        startActivity(new Intent(getApplicationContext(), AddRecipeActivity.class));
-                        overridePendingTransition(0, 0);
-                        return true;
+                        intent = new Intent(getApplicationContext(), AddRecipeActivity.class);
+                        break;
                     case R.id.search:
-                        startActivity(new Intent(getApplicationContext(), SearchActivity.class));
-                        overridePendingTransition(0, 0);
-                        return true;
+                        intent = new Intent(getApplicationContext(), SearchActivity.class);
+                        break;
                     case R.id.shopping_list:
-                        startActivity(new Intent(getApplicationContext(), ShoppingListActivity.class));
-                        overridePendingTransition(0, 0);
-                        return true;
+                        intent = new Intent(getApplicationContext(), ShoppingListActivity.class);
+                        break;
                 }
-                return false;
+                startActivity(intent);
+                Animatoo.animateZoom(DataPolicyActivity.this);
+                return true;
             }
         });
     }
@@ -137,14 +138,10 @@ public class DataPolicyActivity extends AppCompatActivity {
                 navigationView.setVisibility(View.INVISIBLE);
                 profile.setColorFilter(Color.parseColor("#000000"));
             } else {
-                startActivity(new Intent(getApplicationContext(), MainActivity.class));
-                overridePendingTransition(0, 0);
-                id = R.id.home;
+                super.onBackPressed();
             }
         } else {
-            startActivity(new Intent(getApplicationContext(), MainActivity.class));
-            overridePendingTransition(0, 0);
-            id = R.id.home;
+            super.onBackPressed();
         }
     }
 }

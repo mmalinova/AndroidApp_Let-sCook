@@ -40,10 +40,12 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
     private List<Product> productList;
     private Activity context;
     private RoomDB database;
+    private String listType;
 
-    public MainAdapter(Activity context, List<Product> productList) {
+    public MainAdapter(Activity context, List<Product> productList, String listType) {
         this.context = context;
         this.productList = productList;
+        this.listType = listType;
         notifyDataSetChanged();
     }
 
@@ -66,7 +68,9 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
         holder.name.setTextColor(Color.parseColor("#4E4E4E"));
         holder.name.setText(String.valueOf(product.getName()));
         holder.quantity.setTextColor(Color.parseColor("#4E4E4E"));
-        holder.quantity.setText(String.valueOf(product.getQuantity()));
+        if (product.getQuantity() > 0) {
+            holder.quantity.setText(String.valueOf(product.getQuantity()));
+        }
         holder.unit.setTextColor(Color.parseColor("#4E4E4E"));
         holder.unit.setText(String.valueOf(product.getMeasureUnit()));
         holder.edit.setOnClickListener(new View.OnClickListener() {
@@ -86,12 +90,12 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
                 dialog.show();
 
                 // Initialize and assign variables
-                EditText name = (EditText) dialog.findViewById(R.id.editName);
-                EditText quantity = (EditText) dialog.findViewById(R.id.editQuantity);
-                EditText unit = (EditText) dialog.findViewById(R.id.editUnit);
-                TextView nameReq = (TextView) dialog.findViewById(R.id.firstTextView);
-                TextView quantityReq = (TextView) dialog.findViewById(R.id.secondTextView);
-                TextView unitReq = (TextView) dialog.findViewById(R.id.thirdTextView);
+                EditText name = dialog.findViewById(R.id.editName);
+                EditText quantity = dialog.findViewById(R.id.editQuantity);
+                EditText unit = dialog.findViewById(R.id.editUnit);
+                TextView nameReq = dialog.findViewById(R.id.firstTextView);
+                TextView quantityReq = dialog.findViewById(R.id.secondTextView);
+                TextView unitReq = dialog.findViewById(R.id.thirdTextView);
                 Button update = dialog.findViewById(R.id.update);
                 update.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -99,25 +103,32 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
                         nameReq.setVisibility(View.INVISIBLE);
                         quantityReq.setVisibility(View.INVISIBLE);
                         unitReq.setVisibility(View.INVISIBLE);
+                        float uQuantity = 0;
                         String uName = name.getText().toString().trim();
-                        String uQuantity = quantity.getText().toString().trim();
+                        String q = quantity.getText().toString().trim();
                         String uMeasure_unit = unit.getText().toString().trim();
                         String[] units = {MEASURING_UNITS, ML, L, GR, KG, GLASS, SMALL_GLASS, SPOON, SMALL_SPOON, PINCH, PINCHES, PACKET, PACKETS};
                         if (uName.equals("")) {
                            nameReq.setVisibility(View.VISIBLE);
                            //return;
-                        } else if (uQuantity.equals("0")) {
+                        } else if (q.equals(".")) {
                             quantityReq.setVisibility(View.VISIBLE);
                             //return;
                         } else if (!uMeasure_unit.equals("") && !Arrays.asList(units).contains(uMeasure_unit)) {
                             unitReq.setVisibility(View.VISIBLE);
                             //return;
+                        } else if (!q.equals("")) {
+                            uQuantity = Float.parseFloat(q);
+                            if (uQuantity <= 0) {
+                                quantityReq.setVisibility(View.VISIBLE);
+                                //return;
+                            }
                         } else {
                             // Update in database
                             database.productDao().update(sID, uName, uMeasure_unit, uQuantity);
                             // Notify
                             productList.clear();
-                            productList.addAll(database.productDao().getAllProducts());
+                            productList.addAll(database.productDao().getUserProducts(listType));
                             notifyDataSetChanged();
                             nameReq.setVisibility(View.INVISIBLE);
                             quantityReq.setVisibility(View.INVISIBLE);

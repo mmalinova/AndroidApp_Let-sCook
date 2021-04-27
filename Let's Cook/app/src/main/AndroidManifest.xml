@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.letscook">
 
+    <uses-permission android:name="android.permission.INTERNET"/>
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/logo"
@@ -81,7 +83,8 @@
         <activity
             android:name=".view.recipesDashboard.RecipesActivity" />
         <activity
-            android:name=".view.recipeDetails.RecipeActivity" />
+            android:name=".view.recipeDetails.RecipeActivity"
+            android:parentActivityName=".view.recipesDashboard.RecipesActivity" />
         <activity
             android:name=".view.info.DataPolicyActivity"
             android:parentActivityName=".view.home.MainActivity" />

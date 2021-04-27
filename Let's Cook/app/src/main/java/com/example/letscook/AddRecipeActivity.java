@@ -19,12 +19,14 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.blogspot.atifsoftwares.animatoolib.Animatoo;
 import com.example.letscook.view.home.MainActivity;
 import com.example.letscook.view.products.MyProductsActivity;
 import com.example.letscook.view.products.ShoppingListActivity;
 import com.example.letscook.view.profile.ProfileActivity;
 import com.example.letscook.view.search.SearchActivity;
 import com.example.letscook.view.search.WhatToCookActivity;
+import com.example.letscook.view.userRecipes.MyRecipesActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 
@@ -39,6 +41,7 @@ public class AddRecipeActivity extends AppCompatActivity implements AdapterView.
     private Spinner spinner;
     private Button addProduct, addRecipe;
     private EditText steps;
+    private BottomNavigationView bottomNavigationView;
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -74,6 +77,7 @@ public class AddRecipeActivity extends AppCompatActivity implements AdapterView.
                     }
                 } else {
                     startActivity(new Intent(getApplicationContext(), ProfileActivity.class));
+                    Animatoo.animateSlideDown(AddRecipeActivity.this);
                     profile.setColorFilter(Color.parseColor("#FFFEF6D8"));
                 }
             }
@@ -82,6 +86,7 @@ public class AddRecipeActivity extends AppCompatActivity implements AdapterView.
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(getApplicationContext(), MyProductsActivity.class));
+                Animatoo.animateSlideDown(AddRecipeActivity.this);
                 my_products.setColorFilter(Color.parseColor("#FFFEF6D8"));
             }
         });
@@ -94,7 +99,6 @@ public class AddRecipeActivity extends AppCompatActivity implements AdapterView.
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(getApplicationContext(), MainActivity.class));
-                overridePendingTransition(0, 0);
             }
         });
         actionText.setText(ADD_RECIPE);
@@ -129,12 +133,12 @@ public class AddRecipeActivity extends AppCompatActivity implements AdapterView.
             }
         });
         // Initialize and assign variable
-        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_nav);
+        bottomNavigationView = findViewById(R.id.bottom_nav);
 
 //        BottomNavigation bottomNavigation = new BottomNavigation();
 //        bottomNavigation.bottomNavActions(bottomNavigationView);
 
-        // Set home selected
+        // Set selected
         bottomNavigationView.setSelectedItemId(R.id.add_recipe);
 
         // Perform item selected list
@@ -142,27 +146,26 @@ public class AddRecipeActivity extends AppCompatActivity implements AdapterView.
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 id = item.getItemId();
+                Intent intent = null;
                 switch (id) {
                     case R.id.home:
-                        startActivity(new Intent(getApplicationContext(), MainActivity.class));
-                        overridePendingTransition(0, 0);
-                        return true;
+                        intent = new Intent(getApplicationContext(), MainActivity.class);
+                        break;
                     case R.id.what_to_cook:
-                        startActivity(new Intent(getApplicationContext(), WhatToCookActivity.class));
-                        overridePendingTransition(0, 0);
-                        return true;
+                        intent = new Intent(getApplicationContext(), WhatToCookActivity.class);
+                        break;
                     case R.id.add_recipe:
                         return true;
                     case R.id.search:
-                        startActivity(new Intent(getApplicationContext(), SearchActivity.class));
-                        overridePendingTransition(0, 0);
-                        return true;
+                        intent = new Intent(getApplicationContext(), SearchActivity.class);
+                        break;
                     case R.id.shopping_list:
-                        startActivity(new Intent(getApplicationContext(), ShoppingListActivity.class));
-                        overridePendingTransition(0, 0);
-                        return true;
+                        intent = new Intent(getApplicationContext(), ShoppingListActivity.class);
+                        break;
                 }
-                return false;
+                startActivity(intent);
+                Animatoo.animateZoom(AddRecipeActivity.this);
+                return true;
             }
         });
     }
@@ -171,6 +174,7 @@ public class AddRecipeActivity extends AppCompatActivity implements AdapterView.
     protected void onStart() {
         profile.setColorFilter(Color.parseColor("#000000"));
         my_products.setColorFilter(Color.parseColor("#000000"));
+        bottomNavigationView.setSelectedItemId(R.id.add_recipe);
         super.onStart();
     }
 
@@ -181,24 +185,21 @@ public class AddRecipeActivity extends AppCompatActivity implements AdapterView.
                 navigationView.setVisibility(View.INVISIBLE);
                 profile.setColorFilter(Color.parseColor("#000000"));
             } else {
-                startActivity(new Intent(getApplicationContext(), MainActivity.class));
-                overridePendingTransition(0, 0);
-                id = R.id.home;
+                super.onBackPressed();
+                if (!getIntent().getBooleanExtra("isFromMain", false)) {
+                    overridePendingTransition(0,0);
+                }
             }
         } else {
-            startActivity(new Intent(getApplicationContext(), MainActivity.class));
-            overridePendingTransition(0, 0);
-            id = R.id.home;
+            super.onBackPressed();
+            if (!getIntent().getBooleanExtra("isFromMain", false)) {
+                overridePendingTransition(0,0);
+            }
         }
     }
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        Object pos = parent.getItemAtPosition(position);
-        if (!pos.equals("Мерна единица*")) {
-            String text = pos.toString();
-            Toast.makeText(parent.getContext(), text, Toast.LENGTH_SHORT).show();
-        }
     }
 
     @Override

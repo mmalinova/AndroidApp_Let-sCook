@@ -22,12 +22,14 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.blogspot.atifsoftwares.animatoolib.Animatoo;
 import com.example.letscook.AddRecipeActivity;
 import com.example.letscook.R;
 import com.example.letscook.adapter.MainAdapter;
 import com.example.letscook.database.product.Product;
 import com.example.letscook.database.RoomDB;
 import com.example.letscook.view.home.MainActivity;
+import com.example.letscook.view.info.TermsOfUseActivity;
 import com.example.letscook.view.profile.ProfileActivity;
 import com.example.letscook.view.search.SearchActivity;
 import com.example.letscook.view.search.WhatToCookActivity;
@@ -39,7 +41,7 @@ import java.util.List;
 
 import static com.example.letscook.constants.Messages.*;
 
-public class MyProductsActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener{
+public class MyProductsActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
     private int id;
     private ImageView backIcon, profile, my_products;
     private TextView actionText, textView;
@@ -53,7 +55,6 @@ public class MyProductsActivity extends AppCompatActivity implements AdapterView
     private LinearLayoutManager linearLayoutManager;
     private RoomDB database;
     private MainAdapter mainAdapter;
-
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -89,6 +90,7 @@ public class MyProductsActivity extends AppCompatActivity implements AdapterView
                     }
                 } else {
                     startActivity(new Intent(getApplicationContext(), ProfileActivity.class));
+                    Animatoo.animateSlideDown(MyProductsActivity.this);
                     profile.setColorFilter(Color.parseColor("#FFFEF6D8"));
                 }
             }
@@ -101,20 +103,19 @@ public class MyProductsActivity extends AppCompatActivity implements AdapterView
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(getApplicationContext(), MainActivity.class));
-                overridePendingTransition(0, 0);
             }
         });
         actionText.setText(MY_PRODUCTS);
 
         // Initialize attributes
         addBtn = findViewById(R.id.addProdBtn);
-        name = (EditText) findViewById(R.id.editTextProduct);
+        name = findViewById(R.id.editTextProduct);
         name.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 if (v.getId() == R.id.editTextProduct) {
                     v.getParent().requestDisallowInterceptTouchEvent(true);
-                    switch (event.getAction()&MotionEvent.ACTION_MASK){
+                    switch (event.getAction() & MotionEvent.ACTION_MASK) {
                         case MotionEvent.ACTION_UP:
                             v.getParent().requestDisallowInterceptTouchEvent(false);
                             break;
@@ -134,7 +135,7 @@ public class MyProductsActivity extends AppCompatActivity implements AdapterView
                 ConstraintLayout constraintLayout = findViewById(R.id.constraint);
                 ConstraintSet constraintSet = new ConstraintSet();
                 constraintSet.clone(constraintLayout);
-                constraintSet.connect(R.id.recycler_view, ConstraintSet.TOP, R.id.delAllProd, ConstraintSet.BOTTOM,560);
+                constraintSet.connect(R.id.recycler_view, ConstraintSet.TOP, R.id.delAllProd, ConstraintSet.BOTTOM, 560);
                 constraintSet.applyTo(constraintLayout);
             }
         });
@@ -152,10 +153,10 @@ public class MyProductsActivity extends AppCompatActivity implements AdapterView
         // Initialize db
         database = RoomDB.getInstance(this);
         // Store db value in product list
-        dataList = database.productDao().getAllProducts();
+        dataList = database.productDao().getUserProducts("myProducts");
         linearLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(linearLayoutManager);
-        mainAdapter = new MainAdapter(MyProductsActivity.this, dataList);
+        mainAdapter = new MainAdapter(MyProductsActivity.this, dataList, "myProducts");
         recyclerView.setAdapter(mainAdapter);
 
         deleteAll = findViewById(R.id.delAllProd);
@@ -174,21 +175,26 @@ public class MyProductsActivity extends AppCompatActivity implements AdapterView
             public void onClick(View v) {
                 findViewById(R.id.firstTextView).setVisibility(View.INVISIBLE);
                 findViewById(R.id.secondTextView).setVisibility(View.INVISIBLE);
+                Product product = new Product();
+                float sQuantity = 0;
                 String sName = name.getText().toString().trim();
-                float sQuantity = Float.parseFloat(quantity.getText().toString().trim());
+                String q = quantity.getText().toString().trim();
                 String sMeasureUnit = spinner.getSelectedItem().toString();
                 if (!sName.equals("")) {
                     if (sMeasureUnit.contains("Мерна")) {
                         sMeasureUnit = "";
                     }
-                    if (sQuantity < 0) {
-                        findViewById(R.id.secondTextView).setVisibility(View.VISIBLE);
-                        return;
+                    if (!q.equals("") && !q.equals(".")) {
+                        sQuantity = Float.parseFloat(q);
+                        if (sQuantity <= 0) {
+                            findViewById(R.id.secondTextView).setVisibility(View.VISIBLE);
+                            return;
+                        }
                     }
-                    Product product = new Product();
                     product.setName(sName);
                     product.setMeasureUnit(sMeasureUnit);
                     product.setQuantity(sQuantity);
+                    product.setBelonging("myProducts");
                     // Insert in db
                     database.productDao().insert(product);
                     // Clear edit texts
@@ -196,14 +202,14 @@ public class MyProductsActivity extends AppCompatActivity implements AdapterView
                     spinner.setSelection(0);
                     quantity.setText("");
                     dataList.clear();
-                    dataList.addAll(database.productDao().getAllProducts());
+                    dataList.addAll(database.productDao().getUserProducts("myProducts"));
                     mainAdapter.notifyDataSetChanged();
                     findViewById(R.id.firstTextView).setVisibility(View.INVISIBLE);
                     constraintLayout.setVisibility(View.INVISIBLE);
                     ConstraintLayout constraintLayout = findViewById(R.id.constraint);
                     ConstraintSet constraintSet = new ConstraintSet();
                     constraintSet.clone(constraintLayout);
-                    constraintSet.connect(R.id.recycler_view,ConstraintSet.TOP,R.id.delAllProd,ConstraintSet.BOTTOM,48);
+                    constraintSet.connect(R.id.recycler_view, ConstraintSet.TOP, R.id.delAllProd, ConstraintSet.BOTTOM, 48);
                     constraintSet.applyTo(constraintLayout);
                 } else {
                     findViewById(R.id.firstTextView).setVisibility(View.VISIBLE);
@@ -218,29 +224,27 @@ public class MyProductsActivity extends AppCompatActivity implements AdapterView
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 id = item.getItemId();
-                switch(id) {
+                Intent intent = null;
+                switch (id) {
                     case R.id.home:
                         startActivity(new Intent(getApplicationContext(), MainActivity.class));
-                        overridePendingTransition(0, 0);
-                        return true;
+                        break;
                     case R.id.what_to_cook:
                         startActivity(new Intent(getApplicationContext(), WhatToCookActivity.class));
-                        overridePendingTransition(0, 0);
-                        return true;
+                        break;
                     case R.id.add_recipe:
                         startActivity(new Intent(getApplicationContext(), AddRecipeActivity.class));
-                        overridePendingTransition(0, 0);
-                        return true;
+                        break;
                     case R.id.search:
                         startActivity(new Intent(getApplicationContext(), SearchActivity.class));
-                        overridePendingTransition(0, 0);
-                        return true;
+                        break;
                     case R.id.shopping_list:
                         startActivity(new Intent(getApplicationContext(), ShoppingListActivity.class));
-                        overridePendingTransition(0, 0);
-                        return true;
+                        break;
                 }
-                return false;
+                startActivity(intent);
+                Animatoo.animateZoom(MyProductsActivity.this);
+                return true;
             }
         });
     }
@@ -253,7 +257,7 @@ public class MyProductsActivity extends AppCompatActivity implements AdapterView
 
     @Override
     public void onBackPressed() {
-        if (constraintLayout != null ) {
+        if (constraintLayout != null) {
             if (constraintLayout.getVisibility() == View.VISIBLE) {
                 findViewById(R.id.firstTextView).setVisibility(View.INVISIBLE);
                 findViewById(R.id.secondTextView).setVisibility(View.INVISIBLE);
@@ -261,7 +265,7 @@ public class MyProductsActivity extends AppCompatActivity implements AdapterView
                 ConstraintLayout constraintLayout = findViewById(R.id.constraint);
                 ConstraintSet constraintSet = new ConstraintSet();
                 constraintSet.clone(constraintLayout);
-                constraintSet.connect(R.id.recycler_view,ConstraintSet.TOP,R.id.delAllProd,ConstraintSet.BOTTOM,48);
+                constraintSet.connect(R.id.recycler_view, ConstraintSet.TOP, R.id.delAllProd, ConstraintSet.BOTTOM, 48);
                 constraintSet.applyTo(constraintLayout);
                 return;
             }
@@ -272,18 +276,20 @@ public class MyProductsActivity extends AppCompatActivity implements AdapterView
                 profile.setColorFilter(Color.parseColor("#000000"));
             } else {
                 super.onBackPressed();
+                if (!getIntent().getBooleanExtra("isFromMain", false)) {
+                    Animatoo.animateSlideUp(MyProductsActivity.this);
+                }
             }
         } else {
             super.onBackPressed();
+            if (!getIntent().getBooleanExtra("isFromMain", false)) {
+                Animatoo.animateSlideUp(MyProductsActivity.this);
+            }
         }
     }
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        Object pos = parent.getItemAtPosition(position);
-        if (!pos.equals("Мерна единица:")) {
-            String text = pos.toString();
-        }
     }
 
     @Override

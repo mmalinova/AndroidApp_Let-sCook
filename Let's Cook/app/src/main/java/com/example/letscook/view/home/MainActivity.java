@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.blogspot.atifsoftwares.animatoolib.Animatoo;
 import com.example.letscook.AddRecipeActivity;
 import com.example.letscook.ContactsActivity;
 import com.example.letscook.view.info.DataPolicyActivity;
@@ -18,6 +19,7 @@ import com.example.letscook.view.info.InfoActivity;
 import com.example.letscook.view.products.MyProductsActivity;
 import com.example.letscook.view.profile.ProfileActivity;
 import com.example.letscook.R;
+import com.example.letscook.view.recipeDetails.RecipeActivity;
 import com.example.letscook.view.recipesDashboard.RecipesActivity;
 import com.example.letscook.view.search.SearchActivity;
 import com.example.letscook.view.products.ShoppingListActivity;
@@ -34,6 +36,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             infoCard, policyCard, termsCard;
     private ImageView profile, my_products;
     private NavigationView navigationView = null;
+    private BottomNavigationView bottomNavigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +58,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     if (navigationView.getVisibility() == View.INVISIBLE) {
                         navigationView.setVisibility(View.VISIBLE);
                         profile.setColorFilter(Color.parseColor("#FFFEF6D8"));
-
 //                      Button button = findViewById(R.id.login_btn);
 //                      button.setOnClickListener(new View.OnClickListener() {
 //                        public void onClick(View v) {
@@ -67,7 +69,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         profile.setColorFilter(Color.parseColor("#000000"));
                     }
                 } else {
-                    startActivity(new Intent(getApplicationContext(), ProfileActivity.class));
+                    Intent intent = new Intent(getApplicationContext(), ProfileActivity.class);
+                    startActivity(intent);
+                    Animatoo.animateSlideDown(MainActivity.this);
                     profile.setColorFilter(Color.parseColor("#FFFEF6D8"));
                 }
             }
@@ -76,6 +80,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(getApplicationContext(), MyProductsActivity.class));
+                Animatoo.animateSlideDown(MainActivity.this);
                 my_products.setColorFilter(Color.parseColor("#FFFEF6D8"));
             }
         });
@@ -113,7 +118,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         termsCard.setOnClickListener(this);
 
         // Initialize and assign variable
-        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_nav);
+        bottomNavigationView = findViewById(R.id.bottom_nav);
 
         // Set home selected
         bottomNavigationView.setSelectedItemId(R.id.home);
@@ -122,98 +127,104 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                Intent intent = null;
                 switch (item.getItemId()) {
                     case R.id.home:
                         return true;
                     case R.id.what_to_cook:
-                        startActivity(new Intent(getApplicationContext(), WhatToCookActivity.class));
-                        overridePendingTransition(0, 0);
-                        return true;
+                        intent = new Intent(getApplicationContext(), WhatToCookActivity.class);
+                        break;
                     case R.id.add_recipe:
-                        startActivity(new Intent(getApplicationContext(), AddRecipeActivity.class));
-                        overridePendingTransition(0, 0);
-                        return true;
+                        intent = new Intent(getApplicationContext(), AddRecipeActivity.class);
+                        break;
                     case R.id.search:
-                        startActivity(new Intent(getApplicationContext(), SearchActivity.class));
-                        overridePendingTransition(0, 0);
-                        return true;
+                        intent = new Intent(getApplicationContext(), SearchActivity.class);
+                        break;
                     case R.id.shopping_list:
-                        startActivity(new Intent(getApplicationContext(), ShoppingListActivity.class));
-                        overridePendingTransition(0, 0);
-                        return true;
+                        intent = new Intent(getApplicationContext(), ShoppingListActivity.class);
+                        break;
                 }
-                return false;
+                intent.putExtra("isFromMain", true);
+                startActivity(intent);
+                Animatoo.animateZoom(MainActivity.this);
+                return true;
             }
         });
     }
 
     @Override
     public void onClick(View v) {
-        Intent i;
+        Intent intent;
         switch (v.getId()) {
             case R.id.whatToCook_card:
-                i = new Intent(this, WhatToCookActivity.class);
-                startActivity(i);
+                intent = new Intent(this, WhatToCookActivity.class);
+                intent.putExtra("isFromMain", true);
+                startActivity(intent);
                 break;
             case R.id.search_card:
-                i = new Intent(this, SearchActivity.class);
-                startActivity(i);
+                intent = new Intent(this, SearchActivity.class);
+                intent.putExtra("isFromMain", true);
+                startActivity(intent);
                 break;
             case R.id.myRecipes_card:
-                i = new Intent(this, RecipesActivity.class);
-                i.putExtra("phrase", MY_RECIPES);
-                i.putExtra("text", MY_RES);
-                startActivity(i);
+                intent = new Intent(this, RecipesActivity.class);
+                intent.putExtra("phrase", MY_RECIPES);
+                intent.putExtra("text", MY_RES);
+                startActivity(intent);
                 break;
             case R.id.fav_card:
-                i = new Intent(this, RecipesActivity.class);
-                i.putExtra("phrase", FAV_RECIPES);
-                i.putExtra("text", MY_FAV);
-                startActivity(i);
+                intent = new Intent(this, RecipesActivity.class);
+                intent.putExtra("phrase", FAV_RECIPES);
+                intent.putExtra("text", MY_FAV);
+                startActivity(intent);
                 break;
             case R.id.shopping_card:
-                i = new Intent(this, ShoppingListActivity.class);
-                startActivity(i);
+                intent = new Intent(this, ShoppingListActivity.class);
+                intent.putExtra("isFromMain", true);
+                startActivity(intent);
                 break;
             case R.id.myProducts_card:
-                i = new Intent(this, MyProductsActivity.class);
-                startActivity(i);
+                intent = new Intent(this, MyProductsActivity.class);
+                intent.putExtra("isFromMain", true);
+                startActivity(intent);
                 break;
             case R.id.addRecipe_card:
-                i = new Intent(this, AddRecipeActivity.class);
-                startActivity(i);
+                intent = new Intent(this, AddRecipeActivity.class);
+                intent.putExtra("isFromMain", true);
+                startActivity(intent);
                 break;
             case R.id.myProfile_card:
-                i = new Intent(this, ProfileActivity.class);
+                intent = new Intent(this, ProfileActivity.class);
+                intent.putExtra("isFromMain", true);
                 //i = new Intent(this, LoginActivity.class);
-                startActivity(i);
+                startActivity(intent);
                 break;
             case R.id.lastViewed_card:
-                i = new Intent(this, RecipesActivity.class);
-                i.putExtra("phrase", LAST_VIEW);
-                i.putExtra("text", MY_VIEWED);
-                startActivity(i);
+                intent = new Intent(this, RecipesActivity.class);
+                intent.putExtra("phrase", LAST_VIEW);
+                intent.putExtra("text", MY_VIEWED);
+                startActivity(intent);
                 break;
             case R.id.lastAdded_card:
-                i = new Intent(this, RecipesActivity.class);
-                i.putExtra("phrase", LAST_ADD);
-                startActivity(i);
+                intent = new Intent(this, RecipesActivity.class);
+                intent.putExtra("phrase", LAST_ADD);
+                startActivity(intent);
                 break;
             case R.id.contacts_card:
-                i = new Intent(this, ContactsActivity.class);
-                startActivity(i);
+                intent = new Intent(this, ContactsActivity.class);
+                startActivity(intent);
                 break;
             case R.id.info_card:
-                i = new Intent(this, InfoActivity.class);
-                startActivity(i);
+                intent = new Intent(this, InfoActivity.class);
+                startActivity(intent);
                 break;
             case R.id.policy_card:
-                i = new Intent(this, DataPolicyActivity.class);
-                startActivity(i);
+                intent = new Intent(this, DataPolicyActivity.class);
+                startActivity(intent);
                 break;
             case R.id.terms_card:
-                i = new Intent(this, TermsOfUseActivity.class);
-                startActivity(i);
+                intent = new Intent(this, TermsOfUseActivity.class);
+                startActivity(intent);
                 break;
         }
     }
@@ -222,6 +233,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onStart() {
         profile.setColorFilter(Color.parseColor("#000000"));
         my_products.setColorFilter(Color.parseColor("#000000"));
+        bottomNavigationView.setSelectedItemId(R.id.home);
         super.onStart();
     }
 

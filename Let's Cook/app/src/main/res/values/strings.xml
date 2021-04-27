@@ -19,7 +19,7 @@
     <!-- Sign up activity -->
     <string name="skip_btn">Пропусни</string>
     <string name="registrationText">Регистрация</string>
-    <string name="nameЕditText">Име*</string>
+    <string name="nameЕditText">Потребителско име*</string>
     <string name="emailEditText">E-mail*</string>
     <string name="passwordEditText">Парола*</string>
     <string name="rePassEditText">Повтори паролата*</string>

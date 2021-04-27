@@ -1,5 +1,6 @@
 package com.example.letscook.database.user;
 
+import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Embedded;
 import androidx.room.Entity;
@@ -13,8 +14,9 @@ import java.io.Serializable;
 //Define table
 @Entity(tableName = "user")
 public class User implements Serializable {
-    @ColumnInfo(name = "user_id")
+    @NonNull
     @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "user_id")
     private long ID;
     @ColumnInfo(name = "name")
     private String name;
@@ -123,16 +125,5 @@ public class User implements Serializable {
 
     public void setMySession(long mySession) {
         this.mySession = mySession;
-    }
-
-    // One-to-one relationship
-    public class UserCreatesSession {
-        @Embedded
-        public Session session;
-        @Relation(
-                parentColumn = "session_id",
-                entityColumn = "my_session"
-        )
-        public User user;
     }
 }

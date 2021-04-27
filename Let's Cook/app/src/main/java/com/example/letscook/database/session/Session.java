@@ -1,5 +1,6 @@
 package com.example.letscook.database.session;
 
+import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
@@ -10,8 +11,9 @@ import java.util.Date;
 //Define table
 @Entity(tableName = "session")
 public class Session implements Serializable {
-    @ColumnInfo(name = "session_id")
+    @NonNull
     @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "session_id")
     private long ID;
     @ColumnInfo(name = "installation_id")
     private long installationId;

@@ -17,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.blogspot.atifsoftwares.animatoolib.Animatoo;
 import com.example.letscook.AddRecipeActivity;
 import com.example.letscook.view.products.MyProductsActivity;
 import com.example.letscook.R;
@@ -41,6 +42,7 @@ public class SearchActivity extends AppCompatActivity {
     private AlertDialog.Builder dialogBuilder;
     private AlertDialog dialog = null;
     private Button yesButton, noButton;
+    private BottomNavigationView bottomNavigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,6 +77,7 @@ public class SearchActivity extends AppCompatActivity {
                     }
                 } else {
                     startActivity(new Intent(getApplicationContext(), ProfileActivity.class));
+                    Animatoo.animateSlideDown(SearchActivity.this);
                     profile.setColorFilter(Color.parseColor("#FFFEF6D8"));
                 }
             }
@@ -83,6 +86,7 @@ public class SearchActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(getApplicationContext(), MyProductsActivity.class));
+                Animatoo.animateSlideDown(SearchActivity.this);
                 my_products.setColorFilter(Color.parseColor("#FFFEF6D8"));
             }
         });
@@ -95,7 +99,6 @@ public class SearchActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(getApplicationContext(), MainActivity.class));
-                overridePendingTransition(0, 0);
             }
         });
         actionText.setText(SEARCH_RECIPE);
@@ -112,9 +115,9 @@ public class SearchActivity extends AppCompatActivity {
         });
 
         // Initialize and assign variable
-        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_nav);
+        bottomNavigationView = findViewById(R.id.bottom_nav);
 
-        // Set home selected
+        // Set selected
         bottomNavigationView.setSelectedItemId(R.id.search);
 
         // Perform item selected list
@@ -122,27 +125,26 @@ public class SearchActivity extends AppCompatActivity {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 id = item.getItemId();
+                Intent intent = null;
                 switch (id) {
                     case R.id.home:
-                        startActivity(new Intent(getApplicationContext(), MainActivity.class));
-                        overridePendingTransition(0, 0);
-                        return true;
+                        intent = new Intent(getApplicationContext(), MainActivity.class);
+                        break;
                     case R.id.what_to_cook:
-                        startActivity(new Intent(getApplicationContext(), WhatToCookActivity.class));
-                        overridePendingTransition(0, 0);
-                        return true;
+                        intent = new Intent(getApplicationContext(), WhatToCookActivity.class);
+                        break;
                     case R.id.add_recipe:
-                        startActivity(new Intent(getApplicationContext(), AddRecipeActivity.class));
-                        overridePendingTransition(0, 0);
-                        return true;
+                        intent = new Intent(getApplicationContext(), AddRecipeActivity.class);
+                        break;
                     case R.id.search:
                         return true;
                     case R.id.shopping_list:
-                        startActivity(new Intent(getApplicationContext(), ShoppingListActivity.class));
-                        overridePendingTransition(0, 0);
-                        return true;
+                        intent = new Intent(getApplicationContext(), ShoppingListActivity.class);
+                        break;
                 }
-                return false;
+                startActivity(intent);
+                Animatoo.animateZoom(SearchActivity.this);
+                return true;
             }
         });
     }
@@ -184,6 +186,7 @@ public class SearchActivity extends AppCompatActivity {
     protected void onStart() {
         profile.setColorFilter(Color.parseColor("#000000"));
         my_products.setColorFilter(Color.parseColor("#000000"));
+        bottomNavigationView.setSelectedItemId(R.id.search);
         super.onStart();
     }
 
@@ -194,14 +197,16 @@ public class SearchActivity extends AppCompatActivity {
                 navigationView.setVisibility(View.INVISIBLE);
                 profile.setColorFilter(Color.parseColor("#000000"));
             } else {
-                startActivity(new Intent(getApplicationContext(), MainActivity.class));
-                overridePendingTransition(0, 0);
-                id = R.id.home;
+                super.onBackPressed();
+                if (!getIntent().getBooleanExtra("isFromMain", false)) {
+                    overridePendingTransition(0,0);
+                }
             }
         } else {
-            startActivity(new Intent(getApplicationContext(), MainActivity.class));
-            overridePendingTransition(0, 0);
-            id = R.id.home;
+            super.onBackPressed();
+            if (!getIntent().getBooleanExtra("isFromMain", false)) {
+                overridePendingTransition(0,0);
+            }
         }
     }
 

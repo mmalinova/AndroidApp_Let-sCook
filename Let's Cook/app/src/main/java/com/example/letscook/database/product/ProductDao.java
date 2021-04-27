@@ -25,12 +25,12 @@ public interface ProductDao {
 
     @Query("UPDATE product SET name = :sName, measure_unit = :sMeasureUnit, quantity = :sQuantity " +
             "WHERE product_id = :sID")
-    void update(long sID, String sName, String sMeasureUnit, String sQuantity);
+    void update(long sID, String sName, String sMeasureUnit, float sQuantity);
 
     @Query("SELECT * FROM product ORDER BY name")
     public List<Product> getAllProducts();
 
     @Transaction
-    @Query("SELECT * FROM product WHERE belonging LIKE :belong ORDER BY name")
-    public List<Product.ProductHasOwner> getUserProducts(String belong);
+    @Query("SELECT * FROM product WHERE belonging = :belong ORDER BY name")
+    public List<Product> getUserProducts(String belong);
 }

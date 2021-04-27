@@ -9,6 +9,6 @@ import java.util.List;
 @Dao
 public interface RecipeProductCrossRefDao {
     @Transaction
-    @Query("SELECT * FROM product")
-    public List<RecipeProductCrossRef.RecipeHasProducts> getProductsForRecipe();
+    @Query("SELECT * FROM recipe")
+    public List<RecipeWithProducts> getProductsForRecipe();
 }
