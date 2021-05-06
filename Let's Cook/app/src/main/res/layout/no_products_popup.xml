@@ -13,9 +13,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:text="@string/vegetarianQuestion"
+        android:text="@string/no_products"
         android:textColor="@color/black"
-        android:textSize="18sp"
+        android:textSize="17sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -25,30 +25,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/veg_question"
-        android:layout_marginStart="54dp"
         android:background="@android:color/transparent"
         android:gravity="center"
-        android:text="@string/yes"
-        android:textColor="@color/black"
-        android:textStyle="bold"
-        app:iconPadding="2dp"
-        app:layout_constraintStart_toStartOf="@+id/veg_question"
-        app:layout_constraintTop_toBottomOf="@+id/veg_question" />
-
-    <Button
-        android:id="@+id/noBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/veg_question"
-        android:layout_marginEnd="54dp"
-        android:layout_toEndOf="@id/okBtn"
-        android:background="@android:color/transparent"
-        android:gravity="center"
-        android:text="@string/no"
+        android:text="@string/ok"
         android:textColor="@color/black"
         android:textStyle="bold"
         app:iconPadding="2dp"
         app:layout_constraintEnd_toEndOf="@+id/veg_question"
+        app:layout_constraintStart_toStartOf="@+id/veg_question"
         app:layout_constraintTop_toBottomOf="@+id/veg_question" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

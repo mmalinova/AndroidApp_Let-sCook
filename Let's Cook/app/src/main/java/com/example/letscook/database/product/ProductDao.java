@@ -6,8 +6,6 @@ import androidx.room.Insert;
 import androidx.room.Query;
 import androidx.room.Transaction;
 
-import com.example.letscook.database.product.Product;
-
 import java.util.List;
 
 import static androidx.room.OnConflictStrategy.REPLACE;

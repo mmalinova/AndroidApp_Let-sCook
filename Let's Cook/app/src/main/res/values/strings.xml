@@ -9,14 +9,9 @@
     <string name="logo">Лого</string>
     <string name="prof_photo_desc">Профил</string>
     <string name="smile">Усмивка</string>
-    <!-- Phrases
-    <string name="breakfast_title">Добро утро пожелай с чаша чай</string>
-    <string name="lunch_title">Мохабетче на обедче</string>
-    <string name="dinner_title">Чаша вино си сипи и се отпусни</string>
-    <string name="dessert_title">А без десерт не може</string>
-    <string name="appropriate_recipes">Подходящи рецепти</string>
-    -->
+    <string name="denied">За достъп до тази секция трябва да влезнеш в профила си от \"Профил\" секцията!</string>
     <!-- Sign up activity -->
+    <string name="reg_question"><a href="">Регистриране?</a></string>
     <string name="skip_btn">Пропусни</string>
     <string name="registrationText">Регистрация</string>
     <string name="nameЕditText">Потребителско име*</string>
@@ -33,10 +28,14 @@
     <string name="and">и</string>
     <string name="policy_link"><a href="">политиката за поверителност на данните</a>.</string>
     <string name="ok">Добре</string>
+    <string name="usernameReq">Моля, въведете потребителско име!</string>
+    <string name="rememberMe">Запомни ме</string>
+    <string name="forgotten_pass">Моля, попълнете E-mail адреса си и Вашата нова парола!</string>
     <!-- Login activity -->
     <string name="login_btn">Вход</string>
     <string name="forgot_pass"><a href="">Забравена парола?</a></string>
     <!-- Main activity -->
+    <string name="welcome">Добре дошъл в приложението!&#128578;</string>
     <string name="whatToCook_title">Какво да сготвя</string>
     <string name="search_title">Намери рецепта</string>
     <string name="myRecipes_title">Моите рецепти</string>
@@ -58,7 +57,7 @@
     <string name="dessert">Десерт</string>
     <!-- WhatToCook activity -->
     <string name="addProductEditText">Добави продукт</string>
-    <string name="whatToCook_info">Тук може да добавите всички продукти, с които разполагате или да приложите вече готовия ваш <a href=""><b><i>списък</i></b></a>. Огледайте се добре - според тях ще бъдат филтрирани рецептите, които може да сготвите!</string>
+    <string name="whatToCook_info">Тук може да добавиш всички продукти, с които разполагаш или да приложиш вече готовия твой <a href=""><b><i>списък</i></b></a>. Огледайте се добре - според тях ще бъдат филтрирани рецептите, които може да сготвите!</string>
     <string name="categoryQuestion">Какво искаш да сготвиш?</string>
     <string name="vegetarianQuestion">Вегетарианска ли да бъде рецептата?</string>
     <string name="productsQuestion">С/без нужда от допълнителни продукти?</string>
@@ -72,7 +71,7 @@
     <string name="ingredients">Необходими продукти:</string>
     <string name="steps">Начин на приготвяне:</string>
     <!-- Shopping list activity -->
-    <string name="productsList">(Все още нямате добавени продукти)</string>
+    <string name="productsList">(Все още нямаш добавени продукти)</string>
     <string name="toAddBtn">Добави</string>
     <string name="product">Име на продукта:</string>
     <string name="quantity">Количество:</string>
@@ -83,6 +82,8 @@
     <string name="quantityReq">Количеството не може да бъде 0!</string>
     <string name="unitReq">Въведи валидна мерна единица: мл., л., гр., кг., ч.ч., к.ч., с.л., ч.л., щипка, щипки, пакетче, пакетчета!</string>
     <string name="editBtn">Редактиране</string>
+    <string name="delete_confirm">Сигурен ли си, че искаш да изтриеш всички продукти?</string>
+    <string name="no_products">Все още нямаш добавени продукти!</string>
     <!-- Profile -->
     <string name="myData">Лични данни:</string>
     <string name="name">Име:</string>
@@ -91,6 +92,7 @@
     <string name="photo_desc">Профилна снимка</string>
     <string name="share_icon">Икона</string>
     <string name="floating_desc">Бутон \"Сподели с\"</string>
+    <string name="exit">Изход</string>
     <!-- Info activity -->
     <string name="aboutApp_title">За приложението</string>
     <string name="aboutMe">Добре дошъл в приложението \"Да сготвим\".</string>
@@ -103,7 +105,7 @@
         \nА за максимално улеснение може да използваш приложението и без Интернет връзка.
         \nКогато пък си на страницата на някоя рецепта екранът ти ще остане буден, докато не излезнеш или не решиш да го изключиш. Така няма да е нужно постоянно да го пипаш, докато следваш стъпките или пък да се ровиш из настройките на телефона. &#128533;
         \nОтносно сигурността - можеш да бъдеш сигурен, че всичките ти пароли, които \"текът\" по мрежата са криптирани и неразчетими от трети лица.
-        \nЗа да не нужно пък всеки път, когато отваряш приложението да влизаш в профила си отново и отново, то данните(сесията) ти ще бъдат запазени за период от един месец при непосещаемост. При изтичането на сесията ти, ще трябва отново да влезнеш с потребителско име и парола, за да може да се възползваш от пълните функционалности, предоставени от \"Да сготвим\". При период от 2 години на непосещаемост на приложението, акаунтът ти ще бъде изтрит.
+        \nЗа да не нужно пък всеки път, когато отваряш приложението да влизаш в профила си отново и отново, то данните(сесията) ти ще бъдат запазени за период от един месец при непосещаемост. Единственото, което трябва да направиш за това е да цъкнеш бутончето \"Запомни ме\" при регистрацията/влизането си. При изтичането на сесията ти, ще трябва отново да влезнеш с E-mail и парола, за да може да се възползваш от пълните функционалности, предоставени от \"Да сготвим\". При период от 2 години на непосещаемост на приложението, акаунтът ти ще бъде изтрит.
         \nАко имаш някакви въпроси към мен, искаш да дадеш обратна връзка или просто искаш да си поговориш с мен за съвет или нещо друго, не се колебай да се свържеш с мен чрез секцията Контакти, ще се радвам да те \"чуя\".
         \n\n\tПриятен апетит! &#128523;</string>
     <string name="aboutApp">Android мобилното приложението "Да сготвим" е приложение с кулинарни идеи. Целите на това приложение са всеки един, който има желание да си приготви или сготви нещо, да го направи по най-лесния и достъпен за него начин с всички описани стъпки и прикачени снимки. Всеки един от потребителите на приложението трябва да се регистрира, с което има възможност да добави и свои рецепти, които останалите да виждат. Също така може да запазва любими рецепти, да изгражда списък с наличните си продукти, както и лист с продукти за пазаруване, да търси рецепти по зададени категории, име на рецепта или пък да "попита" приложението какво да сготви за ззакуска, обяд, вечеря или просто нещо за десерт. :) След всяка една добавена от потребителя рецепта обаче ще трябва да се изчаква определено време(в зависимост от натовареността) за одобрението ѝ от админ.
@@ -116,8 +118,8 @@
     <string name="myFacebook">Facebook: <a href="">mihaela.malinova.98</a></string>
     <string name="myLinkedIn">LinkedIn: <a href="">mihaela-malinova-72352319a</a></string>
     <string name="myInstagram">Instagram: <a href="">mihaellamalinova</a></string>
-    <string name="contactInfo">За връзка с мен или запитване за реклама може да използвате E-mail: malinova29@gmail.com/mmalinova@mydigitalassistant.bg или популярните социални мрежи:</string>
-    <string name="contactForm">Също така може да попълните формуляра, даден по-долу:</string>
+    <string name="contactInfo">За връзка с мен или запитване за реклама може да използваш E-mail: malinova29@gmail.com/mmalinova@mydigitalassistant.bg или популярните социални мрежи:</string>
+    <string name="contactForm">Също така може да попълниш формуляра, даден по-долу:</string>
     <string name="required">(Всички полета са задължителни)</string>
     <string name="message">Съобщение*</string>
     <string name="sendBtn">Изпращане</string>
@@ -161,7 +163,7 @@
     <string name="connection_info">Ако имате въпроси или коментари относно съдържаниео на настоящата Политика, може да се свържете със Собственика чрез E-mail: <b>malinova29@gmail.com/mmalinova@mydigitalassistant.bg</b> или в случай, че вече сте влезли в приложението - чрез секцията \"Контакти\".</string>
     <!-- Add recipe activity -->
     <string name="recipeName">Име на\nрецептата:</string>
-    <string name="inWhichCategoryToAdd">За коя категория е най-подходящо ястието ти?</string>
+    <string name="inWhichCategoryToAdd">За коя/и категория/и е най-подходящо ястието ти?</string>
     <string name="isItVegetarian">Вегетарианска ли е рецептата?</string>
     <string name="yes">Да</string>
     <string name="no">Не</string>
@@ -177,11 +179,4 @@
     <string name="h_req">Брой часове*</string>
     <string name="min_req">Брой минути*</string>
     <string name="delimiter">:</string>
-    <!-- My recipes activity
-    <string name="myRes">(Все още няма добавяни от Вас рецепти)</string>
-     Last viewed activity
-    <string name="lastViewed">(Все още няма отваряни от Вас рецепти)</string>
-     Favourite activity
-    <string name="favourite">(Все още нямате рецепти, отбелязани като любими)</string>
-    -->
 </resources>

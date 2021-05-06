@@ -2,7 +2,6 @@ package com.example.letscook.view.recipeDetails;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
 import android.content.Intent;
 import android.graphics.Color;
@@ -20,11 +19,9 @@ import com.example.letscook.database.RoomDB;
 import com.example.letscook.view.home.MainActivity;
 import com.example.letscook.view.products.MyProductsActivity;
 import com.example.letscook.view.products.ShoppingListActivity;
-import com.example.letscook.view.profile.ProfileActivity;
 import com.example.letscook.view.search.SearchActivity;
 import com.example.letscook.view.search.WhatToCookActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.navigation.NavigationView;
 
 import technolifestyle.com.imageslider.FlipperLayout;
 import technolifestyle.com.imageslider.FlipperView;
@@ -33,7 +30,6 @@ public class RecipeActivity extends AppCompatActivity {
     private int id;
     private ImageView my_products;
     private FlipperLayout flipperLayout;
-    private NavigationView navigationView = null;
     private RoomDB database;
 
     @Override
@@ -48,9 +44,6 @@ public class RecipeActivity extends AppCompatActivity {
 
         // Initialize my products links
         my_products = findViewById(R.id.my_products);
-
-        // Set view according session storage
-        //navigationView = findViewById(R.id.login_view);
 
         my_products.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -122,16 +115,4 @@ public class RecipeActivity extends AppCompatActivity {
         super.onStart();
     }
 
-    @Override
-    public void onBackPressed() {
-        if (navigationView != null) {
-            if (navigationView.getVisibility() == View.VISIBLE) {
-                navigationView.setVisibility(View.INVISIBLE);
-            } else {
-                super.onBackPressed();
-            }
-        } else {
-            super.onBackPressed();
-        }
-    }
 }

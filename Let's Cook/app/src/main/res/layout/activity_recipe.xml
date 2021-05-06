@@ -7,15 +7,6 @@
     android:layout_centerVertical="true"
     tools:context=".view.recipeDetails.RecipeActivity">
 
-    <com.google.android.material.navigation.NavigationView
-        android:id="@+id/login_view"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_gravity="end"
-        android:background="@color/background"
-        android:visibility="invisible"
-        app:headerLayout="@layout/activity_login" />
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraint"
         android:layout_width="match_parent"

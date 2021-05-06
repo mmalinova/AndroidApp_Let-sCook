@@ -13,7 +13,7 @@
         android:layout_height="match_parent"
         android:background="@color/background"
         android:layout_gravity="end"
-        app:headerLayout="@layout/activity_login"
+        app:headerLayout="@layout/main_login"
         android:visibility="invisible"/>
 
     <ScrollView
@@ -24,6 +24,7 @@
         android:background="@color/background">
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraint"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <include

@@ -3,7 +3,9 @@ package com.example.letscook.view.profile;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.net.Uri;
 import android.os.Bundle;
@@ -14,7 +16,8 @@ import android.widget.TextView;
 import com.blogspot.atifsoftwares.animatoolib.Animatoo;
 import com.example.letscook.AddRecipeActivity;
 import com.example.letscook.R;
-import com.example.letscook.view.products.MyProductsActivity;
+import com.example.letscook.database.RoomDB;
+import com.example.letscook.database.user.User;
 import com.example.letscook.view.search.SearchActivity;
 import com.example.letscook.view.products.ShoppingListActivity;
 import com.example.letscook.view.search.WhatToCookActivity;
@@ -25,19 +28,30 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.io.File;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import static com.example.letscook.constants.Messages.*;
 
 public class ProfileActivity extends AppCompatActivity {
-    private TextView greetingText;
-    private FloatingActionButton floatingBtn;
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
-        floatingBtn = findViewById(R.id.floating_btn);
+        findViewById(R.id.exit_btn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SharedPreferences sharedPreferences = getSharedPreferences("PREFERENCE", MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putString("email", null);
+                editor.apply();
+                startActivity(new Intent(ProfileActivity.this, MainActivity.class));
+            }
+        });
+
+        FloatingActionButton floatingBtn = findViewById(R.id.floating_btn);
         floatingBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -49,7 +63,6 @@ public class ProfileActivity extends AppCompatActivity {
                 startActivity(Intent.createChooser(intent, SHARE));
             }
         });
-
         // Initialize and assign variable
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_nav);
 
@@ -83,29 +96,33 @@ public class ProfileActivity extends AppCompatActivity {
                 return true;
             }
         });
-
+        // Initialize db
+        RoomDB database = RoomDB.getInstance(this);
         // Initialize action text
-        greetingText = findViewById(R.id.bar_text);
-
+        TextView greetingText = findViewById(R.id.bar_text);
+        // Get data
+        String userEmail = getSharedPreferences("PREFERENCE", MODE_PRIVATE).getString("email", null);
+        User user = database.userDao().getUserByEmail(userEmail);
+        // Set data
+        String username = user.getName();
+        TextView name = findViewById(R.id.name);
+        name.setText(username);
+        TextView email = findViewById(R.id.email);
+        email.setText(user.getEmail());
         // Get time of the day
         Date date = new Date();
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);
         int hour = cal.get(Calendar.HOUR_OF_DAY);
-
-        // Get name
-        String name = "Михаела";
-
         // Set greeting
-        String greeting = null;
+        String greeting;
         if (hour >= 6 && hour <= 10) {
-            greeting = MORNING_GREETING + name + "!";
+            greeting = MORNING_GREETING + username + "!";
         } else if (hour > 10 && hour <= 18) {
-            greeting = AFTERNOON_GREETING + name + "!";
+            greeting = AFTERNOON_GREETING + username + "!";
         } else {
-            greeting = NIGHT_GREETING + name + "!";
+            greeting = NIGHT_GREETING + username + "!";
         }
-
         //Change text
         greetingText.setText(greeting);
     }

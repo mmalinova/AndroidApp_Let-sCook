@@ -1,6 +1,7 @@
 package com.example.letscook.view.products;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
@@ -8,12 +9,15 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -21,8 +25,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
-
 
 import com.blogspot.atifsoftwares.animatoolib.Animatoo;
 import com.example.letscook.AddRecipeActivity;
@@ -35,7 +37,6 @@ import com.example.letscook.view.profile.ProfileActivity;
 import com.example.letscook.view.search.SearchActivity;
 import com.example.letscook.view.search.WhatToCookActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.navigation.NavigationView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,7 +47,6 @@ public class ShoppingListActivity extends AppCompatActivity implements AdapterVi
     private int id;
     private ImageView backIcon, profile, my_products;
     private TextView actionText, textView;
-    private NavigationView navigationView = null;
     private Spinner spinner;
     private Button addBtn, deleteAll, addedBtn;
     private ConstraintLayout constraintLayout = null;
@@ -57,6 +57,9 @@ public class ShoppingListActivity extends AppCompatActivity implements AdapterVi
     private RoomDB database;
     private MainAdapter mainAdapter;
     private BottomNavigationView bottomNavigationView;
+    private AlertDialog.Builder dialogBuilder;
+    private AlertDialog dialog = null;
+    private Button okButton, noButton;
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -68,32 +71,14 @@ public class ShoppingListActivity extends AppCompatActivity implements AdapterVi
         profile = findViewById(R.id.profile);
         my_products = findViewById(R.id.my_products);
 
-        // Set view according session storage
-        //navigationView = findViewById(R.id.login_view);
-
         // Add click event listeners
         profile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (navigationView != null) {
-                    if (navigationView.getVisibility() == View.INVISIBLE) {
-                        navigationView.setVisibility(View.VISIBLE);
-                        profile.setColorFilter(Color.parseColor("#FFFEF6D8"));
-//                      Button button = findViewById(R.id.login_btn);
-//                      button.setOnClickListener(new View.OnClickListener() {
-//                        public void onClick(View v) {
-//                            Toast.makeText(getApplicationContext(),"Clicked", Toast.LENGTH_LONG).show();
-//                        }
-//                      });
-                    } else {
-                        navigationView.setVisibility(View.INVISIBLE);
-                        profile.setColorFilter(Color.parseColor("#000000"));
-                    }
-                } else {
-                    startActivity(new Intent(getApplicationContext(), ProfileActivity.class));
-                    Animatoo.animateSlideDown(ShoppingListActivity.this);
-                    profile.setColorFilter(Color.parseColor("#FFFEF6D8"));
-                }
+                Intent intent = new Intent(getApplicationContext(), ProfileActivity.class);
+                startActivity(intent);
+                Animatoo.animateSlideDown(ShoppingListActivity.this);
+                profile.setColorFilter(Color.parseColor("#FFFEF6D8"));
             }
         });
         my_products.setOnClickListener(new View.OnClickListener() {
@@ -108,11 +93,10 @@ public class ShoppingListActivity extends AppCompatActivity implements AdapterVi
         // Initialize action bar variables
         backIcon = findViewById(R.id.back_icon);
         actionText = findViewById(R.id.action_bar_text);
-
         backIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                ShoppingListActivity.super.onBackPressed();
             }
         });
         actionText.setText(SHOPPING_LIST);
@@ -135,7 +119,6 @@ public class ShoppingListActivity extends AppCompatActivity implements AdapterVi
             }
         });
         quantity = findViewById(R.id.editTextQuantity);
-        textView = findViewById(R.id.textView);
         addBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -150,6 +133,7 @@ public class ShoppingListActivity extends AppCompatActivity implements AdapterVi
             }
         });
         recyclerView = findViewById(R.id.recycler_view);
+        textView = findViewById(R.id.textView);
 
         // Get data
         String[] units = {MEASURING_UNITS, ML, L, GR, KG, GLASS, SMALL_GLASS, SPOON, SMALL_SPOON, PINCH, PINCHES, PACKET, PACKETS};
@@ -164,6 +148,13 @@ public class ShoppingListActivity extends AppCompatActivity implements AdapterVi
         database = RoomDB.getInstance(this);
         // Store db value in product list
         dataList = database.productDao().getUserProducts("shoppingList");
+        if (dataList.size() > 0) {
+            textView.setVisibility(View.INVISIBLE);
+            recyclerView.setVisibility(View.VISIBLE);
+        } else {
+            recyclerView.setVisibility(View.INVISIBLE);
+            textView.setVisibility(View.VISIBLE);
+        }
         linearLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(linearLayoutManager);
         mainAdapter = new MainAdapter(ShoppingListActivity.this, dataList, "shoppingList");
@@ -173,10 +164,17 @@ public class ShoppingListActivity extends AppCompatActivity implements AdapterVi
         deleteAll.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                database.productDao().deleteAll(dataList);
-                dataList.clear();
-                dataList.addAll(database.productDao().getAllProducts());
-                mainAdapter.notifyDataSetChanged();
+                if (dataList.size() > 0) {
+                    deleteDialog();
+                } else {
+                    noProdDialog();
+                    Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        public void run() {
+                            dialog.dismiss();
+                        }
+                    }, 2000);
+                }
             }
         });
         addedBtn = findViewById(R.id.added);
@@ -213,6 +211,13 @@ public class ShoppingListActivity extends AppCompatActivity implements AdapterVi
                     quantity.setText("");
                     dataList.clear();
                     dataList.addAll(database.productDao().getUserProducts("shoppingList"));
+                    if (dataList.size() > 0) {
+                        textView.setVisibility(View.INVISIBLE);
+                        recyclerView.setVisibility(View.VISIBLE);
+                    } else {
+                        recyclerView.setVisibility(View.INVISIBLE);
+                        textView.setVisibility(View.VISIBLE);
+                    }
                     mainAdapter.notifyDataSetChanged();
                     findViewById(R.id.firstTextView).setVisibility(View.INVISIBLE);
                     constraintLayout.setVisibility(View.INVISIBLE);
@@ -224,6 +229,8 @@ public class ShoppingListActivity extends AppCompatActivity implements AdapterVi
                 } else {
                     findViewById(R.id.firstTextView).setVisibility(View.VISIBLE);
                 }
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
             }
         });
         // Initialize and assign variable
@@ -261,6 +268,60 @@ public class ShoppingListActivity extends AppCompatActivity implements AdapterVi
         });
     }
 
+    public void noProdDialog() {
+        dialogBuilder = new AlertDialog.Builder(this);
+        final View popupView = getLayoutInflater().inflate(R.layout.no_products_popup, null);
+
+        okButton = popupView.findViewById(R.id.okBtn);
+
+        dialogBuilder.setView(popupView);
+        dialog = dialogBuilder.create();
+        dialog.show();
+
+        okButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+    }
+
+    public void deleteDialog() {
+        dialogBuilder = new AlertDialog.Builder(this);
+        final View popupView = getLayoutInflater().inflate(R.layout.delete_popup, null);
+
+        okButton = popupView.findViewById(R.id.okBtn);
+        noButton = popupView.findViewById(R.id.noBtn);
+
+        dialogBuilder.setView(popupView);
+        dialog = dialogBuilder.create();
+        dialog.show();
+
+        okButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                database.productDao().deleteAll(dataList);
+                dataList.clear();
+                dataList.addAll(database.productDao().getUserProducts("shoppingList"));
+                if (dataList.size() > 0) {
+                    textView.setVisibility(View.INVISIBLE);
+                    recyclerView.setVisibility(View.VISIBLE);
+                } else {
+                    recyclerView.setVisibility(View.INVISIBLE);
+                    textView.setVisibility(View.VISIBLE);
+                }
+                mainAdapter.notifyDataSetChanged();
+                dialog.dismiss();
+            }
+        });
+        noButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+    }
+
     @Override
     protected void onStart() {
         profile.setColorFilter(Color.parseColor("#000000"));
@@ -270,34 +331,27 @@ public class ShoppingListActivity extends AppCompatActivity implements AdapterVi
     }
 
     @Override
+    protected void onResume() {
+        profile.setColorFilter(Color.parseColor("#000000"));
+        my_products.setColorFilter(Color.parseColor("#000000"));
+        super.onResume();
+    }
+
+    @Override
     public void onBackPressed() {
-        if (constraintLayout != null) {
-            if (constraintLayout.getVisibility() == View.VISIBLE) {
-                findViewById(R.id.firstTextView).setVisibility(View.INVISIBLE);
-                findViewById(R.id.secondTextView).setVisibility(View.INVISIBLE);
-                constraintLayout.setVisibility(View.INVISIBLE);
-                ConstraintLayout constraintLayout = findViewById(R.id.constraint);
-                ConstraintSet constraintSet = new ConstraintSet();
-                constraintSet.clone(constraintLayout);
-                constraintSet.connect(R.id.recycler_view, ConstraintSet.TOP, R.id.delAllProd, ConstraintSet.BOTTOM, 48);
-                constraintSet.applyTo(constraintLayout);
-                return;
-            }
-        }
-        if (navigationView != null) {
-            if (navigationView.getVisibility() == View.VISIBLE) {
-                navigationView.setVisibility(View.INVISIBLE);
-                profile.setColorFilter(Color.parseColor("#000000"));
-            } else {
-                super.onBackPressed();
-                if (!getIntent().getBooleanExtra("isFromMain", false)) {
-                    overridePendingTransition(0,0);
-                }
-            }
+        if (constraintLayout != null && constraintLayout.getVisibility() == View.VISIBLE) {
+            findViewById(R.id.firstTextView).setVisibility(View.INVISIBLE);
+            findViewById(R.id.secondTextView).setVisibility(View.INVISIBLE);
+            constraintLayout.setVisibility(View.INVISIBLE);
+            ConstraintLayout constraintLayout = findViewById(R.id.constraint);
+            ConstraintSet constraintSet = new ConstraintSet();
+            constraintSet.clone(constraintLayout);
+            constraintSet.connect(R.id.recycler_view, ConstraintSet.TOP, R.id.delAllProd, ConstraintSet.BOTTOM, 48);
+            constraintSet.applyTo(constraintLayout);
         } else {
             super.onBackPressed();
             if (!getIntent().getBooleanExtra("isFromMain", false)) {
-                overridePendingTransition(0,0);
+                overridePendingTransition(0, 0);
             }
         }
     }

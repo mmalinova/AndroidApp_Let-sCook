@@ -13,10 +13,11 @@
         android:layout_height="match_parent"
         android:background="@color/background"
         android:layout_gravity="end"
-        app:headerLayout="@layout/activity_login"
+        app:headerLayout="@layout/main_login"
         android:visibility="invisible"/>
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraint"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/tool"
@@ -48,10 +49,10 @@
             app:layout_constraintTop_toBottomOf="@+id/action_bar" >
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/recipe_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:drawableEnd="@drawable/ic_search"
-                android:drawableRight="@drawable/ic_search"
                 android:drawablePadding="8dp"
                 android:inputType="textCapSentences"
                 android:overScrollMode="always"

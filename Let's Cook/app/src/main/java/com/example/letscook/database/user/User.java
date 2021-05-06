@@ -2,17 +2,14 @@ package com.example.letscook.database.user;
 
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
-import androidx.room.Embedded;
 import androidx.room.Entity;
+import androidx.room.Index;
 import androidx.room.PrimaryKey;
-import androidx.room.Relation;
-
-import com.example.letscook.database.session.Session;
 
 import java.io.Serializable;
 
 //Define table
-@Entity(tableName = "user")
+@Entity(tableName = "user", indices = @Index(value = "email", unique = true))
 public class User implements Serializable {
     @NonNull
     @PrimaryKey(autoGenerate = true)
@@ -24,7 +21,7 @@ public class User implements Serializable {
     private String email;
     @ColumnInfo(name = "password")
     private String password;
-    @ColumnInfo(name = "photo")
+    @ColumnInfo(name = "photo", typeAffinity = ColumnInfo.BLOB)
     private byte[] photo;
     @ColumnInfo(name = "my_products")
     private long myProducts;

@@ -17,7 +17,7 @@
         android:layout_gravity="end"
         android:background="@color/background"
         android:visibility="invisible"
-        app:headerLayout="@layout/activity_login" />
+        app:headerLayout="@layout/main_login" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraint"
@@ -54,6 +54,7 @@
             android:id="@+id/recycler_view"
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:layoutAnimation="@anim/layout_slide_right"
             android:background="@color/background"
             android:scrollbars="vertical"
             android:visibility="visible"

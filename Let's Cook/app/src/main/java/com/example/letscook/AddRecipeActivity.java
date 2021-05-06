@@ -17,7 +17,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.blogspot.atifsoftwares.animatoolib.Animatoo;
 import com.example.letscook.view.home.MainActivity;
@@ -26,9 +25,7 @@ import com.example.letscook.view.products.ShoppingListActivity;
 import com.example.letscook.view.profile.ProfileActivity;
 import com.example.letscook.view.search.SearchActivity;
 import com.example.letscook.view.search.WhatToCookActivity;
-import com.example.letscook.view.userRecipes.MyRecipesActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.navigation.NavigationView;
 
 import static com.example.letscook.constants.Messages.*;
 
@@ -37,9 +34,8 @@ public class AddRecipeActivity extends AppCompatActivity implements AdapterView.
     private ImageView backIcon;
     private TextView actionText;
     private ImageView profile, my_products;
-    private NavigationView navigationView = null;
     private Spinner spinner;
-    private Button addProduct, addRecipe;
+    private Button addProduct, addRecipe, browseBtn;
     private EditText steps;
     private BottomNavigationView bottomNavigationView;
 
@@ -53,33 +49,14 @@ public class AddRecipeActivity extends AppCompatActivity implements AdapterView.
         profile = findViewById(R.id.profile);
         my_products = findViewById(R.id.my_products);
 
-        // Set view according session storage
-        navigationView = findViewById(R.id.login_view);
-
         // Add click event listeners
         profile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (navigationView != null) {
-                    if (navigationView.getVisibility() == View.INVISIBLE) {
-                        navigationView.setVisibility(View.VISIBLE);
-                        profile.setColorFilter(Color.parseColor("#FFFEF6D8"));
-
-//                      Button button = findViewById(R.id.login_btn);
-//                      button.setOnClickListener(new View.OnClickListener() {
-//                        public void onClick(View v) {
-//                            Toast.makeText(getApplicationContext(),"Clicked", Toast.LENGTH_LONG).show();
-//                        }
-//                      });
-                    } else {
-                        navigationView.setVisibility(View.INVISIBLE);
-                        profile.setColorFilter(Color.parseColor("#000000"));
-                    }
-                } else {
-                    startActivity(new Intent(getApplicationContext(), ProfileActivity.class));
-                    Animatoo.animateSlideDown(AddRecipeActivity.this);
-                    profile.setColorFilter(Color.parseColor("#FFFEF6D8"));
-                }
+                Intent intent = new Intent(getApplicationContext(), ProfileActivity.class);
+                startActivity(intent);
+                Animatoo.animateSlideDown(AddRecipeActivity.this);
+                profile.setColorFilter(Color.parseColor("#FFFEF6D8"));
             }
         });
         my_products.setOnClickListener(new View.OnClickListener() {
@@ -94,11 +71,10 @@ public class AddRecipeActivity extends AppCompatActivity implements AdapterView.
         // Initialize action bar variables
         backIcon = findViewById(R.id.back_icon);
         actionText = findViewById(R.id.action_bar_text);
-
         backIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                AddRecipeActivity.super.onBackPressed();
             }
         });
         actionText.setText(ADD_RECIPE);
@@ -107,6 +83,7 @@ public class AddRecipeActivity extends AppCompatActivity implements AdapterView.
         addProduct.setEnabled(false);
         addRecipe = findViewById(R.id.addBtn);
         addRecipe.setEnabled(false);
+        browseBtn = findViewById(R.id.uploadBtn);
 
         // Get data
         String[] units = {MEASURING_UNITS_REQ, ML, L, GR, KG, GLASS, SMALL_GLASS, SPOON, SMALL_SPOON, PINCH, PINCHES, PACKET, PACKETS};
@@ -123,7 +100,7 @@ public class AddRecipeActivity extends AppCompatActivity implements AdapterView.
             public boolean onTouch(View v, MotionEvent event) {
                 if (v.getId() == R.id.editTextPrep) {
                     v.getParent().requestDisallowInterceptTouchEvent(true);
-                    switch (event.getAction()&MotionEvent.ACTION_MASK){
+                    switch (event.getAction() & MotionEvent.ACTION_MASK) {
                         case MotionEvent.ACTION_UP:
                             v.getParent().requestDisallowInterceptTouchEvent(false);
                             break;
@@ -134,9 +111,6 @@ public class AddRecipeActivity extends AppCompatActivity implements AdapterView.
         });
         // Initialize and assign variable
         bottomNavigationView = findViewById(R.id.bottom_nav);
-
-//        BottomNavigation bottomNavigation = new BottomNavigation();
-//        bottomNavigation.bottomNavActions(bottomNavigationView);
 
         // Set selected
         bottomNavigationView.setSelectedItemId(R.id.add_recipe);
@@ -179,22 +153,17 @@ public class AddRecipeActivity extends AppCompatActivity implements AdapterView.
     }
 
     @Override
+    protected void onResume() {
+        profile.setColorFilter(Color.parseColor("#000000"));
+        my_products.setColorFilter(Color.parseColor("#000000"));
+        super.onResume();
+    }
+
+    @Override
     public void onBackPressed() {
-        if (navigationView != null) {
-            if (navigationView.getVisibility() == View.VISIBLE) {
-                navigationView.setVisibility(View.INVISIBLE);
-                profile.setColorFilter(Color.parseColor("#000000"));
-            } else {
-                super.onBackPressed();
-                if (!getIntent().getBooleanExtra("isFromMain", false)) {
-                    overridePendingTransition(0,0);
-                }
-            }
-        } else {
-            super.onBackPressed();
-            if (!getIntent().getBooleanExtra("isFromMain", false)) {
-                overridePendingTransition(0,0);
-            }
+        super.onBackPressed();
+        if (!getIntent().getBooleanExtra("isFromMain", false)) {
+            overridePendingTransition(0, 0);
         }
     }
 

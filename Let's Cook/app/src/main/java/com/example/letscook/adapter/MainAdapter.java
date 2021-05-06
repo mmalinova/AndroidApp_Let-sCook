@@ -109,37 +109,39 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
                         String uMeasure_unit = unit.getText().toString().trim();
                         String[] units = {MEASURING_UNITS, ML, L, GR, KG, GLASS, SMALL_GLASS, SPOON, SMALL_SPOON, PINCH, PINCHES, PACKET, PACKETS};
                         if (uName.equals("")) {
-                           nameReq.setVisibility(View.VISIBLE);
-                           //return;
+                            nameReq.setVisibility(View.VISIBLE);
+                            return;
                         } else if (q.equals(".")) {
                             quantityReq.setVisibility(View.VISIBLE);
-                            //return;
+                            return;
                         } else if (!uMeasure_unit.equals("") && !Arrays.asList(units).contains(uMeasure_unit)) {
                             unitReq.setVisibility(View.VISIBLE);
-                            //return;
+                            return;
                         } else if (!q.equals("")) {
                             uQuantity = Float.parseFloat(q);
                             if (uQuantity <= 0) {
                                 quantityReq.setVisibility(View.VISIBLE);
-                                //return;
+                                return;
                             }
-                        } else {
-                            // Update in database
-                            database.productDao().update(sID, uName, uMeasure_unit, uQuantity);
-                            // Notify
-                            productList.clear();
-                            productList.addAll(database.productDao().getUserProducts(listType));
-                            notifyDataSetChanged();
-                            nameReq.setVisibility(View.INVISIBLE);
-                            quantityReq.setVisibility(View.INVISIBLE);
-                            unitReq.setVisibility(View.INVISIBLE);
-                            dialog.dismiss();
                         }
+                        // Update in database
+                        database.productDao().update(sID, uName, uMeasure_unit, uQuantity);
+                        // Notify
+                        productList.clear();
+                        productList.addAll(database.productDao().getUserProducts(listType));
+                        notifyDataSetChanged();
+                        nameReq.setVisibility(View.INVISIBLE);
+                        quantityReq.setVisibility(View.INVISIBLE);
+                        unitReq.setVisibility(View.INVISIBLE);
+                        dialog.dismiss();
+
                     }
                 });
                 // Set text on edit text
                 name.setText(sName);
-                quantity.setText(String.valueOf(sQuantity));
+                if (product.getQuantity() > 0) {
+                    holder.quantity.setText(String.valueOf(product.getQuantity()));
+                }
                 unit.setText(sMeasure_unit);
             }
         });
@@ -151,6 +153,10 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
                 // Notify
                 int position = holder.getAdapterPosition();
                 productList.remove(position);
+                if (productList.size() < 1) {
+                    context.findViewById(R.id.recycler_view).setVisibility(View.INVISIBLE);
+                    context.findViewById(R.id.textView).setVisibility(View.VISIBLE);
+                }
                 notifyItemRemoved(position);
                 notifyItemRangeChanged(position, productList.size());
             }
@@ -162,7 +168,7 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
         return productList.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
+    public class ViewHolder extends RecyclerView.ViewHolder {
         // Initialize variable
         TextView name, quantity, unit;
         ImageView edit, delete;

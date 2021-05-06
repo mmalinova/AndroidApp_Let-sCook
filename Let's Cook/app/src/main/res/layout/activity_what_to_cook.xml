@@ -18,7 +18,7 @@
         android:layout_gravity="end"
         android:background="@color/background"
         android:visibility="invisible"
-        app:headerLayout="@layout/activity_login" />
+        app:headerLayout="@layout/main_login" />
 
     <ScrollView
         android:layout_width="match_parent"
@@ -29,6 +29,7 @@
         android:fillViewport="true">
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraint"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -54,6 +55,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/action_bar">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/product_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:drawableEnd="@drawable/ic_product_add"

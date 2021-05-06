@@ -10,15 +10,6 @@
         android:id="@+id/tool"
         layout="@layout/toolbar" />
 
-    <com.google.android.material.navigation.NavigationView
-        android:id="@+id/login_view"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:background="@color/background"
-        android:layout_gravity="end"
-        app:headerLayout="@layout/activity_login"
-        android:visibility="invisible"/>
-
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -30,6 +21,7 @@
         android:fillViewport="true">
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraint"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingBottom="16dp">
@@ -45,7 +37,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:layout_marginLeft="8dp"
                 android:layout_marginTop="16dp"
                 android:text="@string/required"
                 android:textColor="@color/required"
@@ -58,7 +49,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:layout_marginLeft="16dp"
                 android:layout_marginTop="10dp"
                 android:text="@string/recipeName"
                 android:textColor="@color/black"
@@ -71,10 +61,8 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:layout_marginLeft="8dp"
                 android:layout_marginTop="12dp"
                 android:layout_marginEnd="16dp"
-                android:layout_marginRight="16dp"
                 android:background="@color/editTextBackground"
                 android:hint="@string/name_req"
                 android:importantForAutofill="no"
@@ -123,31 +111,42 @@
                     android:id="@+id/radio_breakfast"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="2dp"
+                    android:layout_marginEnd="1dp"
                     android:text="@string/breakfast"
-                    android:textColor="@color/black" />
-
-                <RadioButton
-                    android:id="@+id/radio_lunch"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="2dp"
-                    android:text="@string/lunch"
                     android:textColor="@color/black" />
 
                 <RadioButton
                     android:id="@+id/radio_dinner"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="2dp"
+                    android:layout_marginStart="1dp"
                     android:text="@string/dinner"
+                    android:textColor="@color/black" />
+            </RadioGroup>
+
+            <RadioGroup
+                android:id="@+id/secondRadioGroup"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/radioGroup">
+
+                <RadioButton
+                    android:id="@+id/radio_lunch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="1dp"
+                    android:text="@string/lunch"
                     android:textColor="@color/black" />
 
                 <RadioButton
                     android:id="@+id/radio_dessert"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="2dp"
+                    android:layout_marginStart="1dp"
                     android:text="@string/dessert"
                     android:textColor="@color/black" />
             </RadioGroup>
@@ -166,7 +165,7 @@
                 android:textSize="16sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/radioGroup" />
+                app:layout_constraintTop_toBottomOf="@+id/secondRadioGroup" />
 
             <RadioGroup
                 android:id="@+id/radioGroupVeg"
@@ -200,10 +199,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:layout_marginLeft="16dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="8dp"
-                android:layout_marginRight="8dp"
                 android:text="@string/recipePictures"
                 android:textColor="@color/black"
                 android:textSize="16sp"
@@ -218,10 +215,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:layout_marginLeft="8dp"
                 android:layout_marginTop="2dp"
                 android:layout_marginEnd="16dp"
-                android:layout_marginRight="16dp"
                 android:text="@string/browse"
                 android:textSize="12sp"
                 app:backgroundTint="@color/backgroundBtn"
@@ -235,10 +230,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:layout_marginLeft="16dp"
                 android:layout_marginTop="32dp"
                 android:layout_marginEnd="8dp"
-                android:layout_marginRight="8dp"
                 android:gravity="center_horizontal"
                 android:text="@string/portions"
                 android:textColor="@color/black"
@@ -254,10 +247,8 @@
                 android:layout_width="170dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:layout_marginLeft="8dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
-                android:layout_marginRight="16dp"
                 android:overScrollMode="always"
                 android:scrollbars="horizontal"
                 android:background="@color/editTextBackground"
@@ -300,7 +291,6 @@
                 android:layout_width="0dp"
                 android:layout_height="45dp"
                 android:layout_marginStart="16dp"
-                android:layout_marginLeft="16dp"
                 android:layout_marginTop="8dp"
                 android:overScrollMode="always"
                 android:scrollbars="horizontal"
@@ -310,10 +300,8 @@
                 android:importantForAutofill="no"
                 android:inputType="textCapSentences"
                 android:paddingStart="2dp"
-                android:paddingLeft="2dp"
                 android:paddingTop="8dp"
                 android:paddingEnd="16dp"
-                android:paddingRight="8dp"
                 android:paddingBottom="8dp"
                 android:textColor="@color/inputText"
                 android:textColorHint="@color/required"
@@ -328,7 +316,6 @@
                 android:layout_width="0dp"
                 android:layout_height="45dp"
                 android:layout_marginStart="4dp"
-                android:layout_marginLeft="4dp"
                 android:layout_marginTop="8dp"
                 android:overScrollMode="always"
                 android:scrollbars="horizontal"
@@ -338,10 +325,8 @@
                 android:importantForAutofill="no"
                 android:inputType="number"
                 android:paddingStart="1dp"
-                android:paddingLeft="1dp"
                 android:paddingTop="8dp"
                 android:paddingEnd="16dp"
-                android:paddingRight="8dp"
                 android:paddingBottom="8dp"
                 android:textColor="@color/inputText"
                 android:textColorHint="@color/required"
@@ -356,10 +341,8 @@
                 android:layout_width="0dp"
                 android:layout_height="45dp"
                 android:layout_marginStart="4dp"
-                android:layout_marginLeft="4dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="16dp"
-                android:layout_marginRight="16dp"
                 android:gravity="center_horizontal"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
@@ -371,10 +354,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:layout_marginLeft="8dp"
                 android:layout_marginTop="2dp"
                 android:layout_marginEnd="16dp"
-                android:layout_marginRight="16dp"
                 android:text="@string/toAddBtn"
                 android:textSize="12sp"
                 app:backgroundTint="@color/backgroundBtn"
@@ -387,7 +368,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:layout_marginLeft="16dp"
                 android:layout_marginTop="16dp"
                 android:text="@string/steps"
                 android:textColor="@color/black"
@@ -417,10 +397,8 @@
                 android:importantForAutofill="no"
                 android:inputType="textMultiLine"
                 android:paddingStart="8dp"
-                android:paddingLeft="16dp"
                 android:paddingTop="8dp"
                 android:paddingEnd="16dp"
-                android:paddingRight="8dp"
                 android:paddingBottom="8dp"
                 android:textColor="@color/inputText"
                 android:textColorHint="@color/required"
@@ -453,10 +431,8 @@
                 android:layout_width="120dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:layout_marginLeft="16dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="2dp"
-                android:layout_marginRight="2dp"
                 android:layout_marginBottom="16dp"
                 android:overScrollMode="always"
                 android:scrollbars="horizontal"
@@ -485,10 +461,8 @@
                 android:layout_width="120dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="2dp"
-                android:layout_marginLeft="2dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
-                android:layout_marginRight="16dp"
                 android:layout_marginBottom="16dp"
                 android:overScrollMode="always"
                 android:scrollbars="horizontal"

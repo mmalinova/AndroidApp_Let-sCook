@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import com.blogspot.atifsoftwares.animatoolib.Animatoo;
 import com.example.letscook.R;
+import com.example.letscook.view.home.MainActivity;
 import com.example.letscook.view.register.SignUpActivity;
 import com.example.letscook.adapter.SliderAdp;
 import com.smarteist.autoimageslider.IndicatorView.animation.type.IndicatorAnimationType;
@@ -34,7 +35,6 @@ public class SliderActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setTheme(R.style.MainTheme);
 
         //Make the activity on full screen
@@ -44,8 +44,24 @@ public class SliderActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_slider);
 
-        //Hide the action bar
-        //getSupportActionBar().hide();
+        // Check if the app is open for the first time
+        boolean isFirstRun = getSharedPreferences("FIRST_RUN", MODE_PRIVATE)
+                .getBoolean("isFirstRun", true);
+        boolean isRemembered = getSharedPreferences("PREFERENCE", MODE_PRIVATE)
+                .getBoolean("remember", false);
+        if (isFirstRun) {
+            getSharedPreferences("FIRST_RUN", MODE_PRIVATE).edit()
+                    .putBoolean("isFirstRun", false).apply();
+        } else if (isRemembered) {
+            startActivity(new Intent(this, MainActivity.class));
+            //must finish this activity (the login activity will not be shown when click back in main activity)
+            finish();
+        } else {
+            startActivity(new Intent(this, SignUpActivity.class));
+            //must finish this activity (the login activity will not be shown when click back in main activity)
+            finish();
+        }
+
 
         sliderView = findViewById(R.id.slider_view);
         btnSkip = findViewById(R.id.skip_btn);

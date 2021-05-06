@@ -1,7 +1,18 @@
 package com.example.letscook.constants;
 
 public class Messages {
-    public static final String EXTRA_MESSAGE = "com.example.letscook.MESSAGE";
+    public static final String FORGOTTEN_TITLE = "Забравена парола";
+    public static final String UPDATE = "Обновяване";
+    public static final String USERNAME_LENGTH = "Потребителското име трябва да съдържа поне два символа!";
+    public static final String EMAIL_REQ = "Моля, въведете валиден E-mail!";
+    public static final String PASS_REQ = "Моля, въведете парола с поне 3 символа!";
+    public static final String REPEAT_PASS_REQ = "Моля, повторете паролата си!";
+    public static final String EQUAL_PASS_REQ = "Паролите не съвпадат!";
+    public static final String EMAIL_NOT_EXIST = "Потребител с такъв E-mail не съществува!";
+    public static final String EMAIL_ALREADY_EXIST = "Потребител с такъв E-mail вече съществува!";
+    public static final String WRONG_PASS = "Грешна парола!";
+    public static final String LOGIN = "Влизане...Моля, изчакайте!";
+    public static final String REGISTER = "Регистриране...Моля, изчакайте!";
 
     public static final String WHAT_TO_COOK = "Какво да сготвя";
     public static final String SEARCH_RECIPE = "Намери рецепта";
@@ -54,7 +65,7 @@ public class Messages {
     public static final String LAST_VIEW = "Последно разглеждани\nрецепти";
     public static final String LAST_ADD = "Последно добавени\nрецепти";
 
-    public static final String MY_RES = "(Все още няма добавяни от Вас рецепти)";
-    public static final String MY_FAV = "(Все още нямате рецепти, отбелязани като любими)";
-    public static final String MY_VIEWED = "(Все още няма отваряни от Вас рецепти)";
+    public static final String MY_RES = "(Все още няма добавяни от теб рецепти)";
+    public static final String MY_FAV = "(Все още нямаш рецепти, отбелязани като любими)";
+    public static final String MY_VIEWED = "(Все още няма отваряни от теб рецепти)";
 }

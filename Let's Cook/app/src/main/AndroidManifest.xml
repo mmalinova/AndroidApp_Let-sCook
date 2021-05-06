@@ -18,25 +18,24 @@
             android:theme="@style/SplashScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
             android:name=".view.register.SignUpActivity"
-            android:theme="@style/Register" />
+            android:theme="@style/Register"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan|adjustResize" />
         <activity
             android:name=".view.home.MainActivity"
             android:theme="@style/MainTheme">
-
             <!-- The meta-data tag is required if you support API level 15 and lower -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".view.home.MainActivity" />
         </activity>
         <activity
-            android:name=".view.login.LoginActivity"
-            android:parentActivityName=".view.home.MainActivity" />
+            android:name=".view.login.LoginActivity" />
         <activity
             android:name=".view.search.WhatToCookActivity"
             android:parentActivityName=".view.home.MainActivity"
@@ -60,18 +59,6 @@
             android:windowSoftInputMode="adjustPan|adjustResize" />
         <activity
             android:name=".view.info.InfoActivity"
-            android:parentActivityName=".view.home.MainActivity" />
-        <activity
-            android:name=".LastAddedActivity"
-            android:parentActivityName=".view.home.MainActivity" />
-        <activity
-            android:name=".view.userRecipes.LastViewedActivity"
-            android:parentActivityName=".view.home.MainActivity" />
-        <activity
-            android:name=".view.userRecipes.FavoriteActivity"
-            android:parentActivityName=".view.home.MainActivity" />
-        <activity
-            android:name=".view.userRecipes.MyRecipesActivity"
             android:parentActivityName=".view.home.MainActivity" />
         <activity
             android:name=".view.search.SearchActivity"

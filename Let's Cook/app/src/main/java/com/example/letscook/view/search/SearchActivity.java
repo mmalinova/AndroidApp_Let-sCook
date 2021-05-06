@@ -4,29 +4,42 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Patterns;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.blogspot.atifsoftwares.animatoolib.Animatoo;
 import com.example.letscook.AddRecipeActivity;
+import com.example.letscook.database.RoomDB;
+import com.example.letscook.database.user.User;
+import com.example.letscook.database.user.UserDao;
 import com.example.letscook.view.products.MyProductsActivity;
 import com.example.letscook.R;
 import com.example.letscook.view.products.ShoppingListActivity;
 import com.example.letscook.view.home.MainActivity;
 import com.example.letscook.view.profile.ProfileActivity;
 import com.example.letscook.view.recipesDashboard.RecipesActivity;
+import com.example.letscook.view.register.SignUpActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
+
+import java.util.List;
 
 import static com.example.letscook.constants.Messages.*;
 
@@ -43,7 +56,10 @@ public class SearchActivity extends AppCompatActivity {
     private AlertDialog dialog = null;
     private Button yesButton, noButton;
     private BottomNavigationView bottomNavigationView;
+    private EditText searchRecipe;
+    private Button okButton;
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,32 +70,24 @@ public class SearchActivity extends AppCompatActivity {
         my_products = findViewById(R.id.my_products);
 
         // Set view according session storage
-        //navigationView = findViewById(R.id.login_view);
+        if (getSharedPreferences("PREFERENCE", MODE_PRIVATE)
+                .getString("email", null) == null) {
+            navigationView = findViewById(R.id.login_view);
+        }
 
         // Add click event listeners
+        findViewById(R.id.constraint).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (navigationView != null && navigationView.getVisibility() == View.VISIBLE) {
+                    hideNavView();
+                }
+            }
+        });
         profile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (navigationView != null) {
-                    if (navigationView.getVisibility() == View.INVISIBLE) {
-                        navigationView.setVisibility(View.VISIBLE);
-                        profile.setColorFilter(Color.parseColor("#FFFEF6D8"));
-
-//                      Button button = findViewById(R.id.login_btn);
-//                      button.setOnClickListener(new View.OnClickListener() {
-//                        public void onClick(View v) {
-//                            Toast.makeText(getApplicationContext(),"Clicked", Toast.LENGTH_LONG).show();
-//                        }
-//                      });
-                    } else {
-                        navigationView.setVisibility(View.INVISIBLE);
-                        profile.setColorFilter(Color.parseColor("#000000"));
-                    }
-                } else {
-                    startActivity(new Intent(getApplicationContext(), ProfileActivity.class));
-                    Animatoo.animateSlideDown(SearchActivity.this);
-                    profile.setColorFilter(Color.parseColor("#FFFEF6D8"));
-                }
+                navigationClickListeners();
             }
         });
         my_products.setOnClickListener(new View.OnClickListener() {
@@ -94,15 +102,33 @@ public class SearchActivity extends AppCompatActivity {
         // Initialize action bar variables
         backIcon = findViewById(R.id.back_icon);
         actionText = findViewById(R.id.action_bar_text);
-
         backIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                SearchActivity.super.onBackPressed();
             }
         });
         actionText.setText(SEARCH_RECIPE);
 
+        searchRecipe = findViewById(R.id.recipe_name);
+        searchRecipe.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (navigationView != null && navigationView.getVisibility() == View.VISIBLE) {
+                    hideNavView();
+                } else {
+                    if (v.getId() == R.id.recipe_name) {
+                        v.getParent().requestDisallowInterceptTouchEvent(true);
+                        switch (event.getAction() & MotionEvent.ACTION_MASK) {
+                            case MotionEvent.ACTION_UP:
+                                v.getParent().requestDisallowInterceptTouchEvent(false);
+                                break;
+                        }
+                    }
+                }
+                return false;
+            }
+        });
         // Initialize list view
         listView = findViewById(R.id.list);
         CustomAdapter customAdapter = new CustomAdapter();
@@ -110,7 +136,11 @@ public class SearchActivity extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                termsDialog(position);
+                if (navigationView != null && navigationView.getVisibility() == View.VISIBLE) {
+                    hideNavView();
+                } else {
+                    vegDialog(position);
+                }
             }
         });
 
@@ -124,36 +154,172 @@ public class SearchActivity extends AppCompatActivity {
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                id = item.getItemId();
-                Intent intent = null;
-                switch (id) {
-                    case R.id.home:
-                        intent = new Intent(getApplicationContext(), MainActivity.class);
-                        break;
-                    case R.id.what_to_cook:
-                        intent = new Intent(getApplicationContext(), WhatToCookActivity.class);
-                        break;
-                    case R.id.add_recipe:
-                        intent = new Intent(getApplicationContext(), AddRecipeActivity.class);
-                        break;
-                    case R.id.search:
-                        return true;
-                    case R.id.shopping_list:
-                        intent = new Intent(getApplicationContext(), ShoppingListActivity.class);
-                        break;
+                if (navigationView != null && navigationView.getVisibility() == View.VISIBLE) {
+                    hideNavView();
+                } else {
+                    id = item.getItemId();
+                    Intent intent = null;
+                    switch (id) {
+                        case R.id.home:
+                            intent = new Intent(getApplicationContext(), MainActivity.class);
+                            break;
+                        case R.id.what_to_cook:
+                            intent = new Intent(getApplicationContext(), WhatToCookActivity.class);
+                            break;
+                        case R.id.add_recipe:
+                            intent = new Intent(getApplicationContext(), AddRecipeActivity.class);
+                            break;
+                        case R.id.search:
+                            return true;
+                        case R.id.shopping_list:
+                            if (getSharedPreferences("PREFERENCE", MODE_PRIVATE)
+                                    .getString("email", null) == null) {
+                                deniedDialog();
+                                return false;
+                            } else {
+                                intent = new Intent(getApplicationContext(), ShoppingListActivity.class);
+                            }
+                            break;
+                    }
+                    startActivity(intent);
+                    Animatoo.animateZoom(SearchActivity.this);
+                    return true;
                 }
-                startActivity(intent);
-                Animatoo.animateZoom(SearchActivity.this);
-                return true;
+                return false;
             }
         });
     }
 
-    public void termsDialog(int position) {
+    public void navigationClickListeners() {
+        if (navigationView != null) {
+            if (navigationView.getVisibility() == View.INVISIBLE) {
+                findViewById(R.id.forgotten_pass).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(getApplicationContext(), SignUpActivity.class);
+                        intent.putExtra("forgottenPassword", 1);
+                        startActivity(intent);
+                    }
+                });
+                findViewById(R.id.register).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        getSharedPreferences("PREFERENCE", MODE_PRIVATE).edit()
+                                .putBoolean("remember", false).apply();
+                        startActivity(new Intent(getApplicationContext(), SignUpActivity.class));
+                    }
+                });
+                navigationView.setVisibility(View.VISIBLE);
+                profile.setColorFilter(Color.parseColor("#FFFEF6D8"));
+            } else {
+                hideNavView();
+            }
+        } else {
+            Intent intent = new Intent(getApplicationContext(), ProfileActivity.class);
+            startActivity(intent);
+            Animatoo.animateSlideDown(SearchActivity.this);
+            profile.setColorFilter(Color.parseColor("#FFFEF6D8"));
+        }
+    }
+
+    public void hideNavView() {
+        TextView required = findViewById(R.id.reqTextView);
+        required.setVisibility(View.INVISIBLE);
+        // Check if no view has focus:
+        View view = this.getCurrentFocus();
+        if (view != null) {
+            InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
+        navigationView.setVisibility(View.INVISIBLE);
+        profile.setColorFilter(Color.parseColor("#000000"));
+    }
+
+    public void login(View view) {
+        // Get the information
+        TextView required = findViewById(R.id.reqTextView);
+        required.setVisibility(View.INVISIBLE);
+
+        TextView email = findViewById(R.id.email_editText);
+        TextView password = findViewById(R.id.password_editText);
+
+        String userEmail = email.getText().toString().trim();
+        if (userEmail.equals("") || !Patterns.EMAIL_ADDRESS.matcher(userEmail).matches()) {
+            required.setText(EMAIL_REQ);
+            required.setVisibility(View.VISIBLE);
+            return;
+        }
+        String userPass = password.getText().toString().trim();
+        if (userPass.length() < 3) {
+            required.setText(PASS_REQ);
+            required.setVisibility(View.VISIBLE);
+            return;
+        }
+        // Initialize db
+        RoomDB database = RoomDB.getInstance(this);
+        final UserDao userDao = database.userDao();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                User user = userDao.getUserByEmail(userEmail);
+                if (user == null) {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            required.setText(EMAIL_NOT_EXIST);
+                            required.setVisibility(View.VISIBLE);
+                        }
+                    });
+                } else if (!user.getPassword().equals(userPass)) {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            required.setText(WRONG_PASS);
+                            required.setVisibility(View.VISIBLE);
+                        }
+                    });
+                } else {
+                    String name = user.getName();
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            required.setText(LOGIN);
+                            required.setVisibility(View.VISIBLE);
+                        }
+                    });
+                    SharedPreferences sharedPreferences = getSharedPreferences("PREFERENCE", MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.putString("email", userEmail);
+                    editor.apply();
+                    startActivity(new Intent(SearchActivity.this, MainActivity.class));
+                }
+            }
+        }).start();
+    }
+
+    public void deniedDialog() {
+        dialogBuilder = new AlertDialog.Builder(this);
+        final View popupView = getLayoutInflater().inflate(R.layout.denied_access, null);
+
+        okButton = popupView.findViewById(R.id.okBtn);
+
+        dialogBuilder.setView(popupView);
+        dialog = dialogBuilder.create();
+        dialog.show();
+
+        okButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+    }
+
+    public void vegDialog(int position) {
         dialogBuilder = new AlertDialog.Builder(this);
         final View popupView = getLayoutInflater().inflate(R.layout.veg_popup, null);
 
-        yesButton = popupView.findViewById(R.id.yesBtn);
+        yesButton = popupView.findViewById(R.id.okBtn);
         noButton = popupView.findViewById(R.id.noBtn);
 
         dialogBuilder.setView(popupView);
@@ -191,21 +357,20 @@ public class SearchActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onResume() {
+        profile.setColorFilter(Color.parseColor("#000000"));
+        my_products.setColorFilter(Color.parseColor("#000000"));
+        super.onResume();
+    }
+
+    @Override
     public void onBackPressed() {
-        if (navigationView != null) {
-            if (navigationView.getVisibility() == View.VISIBLE) {
-                navigationView.setVisibility(View.INVISIBLE);
-                profile.setColorFilter(Color.parseColor("#000000"));
-            } else {
-                super.onBackPressed();
-                if (!getIntent().getBooleanExtra("isFromMain", false)) {
-                    overridePendingTransition(0,0);
-                }
-            }
+        if (navigationView != null && navigationView.getVisibility() == View.VISIBLE) {
+            hideNavView();
         } else {
             super.onBackPressed();
             if (!getIntent().getBooleanExtra("isFromMain", false)) {
-                overridePendingTransition(0,0);
+                overridePendingTransition(0, 0);
             }
         }
     }

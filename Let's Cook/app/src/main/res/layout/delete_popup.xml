@@ -9,13 +9,13 @@
     tools:context=".view.search.SearchActivity">
 
     <TextView
-        android:id="@+id/veg_question"
+        android:id="@+id/confirm"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:text="@string/vegetarianQuestion"
+        android:text="@string/delete_confirm"
         android:textColor="@color/black"
-        android:textSize="18sp"
+        android:textSize="17sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -24,7 +24,7 @@
         android:id="@+id/okBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/veg_question"
+        android:layout_below="@id/confirm"
         android:layout_marginStart="54dp"
         android:background="@android:color/transparent"
         android:gravity="center"
@@ -32,14 +32,14 @@
         android:textColor="@color/black"
         android:textStyle="bold"
         app:iconPadding="2dp"
-        app:layout_constraintStart_toStartOf="@+id/veg_question"
-        app:layout_constraintTop_toBottomOf="@+id/veg_question" />
+        app:layout_constraintStart_toStartOf="@+id/confirm"
+        app:layout_constraintTop_toBottomOf="@+id/confirm" />
 
     <Button
         android:id="@+id/noBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/veg_question"
+        android:layout_below="@id/confirm"
         android:layout_marginEnd="54dp"
         android:layout_toEndOf="@id/okBtn"
         android:background="@android:color/transparent"
@@ -48,7 +48,7 @@
         android:textColor="@color/black"
         android:textStyle="bold"
         app:iconPadding="2dp"
-        app:layout_constraintEnd_toEndOf="@+id/veg_question"
-        app:layout_constraintTop_toBottomOf="@+id/veg_question" />
+        app:layout_constraintEnd_toEndOf="@+id/confirm"
+        app:layout_constraintTop_toBottomOf="@+id/confirm" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

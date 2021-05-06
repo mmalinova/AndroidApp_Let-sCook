@@ -2,17 +2,13 @@ package com.example.letscook.database.recipe;
 
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
-import androidx.room.Embedded;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
-import androidx.room.Relation;
 
-import com.example.letscook.database.user.User;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 //Define table
 @Entity(tableName = "recipe")

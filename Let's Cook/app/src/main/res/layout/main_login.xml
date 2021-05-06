@@ -103,17 +103,11 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
-            <CheckBox
-                android:id="@+id/checkBox"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/rememberMe"
-                android:textColor="@color/inputText" />
-
             <Button
                 android:id="@+id/login_btn"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_marginTop="4dp"
                 android:layout_gravity="center"
                 android:onClick="login"
                 android:text="@string/login_btn"
@@ -126,6 +120,15 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:text="@string/forgot_pass"
+                android:textColorLink="@color/secondLink"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/register"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="@string/reg_question"
                 android:textColorLink="@color/secondLink"
                 android:textSize="16sp" />
 
