@@ -15,6 +15,7 @@ public class Messages {
     public static final String REGISTER = "Регистриране...Моля, изчакайте!";
 
     public static final String WHAT_TO_COOK = "Какво да сготвя";
+    public static final String WHAT_TO_COOK_INFO = "Тук може да добавиш всички продукти, с които разполагаш или да приложиш вече готовия твой списък. Огледай се добре - според тях ще бъдат филтрирани рецептите, които може да сготвиш!";
     public static final String SEARCH_RECIPE = "Намери рецепта";
     public static final String MY_RECIPES = "Моите рецепти";
     public static final String FAV_RECIPES = "Любими рецепти";

@@ -6,7 +6,7 @@ import android.view.MenuItem;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.letscook.AddRecipeActivity;
+import com.example.letscook.view.AddRecipeActivity;
 import com.example.letscook.R;
 import com.example.letscook.view.search.SearchActivity;
 import com.example.letscook.view.products.ShoppingListActivity;

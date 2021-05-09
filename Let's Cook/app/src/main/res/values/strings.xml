@@ -57,7 +57,6 @@
     <string name="dessert">Десерт</string>
     <!-- WhatToCook activity -->
     <string name="addProductEditText">Добави продукт</string>
-    <string name="whatToCook_info">Тук може да добавиш всички продукти, с които разполагаш или да приложиш вече готовия твой <a href=""><b><i>списък</i></b></a>. Огледайте се добре - според тях ще бъдат филтрирани рецептите, които може да сготвите!</string>
     <string name="categoryQuestion">Какво искаш да сготвиш?</string>
     <string name="vegetarianQuestion">Вегетарианска ли да бъде рецептата?</string>
     <string name="productsQuestion">С/без нужда от допълнителни продукти?</string>
@@ -93,6 +92,10 @@
     <string name="share_icon">Икона</string>
     <string name="floating_desc">Бутон \"Сподели с\"</string>
     <string name="exit">Изход</string>
+    <string name="choose_title">Задай своята снимка</string>
+    <string name="gallery">Избери от галерия</string>
+    <string name="takeAPhoto">Снимай с камерата</string>
+    <string name="removePhoto">Премахни снимката</string>
     <!-- Info activity -->
     <string name="aboutApp_title">За приложението</string>
     <string name="aboutMe">Добре дошъл в приложението \"Да сготвим\".</string>

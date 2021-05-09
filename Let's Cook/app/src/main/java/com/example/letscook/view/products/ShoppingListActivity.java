@@ -27,11 +27,13 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.blogspot.atifsoftwares.animatoolib.Animatoo;
-import com.example.letscook.AddRecipeActivity;
+import com.example.letscook.view.AddRecipeActivity;
 import com.example.letscook.R;
 import com.example.letscook.adapter.MainAdapter;
 import com.example.letscook.database.product.Product;
 import com.example.letscook.database.RoomDB;
+import com.example.letscook.database.typeconverters.DataConverter;
+import com.example.letscook.database.user.User;
 import com.example.letscook.view.home.MainActivity;
 import com.example.letscook.view.profile.ProfileActivity;
 import com.example.letscook.view.search.SearchActivity;
@@ -41,11 +43,14 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 import static com.example.letscook.constants.Messages.*;
 
 public class ShoppingListActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
     private int id;
-    private ImageView backIcon, profile, my_products;
+    private ImageView backIcon, my_products;
+    private CircleImageView profile;
     private TextView actionText, textView;
     private Spinner spinner;
     private Button addBtn, deleteAll, addedBtn;
@@ -60,6 +65,7 @@ public class ShoppingListActivity extends AppCompatActivity implements AdapterVi
     private AlertDialog.Builder dialogBuilder;
     private AlertDialog dialog = null;
     private Button okButton, noButton;
+    private User user;
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -71,6 +77,21 @@ public class ShoppingListActivity extends AppCompatActivity implements AdapterVi
         profile = findViewById(R.id.profile);
         my_products = findViewById(R.id.my_products);
 
+        // Initialize db
+        database = RoomDB.getInstance(this);
+        // Set view according session storage
+        String e = getSharedPreferences("PREFERENCE", MODE_PRIVATE).getString("email", null);
+        if (e == null) {
+            profile.setImageResource(R.drawable.ic_profile);
+        } else {
+            user = database.userDao().getUserByEmail(e);
+            if (user.getPhoto() != null) {
+                profile.setImageBitmap(DataConverter.byteArrayToImage(user.getPhoto()));
+            } else {
+                profile.setImageResource(R.drawable.ic_profile_photo);
+            }
+        }
+
         // Add click event listeners
         profile.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -78,7 +99,7 @@ public class ShoppingListActivity extends AppCompatActivity implements AdapterVi
                 Intent intent = new Intent(getApplicationContext(), ProfileActivity.class);
                 startActivity(intent);
                 Animatoo.animateSlideDown(ShoppingListActivity.this);
-                profile.setColorFilter(Color.parseColor("#FFFEF6D8"));
+                profile.setBorderColor(Color.parseColor("#FFFEF6D8"));
             }
         });
         my_products.setOnClickListener(new View.OnClickListener() {
@@ -144,10 +165,12 @@ public class ShoppingListActivity extends AppCompatActivity implements AdapterVi
         spinner.setAdapter(adapter);
         spinner.setOnItemSelectedListener(this);
 
-        // Initialize db
-        database = RoomDB.getInstance(this);
+        // Get current user
+        String userEmail = getSharedPreferences("PREFERENCE", MODE_PRIVATE)
+                .getString("email", null);
+        user = database.userDao().getUserByEmail(userEmail);
         // Store db value in product list
-        dataList = database.productDao().getUserProducts("shoppingList");
+        dataList = database.productDao().getUserProducts("shoppingList", user.getID());
         if (dataList.size() > 0) {
             textView.setVisibility(View.INVISIBLE);
             recyclerView.setVisibility(View.VISIBLE);
@@ -157,7 +180,7 @@ public class ShoppingListActivity extends AppCompatActivity implements AdapterVi
         }
         linearLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(linearLayoutManager);
-        mainAdapter = new MainAdapter(ShoppingListActivity.this, dataList, "shoppingList");
+        mainAdapter = new MainAdapter(ShoppingListActivity.this, dataList, "shoppingList", user.getID());
         recyclerView.setAdapter(mainAdapter);
 
         deleteAll = findViewById(R.id.delAllProd);
@@ -203,6 +226,7 @@ public class ShoppingListActivity extends AppCompatActivity implements AdapterVi
                     product.setMeasureUnit(sMeasureUnit);
                     product.setQuantity(sQuantity);
                     product.setBelonging("shoppingList");
+                    product.setOwnerId(user.getID());
                     // Insert in db
                     database.productDao().insert(product);
                     // Clear edit texts
@@ -210,7 +234,7 @@ public class ShoppingListActivity extends AppCompatActivity implements AdapterVi
                     spinner.setSelection(0);
                     quantity.setText("");
                     dataList.clear();
-                    dataList.addAll(database.productDao().getUserProducts("shoppingList"));
+                    dataList.addAll(database.productDao().getUserProducts("shoppingList", user.getID()));
                     if (dataList.size() > 0) {
                         textView.setVisibility(View.INVISIBLE);
                         recyclerView.setVisibility(View.VISIBLE);
@@ -302,7 +326,7 @@ public class ShoppingListActivity extends AppCompatActivity implements AdapterVi
             public void onClick(View v) {
                 database.productDao().deleteAll(dataList);
                 dataList.clear();
-                dataList.addAll(database.productDao().getUserProducts("shoppingList"));
+                dataList.addAll(database.productDao().getUserProducts("shoppingList", user.getID()));
                 if (dataList.size() > 0) {
                     textView.setVisibility(View.INVISIBLE);
                     recyclerView.setVisibility(View.VISIBLE);
@@ -324,16 +348,40 @@ public class ShoppingListActivity extends AppCompatActivity implements AdapterVi
 
     @Override
     protected void onStart() {
-        profile.setColorFilter(Color.parseColor("#000000"));
+        profile.setBorderColor(Color.parseColor("#000000"));
         my_products.setColorFilter(Color.parseColor("#000000"));
         bottomNavigationView.setSelectedItemId(R.id.shopping_list);
+        // Set view according session storage
+        String e = getSharedPreferences("PREFERENCE", MODE_PRIVATE).getString("email", null);
+        if (e == null) {
+            profile.setImageResource(R.drawable.ic_profile);
+        } else {
+            user = database.userDao().getUserByEmail(e);
+            if (user.getPhoto() != null) {
+                profile.setImageBitmap(DataConverter.byteArrayToImage(user.getPhoto()));
+            } else {
+                profile.setImageResource(R.drawable.ic_profile_photo);
+            }
+        }
         super.onStart();
     }
 
     @Override
     protected void onResume() {
-        profile.setColorFilter(Color.parseColor("#000000"));
+        profile.setBorderColor(Color.parseColor("#000000"));
         my_products.setColorFilter(Color.parseColor("#000000"));
+        // Set view according session storage
+        String e = getSharedPreferences("PREFERENCE", MODE_PRIVATE).getString("email", null);
+        if (e == null) {
+            profile.setImageResource(R.drawable.ic_profile);
+        } else {
+            user = database.userDao().getUserByEmail(e);
+            if (user.getPhoto() != null) {
+                profile.setImageBitmap(DataConverter.byteArrayToImage(user.getPhoto()));
+            } else {
+                profile.setImageResource(R.drawable.ic_profile_photo);
+            }
+        }
         super.onResume();
     }
 

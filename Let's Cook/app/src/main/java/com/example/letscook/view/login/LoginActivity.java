@@ -37,7 +37,9 @@ public class LoginActivity extends AppCompatActivity {
         boolean isChecked = getSharedPreferences("PREFERENCE", MODE_PRIVATE)
                 .getBoolean("remember", false);
         if (isChecked) {
-            startActivity(new Intent(this, MainActivity.class));
+            if (!getIntent().getBooleanExtra("isFromSignUp", false)) {
+                startActivity(new Intent(this, MainActivity.class));
+            }
         }
 
         findViewById(R.id.forgotten_pass).setOnClickListener(new View.OnClickListener() {

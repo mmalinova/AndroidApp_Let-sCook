@@ -1,4 +1,4 @@
-package com.example.letscook;
+package com.example.letscook.view;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,10 +15,15 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.blogspot.atifsoftwares.animatoolib.Animatoo;
+import com.example.letscook.R;
+import com.example.letscook.database.RoomDB;
+import com.example.letscook.database.typeconverters.DataConverter;
+import com.example.letscook.database.user.User;
 import com.example.letscook.view.home.MainActivity;
 import com.example.letscook.view.products.MyProductsActivity;
 import com.example.letscook.view.products.ShoppingListActivity;
@@ -27,17 +32,23 @@ import com.example.letscook.view.search.SearchActivity;
 import com.example.letscook.view.search.WhatToCookActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 import static com.example.letscook.constants.Messages.*;
 
 public class AddRecipeActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
     private int id;
     private ImageView backIcon;
     private TextView actionText;
-    private ImageView profile, my_products;
+    private ImageView my_products;
+    private CircleImageView profile;
     private Spinner spinner;
     private Button addProduct, addRecipe, browseBtn;
-    private EditText steps;
+    private RadioGroup firstRG, secondRG, vegRG;
+    private EditText recipeName, portions, productName, quantity, steps, hours, minutes;
     private BottomNavigationView bottomNavigationView;
+    private RoomDB database;
+    private User user;
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -49,6 +60,21 @@ public class AddRecipeActivity extends AppCompatActivity implements AdapterView.
         profile = findViewById(R.id.profile);
         my_products = findViewById(R.id.my_products);
 
+        // Initialize db
+        database = RoomDB.getInstance(this);
+        // Set view according session storage
+        String e = getSharedPreferences("PREFERENCE", MODE_PRIVATE).getString("email", null);
+        if (e == null) {
+            profile.setImageResource(R.drawable.ic_profile);
+        } else {
+            user = database.userDao().getUserByEmail(e);
+            if (user.getPhoto() != null) {
+                profile.setImageBitmap(DataConverter.byteArrayToImage(user.getPhoto()));
+            } else {
+                profile.setImageResource(R.drawable.ic_profile_photo);
+            }
+        }
+
         // Add click event listeners
         profile.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -56,7 +82,7 @@ public class AddRecipeActivity extends AppCompatActivity implements AdapterView.
                 Intent intent = new Intent(getApplicationContext(), ProfileActivity.class);
                 startActivity(intent);
                 Animatoo.animateSlideDown(AddRecipeActivity.this);
-                profile.setColorFilter(Color.parseColor("#FFFEF6D8"));
+                profile.setBorderColor(Color.parseColor("#FFFEF6D8"));
             }
         });
         my_products.setOnClickListener(new View.OnClickListener() {
@@ -79,11 +105,14 @@ public class AddRecipeActivity extends AppCompatActivity implements AdapterView.
         });
         actionText.setText(ADD_RECIPE);
 
-        addProduct = findViewById(R.id.addProduct);
-        addProduct.setEnabled(false);
-        addRecipe = findViewById(R.id.addBtn);
-        addRecipe.setEnabled(false);
+        recipeName = findViewById(R.id.editTextName);
+        firstRG = findViewById(R.id.radioGroup);
+        secondRG = findViewById(R.id.secondRadioGroup);
+        vegRG = findViewById(R.id.radioGroupVeg);
         browseBtn = findViewById(R.id.uploadBtn);
+        portions = findViewById(R.id.editTextPortion);
+        productName = findViewById(R.id.editTextProd);
+        quantity = findViewById(R.id.editTextQuantity);
 
         // Get data
         String[] units = {MEASURING_UNITS_REQ, ML, L, GR, KG, GLASS, SMALL_GLASS, SPOON, SMALL_SPOON, PINCH, PINCHES, PACKET, PACKETS};
@@ -93,6 +122,9 @@ public class AddRecipeActivity extends AppCompatActivity implements AdapterView.
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
         spinner.setOnItemSelectedListener(this);
+
+        addProduct = findViewById(R.id.addProduct);
+        addProduct.setEnabled(false);
 
         steps = findViewById(R.id.editTextPrep);
         steps.setOnTouchListener(new View.OnTouchListener() {
@@ -109,6 +141,13 @@ public class AddRecipeActivity extends AppCompatActivity implements AdapterView.
                 return false;
             }
         });
+
+        hours = findViewById(R.id.editTextH);
+        minutes = findViewById(R.id.editTextMin);
+
+        addRecipe = findViewById(R.id.addBtn);
+        addRecipe.setEnabled(false);
+
         // Initialize and assign variable
         bottomNavigationView = findViewById(R.id.bottom_nav);
 
@@ -146,16 +185,40 @@ public class AddRecipeActivity extends AppCompatActivity implements AdapterView.
 
     @Override
     protected void onStart() {
-        profile.setColorFilter(Color.parseColor("#000000"));
+        profile.setBorderColor(Color.parseColor("#000000"));
         my_products.setColorFilter(Color.parseColor("#000000"));
+        // Set view according session storage
+        String e = getSharedPreferences("PREFERENCE", MODE_PRIVATE).getString("email", null);
+        if (e == null) {
+            profile.setImageResource(R.drawable.ic_profile);
+        } else {
+            user = database.userDao().getUserByEmail(e);
+            if (user.getPhoto() != null) {
+                profile.setImageBitmap(DataConverter.byteArrayToImage(user.getPhoto()));
+            } else {
+                profile.setImageResource(R.drawable.ic_profile_photo);
+            }
+        }
         bottomNavigationView.setSelectedItemId(R.id.add_recipe);
         super.onStart();
     }
 
     @Override
     protected void onResume() {
-        profile.setColorFilter(Color.parseColor("#000000"));
+        profile.setBorderColor(Color.parseColor("#000000"));
         my_products.setColorFilter(Color.parseColor("#000000"));
+        // Set view according session storage
+        String e = getSharedPreferences("PREFERENCE", MODE_PRIVATE).getString("email", null);
+        if (e == null) {
+            profile.setImageResource(R.drawable.ic_profile);
+        } else {
+            user = database.userDao().getUserByEmail(e);
+            if (user.getPhoto() != null) {
+                profile.setImageBitmap(DataConverter.byteArrayToImage(user.getPhoto()));
+            } else {
+                profile.setImageResource(R.drawable.ic_profile_photo);
+            }
+        }
         super.onResume();
     }
 

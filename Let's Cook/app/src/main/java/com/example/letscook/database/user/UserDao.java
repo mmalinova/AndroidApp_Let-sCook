@@ -20,6 +20,12 @@ public interface UserDao {
     @Query("SELECT * FROM user WHERE email = :sEmail")
     public User getUserByEmail(String sEmail);
 
+    @Query("UPDATE user SET photo = :sPhoto WHERE user_id = :sID")
+    void setPhoto(long sID, byte[] sPhoto);
+
+    @Query("UPDATE user SET photo = NULL WHERE user_id = :sID")
+    void removePhoto(long sID);
+
     // One-to-one relationship
     @Transaction
     @Query("SELECT * FROM user WHERE user_id = :sID")

@@ -19,9 +19,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.blogspot.atifsoftwares.animatoolib.Animatoo;
-import com.example.letscook.AddRecipeActivity;
-import com.example.letscook.ContactsActivity;
+import com.example.letscook.view.AddRecipeActivity;
+import com.example.letscook.view.ContactsActivity;
 import com.example.letscook.database.RoomDB;
+import com.example.letscook.database.typeconverters.DataConverter;
 import com.example.letscook.database.user.User;
 import com.example.letscook.database.user.UserDao;
 import com.example.letscook.view.info.DataPolicyActivity;
@@ -38,7 +39,7 @@ import com.example.letscook.view.search.WhatToCookActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 
-import java.util.List;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 import static com.example.letscook.constants.Messages.*;
 
@@ -46,12 +47,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private CardView whatToCookCard, searchCard, myRecipesCard, favCard, shoppingListCard,
             myProductsCard, addRecipeCard, profileCard, lastViewedCard, lastAddedCard, contactsCard,
             infoCard, policyCard, termsCard;
-    private ImageView profile, my_products;
+    private ImageView my_products;
+    private CircleImageView profile;
     private NavigationView navigationView = null;
     private BottomNavigationView bottomNavigationView;
     private AlertDialog.Builder dialogBuilder;
     private AlertDialog dialog = null;
     private Button okButton;
+    private RoomDB database;
+    private User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,11 +66,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         profile = findViewById(R.id.profile);
         my_products = findViewById(R.id.my_products);
 
+        // Initialize db
+        database = RoomDB.getInstance(this);
         // Set view according session storage
-
-        if (getSharedPreferences("PREFERENCE", MODE_PRIVATE)
-                .getString("email", null) == null) {
+        String e = getSharedPreferences("PREFERENCE", MODE_PRIVATE).getString("email", null);
+        if (e == null) {
             navigationView = findViewById(R.id.login_view);
+            profile.setImageResource(R.drawable.ic_profile);
+        } else {
+            user = database.userDao().getUserByEmail(e);
+            if (user.getPhoto() != null) {
+                profile.setImageBitmap(DataConverter.byteArrayToImage(user.getPhoto()));
+            } else {
+                profile.setImageResource(R.drawable.ic_profile_photo);
+            }
         }
 
         // Add click event listeners
@@ -87,9 +100,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         my_products.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(), MyProductsActivity.class));
-                Animatoo.animateSlideDown(MainActivity.this);
-                my_products.setColorFilter(Color.parseColor("#FFFEF6D8"));
+                if (getSharedPreferences("PREFERENCE", MODE_PRIVATE)
+                        .getString("email", null) == null) {
+                    deniedDialog();
+                } else {
+                    startActivity(new Intent(getApplicationContext(), MyProductsActivity.class));
+                    Animatoo.animateSlideDown(MainActivity.this);
+                    my_products.setColorFilter(Color.parseColor("#FFFEF6D8"));
+                }
             }
         });
 
@@ -146,7 +164,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             intent = new Intent(getApplicationContext(), WhatToCookActivity.class);
                             break;
                         case R.id.add_recipe:
-                            intent = new Intent(getApplicationContext(), AddRecipeActivity.class);
+                            if (getSharedPreferences("PREFERENCE", MODE_PRIVATE)
+                                    .getString("email", null) == null) {
+                                deniedDialog();
+                                return false;
+                            } else {
+                                intent = new Intent(getApplicationContext(), AddRecipeActivity.class);
+                            }
                             break;
                         case R.id.search:
                             intent = new Intent(getApplicationContext(), SearchActivity.class);
@@ -295,7 +319,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     }
                 });
                 navigationView.setVisibility(View.VISIBLE);
-                profile.setColorFilter(Color.parseColor("#FFFEF6D8"));
+                profile.setBorderColor(Color.parseColor("#FFFEF6D8"));
             } else {
                 hideNavView();
             }
@@ -303,7 +327,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             Intent intent = new Intent(getApplicationContext(), ProfileActivity.class);
             startActivity(intent);
             Animatoo.animateSlideDown(MainActivity.this);
-            profile.setColorFilter(Color.parseColor("#FFFEF6D8"));
+            profile.setBorderColor(Color.parseColor("#FFFEF6D8"));
         }
     }
 
@@ -317,7 +341,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
         navigationView.setVisibility(View.INVISIBLE);
-        profile.setColorFilter(Color.parseColor("#000000"));
+        profile.setBorderColor(Color.parseColor("#000000"));
+        // Set view according session storage
+        String e = getSharedPreferences("PREFERENCE", MODE_PRIVATE).getString("email", null);
+        if (e == null) {
+            navigationView = findViewById(R.id.login_view);
+            profile.setImageResource(R.drawable.ic_profile);
+        } else {
+            user = database.userDao().getUserByEmail(e);
+            if (user.getPhoto() != null) {
+                profile.setImageBitmap(DataConverter.byteArrayToImage(user.getPhoto()));
+            } else {
+                profile.setImageResource(R.drawable.ic_profile_photo);
+            }
+        }
     }
 
     public void login(View view) {
@@ -340,8 +377,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             required.setVisibility(View.VISIBLE);
             return;
         }
-        // Initialize db
-        RoomDB database = RoomDB.getInstance(this);
         final UserDao userDao = database.userDao();
         new Thread(new Runnable() {
             @Override
@@ -376,7 +411,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     SharedPreferences.Editor editor = sharedPreferences.edit();
                     editor.putString("email", userEmail);
                     editor.apply();
-                    startActivity(new Intent(MainActivity.this, MainActivity.class));
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (navigationView != null && navigationView.getVisibility() == View.VISIBLE) {
+                                hideNavView();
+                                navigationView = null;
+                            }
+                        }
+                    });
                 }
             }
         }).start();
@@ -402,16 +445,42 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     protected void onStart() {
-        profile.setColorFilter(Color.parseColor("#000000"));
+        profile.setBorderColor(Color.parseColor("#000000"));
         my_products.setColorFilter(Color.parseColor("#000000"));
+        // Set view according session storage
+        String e = getSharedPreferences("PREFERENCE", MODE_PRIVATE).getString("email", null);
+        if (e == null) {
+            navigationView = findViewById(R.id.login_view);
+            profile.setImageResource(R.drawable.ic_profile);
+        } else {
+            user = database.userDao().getUserByEmail(e);
+            if (user.getPhoto() != null) {
+                profile.setImageBitmap(DataConverter.byteArrayToImage(user.getPhoto()));
+            } else {
+                profile.setImageResource(R.drawable.ic_profile_photo);
+            }
+        }
         bottomNavigationView.setSelectedItemId(R.id.home);
         super.onStart();
     }
 
     @Override
     protected void onResume() {
-        profile.setColorFilter(Color.parseColor("#000000"));
+        profile.setBorderColor(Color.parseColor("#000000"));
         my_products.setColorFilter(Color.parseColor("#000000"));
+        // Set view according session storage
+        String e = getSharedPreferences("PREFERENCE", MODE_PRIVATE).getString("email", null);
+        if (e == null) {
+            navigationView = findViewById(R.id.login_view);
+            profile.setImageResource(R.drawable.ic_profile);
+        } else {
+            user = database.userDao().getUserByEmail(e);
+            if (user.getPhoto() != null) {
+                profile.setImageBitmap(DataConverter.byteArrayToImage(user.getPhoto()));
+            } else {
+                profile.setImageResource(R.drawable.ic_profile_photo);
+            }
+        }
         super.onResume();
     }
 

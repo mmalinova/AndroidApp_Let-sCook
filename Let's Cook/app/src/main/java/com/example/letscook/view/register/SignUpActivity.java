@@ -39,7 +39,6 @@ import static com.example.letscook.constants.Messages.UPDATE;
 import static com.example.letscook.constants.Messages.USERNAME_LENGTH;
 
 public class SignUpActivity extends AppCompatActivity {
-
     private TextView termsTextView, policyTextView, login, allFieldsReq, mess;
     private AlertDialog.Builder dialogBuilder;
     private AlertDialog dialog;
@@ -98,7 +97,9 @@ public class SignUpActivity extends AppCompatActivity {
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+                Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                intent.putExtra("isFromSignUp", true);
+                startActivity(intent);
                 Animatoo.animateSlideRight(SignUpActivity.this);
                 login.setLinkTextColor(Color.parseColor("#FFFFFF"));
             }

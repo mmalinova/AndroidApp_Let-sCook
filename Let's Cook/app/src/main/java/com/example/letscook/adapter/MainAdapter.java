@@ -41,11 +41,13 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
     private Activity context;
     private RoomDB database;
     private String listType;
+    private long ownerId;
 
-    public MainAdapter(Activity context, List<Product> productList, String listType) {
+    public MainAdapter(Activity context, List<Product> productList, String listType, long ownerId) {
         this.context = context;
         this.productList = productList;
         this.listType = listType;
+        this.ownerId = ownerId;
         notifyDataSetChanged();
     }
 
@@ -128,7 +130,7 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
                         database.productDao().update(sID, uName, uMeasure_unit, uQuantity);
                         // Notify
                         productList.clear();
-                        productList.addAll(database.productDao().getUserProducts(listType));
+                        productList.addAll(database.productDao().getUserProducts(listType, ownerId));
                         notifyDataSetChanged();
                         nameReq.setVisibility(View.INVISIBLE);
                         quantityReq.setVisibility(View.INVISIBLE);

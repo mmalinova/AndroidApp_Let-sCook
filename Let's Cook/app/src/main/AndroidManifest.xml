@@ -1,8 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.example.letscook">
 
     <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-feature android:name="android.hardware.camera2" android:required="true"/>
+    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+
+    <queries>
+        <!-- Specific apps you interact with, eg: -->
+        <package android:name="com.example.letscook.view.profile" />
+        <!-- Specific intents you query for, eg: for a custom share UI -->
+        <intent>
+            <action android:name="android.intent.action.SEND" />
+            <data android:mimeType="image/jpeg" />
+        </intent>
+        <intent>
+            <action android:name="android.intent.action.CAMERA_BUTTON" />
+            <data android:mimeType="image/jpeg" />
+        </intent>
+        <intent>
+            <action android:name="android.intent.action.MEDIA_BUTTON" />
+            <data android:mimeType="image/jpeg" />
+        </intent>
+    </queries>
 
     <application
         android:allowBackup="true"
@@ -48,10 +70,10 @@
             android:parentActivityName=".view.home.MainActivity"
             android:windowSoftInputMode="adjustPan|adjustResize" />
         <activity
-            android:name=".ContactsActivity"
+            android:name=".view.ContactsActivity"
             android:parentActivityName=".view.home.MainActivity" />
         <activity
-            android:name=".AddRecipeActivity"
+            android:name=".view.AddRecipeActivity"
             android:parentActivityName=".view.home.MainActivity" />
         <activity
             android:name=".view.products.MyProductsActivity"
@@ -75,6 +97,17 @@
         <activity
             android:name=".view.info.DataPolicyActivity"
             android:parentActivityName=".view.home.MainActivity" />
+
+<!--        <provider-->
+<!--            android:authorities="com.example.letscook.fileprovider"-->
+<!--            android:name="androidx.core.content.FileProvider"-->
+<!--            android:exported="false"-->
+<!--            android:grantUriPermissions="true">-->
+<!--            <meta-data-->
+<!--                android:name="android.support.FILE_PROVIDER_PATHS"-->
+<!--                android:resource="@xml/file_paths" />-->
+
+<!--        </provider>-->
 
         <meta-data
             android:name="preloaded_fonts"
