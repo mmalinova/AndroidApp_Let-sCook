@@ -93,13 +93,24 @@ public class ProfileActivity extends AppCompatActivity {
         uploadPhoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (ContextCompat.checkSelfPermission(ProfileActivity.this, Manifest.permission.CAMERA)
-                        != PackageManager.PERMISSION_GRANTED || ContextCompat.checkSelfPermission(ProfileActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE)
-                        != PackageManager.PERMISSION_GRANTED) {
-                    ActivityCompat.requestPermissions(ProfileActivity.this, new String[]{Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE}, CAMERA_INTENT);
+                // Check if device has a camera
+                PackageManager pm = ProfileActivity.this.getPackageManager();
+                if (pm.hasSystemFeature(PackageManager.FEATURE_CAMERA)) {
+                    if (ContextCompat.checkSelfPermission(ProfileActivity.this, Manifest.permission.CAMERA)
+                            != PackageManager.PERMISSION_GRANTED || ContextCompat.checkSelfPermission(ProfileActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE)
+                            != PackageManager.PERMISSION_GRANTED) {
+                        ActivityCompat.requestPermissions(ProfileActivity.this, new String[]{Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE}, CAMERA_INTENT);
+                    }  else {
+                        uploadPhoto.setColorFilter(Color.parseColor("#000000"));
+                        uploadPictureDialog();
+                    }
                 } else {
-                    uploadPhoto.setColorFilter(Color.parseColor("#000000"));
-                    uploadPictureDialog();
+                    if (ContextCompat.checkSelfPermission(ProfileActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                        ActivityCompat.requestPermissions(ProfileActivity.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, CAMERA_INTENT);
+                    }  else {
+                        uploadPhoto.setColorFilter(Color.parseColor("#000000"));
+                        uploadFromGallery();
+                    }
                 }
             }
         });
@@ -285,7 +296,7 @@ public class ProfileActivity extends AppCompatActivity {
 
     public void uploadFromGallery() {
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
-        final View popupView = getLayoutInflater().inflate(R.layout.upload_image_dialog, null);
+        final View popupView = getLayoutInflater().inflate(R.layout.upload_from_gallery, null);
 
         TextView chooseFromGallery = popupView.findViewById(R.id.gallery);
         TextView removePhoto = popupView.findViewById(R.id.remove);
