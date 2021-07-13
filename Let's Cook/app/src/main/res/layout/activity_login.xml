@@ -121,6 +121,15 @@
                 app:backgroundTint="@color/backgroundBtn" />
 
             <TextView
+                android:id="@+id/new_pass"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="@string/new_pass"
+                android:textColor="@color/inputText"
+                android:textSize="14sp" />
+
+            <TextView
                 android:id="@+id/forgotten_pass"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

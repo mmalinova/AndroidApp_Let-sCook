@@ -40,6 +40,7 @@ import com.example.letscook.view.search.WhatToCookActivity;
 import com.example.letscook.view.home.MainActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -74,6 +75,7 @@ public class ProfileActivity extends AppCompatActivity {
                 SharedPreferences.Editor editor = sharedPreferences.edit();
                 editor.putString("email", null);
                 editor.apply();
+                FirebaseAuth.getInstance().signOut();
                 startActivity(new Intent(ProfileActivity.this, MainActivity.class));
             }
         });
@@ -157,8 +159,10 @@ public class ProfileActivity extends AppCompatActivity {
         String userEmail = getSharedPreferences("PREFERENCE", MODE_PRIVATE).getString("email", null);
         user = database.userDao().getUserByEmail(userEmail);
         // Set user photo
-        if (user.getPhoto() != null) {
-            userPhoto.setImageBitmap(DataConverter.byteArrayToImage(user.getPhoto()));
+        if (user != null) {
+            if (user.getPhoto() != null) {
+                userPhoto.setImageBitmap(DataConverter.byteArrayToImage(user.getPhoto()));
+            }
         }
         // Set data
         String username = user.getName();
@@ -374,17 +378,16 @@ public class ProfileActivity extends AppCompatActivity {
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == 1) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED
                     && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
                 uploadPhoto.setColorFilter(Color.parseColor("#000000"));
                 uploadPictureDialog();
-            } else if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED
-                    && grantResults[1] != PackageManager.PERMISSION_GRANTED) {
+            } else if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 uploadPhoto.setColorFilter(Color.parseColor("#000000"));
                 uploadWithCamera();
-            } else if (grantResults.length > 0 && grantResults[0] != PackageManager.PERMISSION_GRANTED
-                    && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
+            } else if (grantResults.length > 0 && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
                 uploadPhoto.setColorFilter(Color.parseColor("#000000"));
                 uploadFromGallery();
             }
@@ -399,10 +402,12 @@ public class ProfileActivity extends AppCompatActivity {
             userPhoto.setImageResource(R.drawable.ic_profile);
         } else {
             user = database.userDao().getUserByEmail(e);
-            if (user.getPhoto() != null) {
-                userPhoto.setImageBitmap(DataConverter.byteArrayToImage(user.getPhoto()));
-            } else {
-                userPhoto.setImageResource(R.drawable.ic_profile_photo);
+            if (user != null) {
+                if (user.getPhoto() != null) {
+                    userPhoto.setImageBitmap(DataConverter.byteArrayToImage(user.getPhoto()));
+                } else {
+                    userPhoto.setImageResource(R.drawable.ic_profile_photo);
+                }
             }
         }
         super.onStart();
@@ -416,10 +421,12 @@ public class ProfileActivity extends AppCompatActivity {
             userPhoto.setImageResource(R.drawable.ic_profile);
         } else {
             user = database.userDao().getUserByEmail(e);
-            if (user.getPhoto() != null) {
-                userPhoto.setImageBitmap(DataConverter.byteArrayToImage(user.getPhoto()));
-            } else {
-                userPhoto.setImageResource(R.drawable.ic_profile_photo);
+            if (user != null) {
+                if (user.getPhoto() != null) {
+                    userPhoto.setImageBitmap(DataConverter.byteArrayToImage(user.getPhoto()));
+                } else {
+                    userPhoto.setImageResource(R.drawable.ic_profile_photo);
+                }
             }
         }
         super.onResume();

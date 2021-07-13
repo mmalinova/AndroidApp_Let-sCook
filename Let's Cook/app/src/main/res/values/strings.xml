@@ -22,7 +22,7 @@
     <string name="haveAccountText"><a href="">Вече имам акаунт</a></string>
     <string name="google_login">Влизане чрез Google</string>
     <string name="facebook_login">Влизане чрез Facebook</string>
-    <string name="instagram_login">Влизане чрез Instagram</string>
+    <string name="linked_login">Влизане чрез LinkedIn</string>
     <string name="register_text">С регистрацията си приемам</string>
     <string name="terms_link"><a href="">условията за ползване</a></string>
     <string name="and">и</string>
@@ -124,6 +124,7 @@
     <string name="contactInfo">За връзка с мен или запитване за реклама може да използваш E-mail: malinova29@gmail.com/mmalinova@mydigitalassistant.bg или популярните социални мрежи:</string>
     <string name="contactForm">Също така може да попълниш формуляра, даден по-долу:</string>
     <string name="required">(Всички полета са задължителни)</string>
+    <string name="email_pass">Парола за E-mail-а*</string>
     <string name="message">Съобщение*</string>
     <string name="sendBtn">Изпращане</string>
     <!-- Terms activity -->
@@ -170,8 +171,8 @@
     <string name="isItVegetarian">Вегетарианска ли е рецептата?</string>
     <string name="yes">Да</string>
     <string name="no">Не</string>
-    <string name="recipePictures">Снимки:</string>
-    <string name="browse">Качи снимка/и</string>
+    <string name="recipePictures">Избери до 3 снимки:</string>
+    <string name="browse">Качи снимка</string>
     <string name="h">ч.</string>
     <string name="min">мин.</string>
     <string name="name_req">Въведи име*</string>
@@ -182,4 +183,12 @@
     <string name="h_req">Брой часове*</string>
     <string name="min_req">Брой минути*</string>
     <string name="delimiter">:</string>
+    <string name="image_number">Качени снимки: </string>
+
+    //Facebook
+    <string name="facebook_app_id">130022509208006</string>
+    <string name="fb_login_protocol_scheme">fb130022509208006</string>
+
+    <string name="new_pass">В случай, че си регистриран чрез външно приложение(Facebook, Google, Instagram) и все още не си сменили паролата си, моля цъкни върху \"Забравена парола\", за да въведеш парола за влизане. &#128578;</string>
+
 </resources>

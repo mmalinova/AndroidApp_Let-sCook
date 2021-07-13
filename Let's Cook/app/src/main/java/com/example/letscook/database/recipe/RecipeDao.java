@@ -27,6 +27,9 @@ public interface RecipeDao {
     @Query("SELECT * FROM recipe WHERE vegetarian = 'true'")
     public List<Recipe> getAllVegRecipes();
 
+    @Query("SELECT * FROM recipe WHERE name = :sName")
+    public Recipe getRecipeByName(String sName);
+
     @Query("SELECT * FROM recipe WHERE name LIKE '%' + :sName + '%'")
     public List<Recipe> getAllRecipeByName(String sName);
 

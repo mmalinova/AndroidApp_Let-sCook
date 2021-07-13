@@ -27,6 +27,7 @@
             android:id="@+id/constraint"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
             <include
                 android:id="@+id/action_bar"
                 layout="@layout/action_bar"
@@ -53,7 +54,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:layout_marginLeft="8dp"
                 android:paddingLeft="16dp"
                 android:paddingTop="8dp"
                 android:paddingRight="16dp"
@@ -70,7 +70,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:layout_marginLeft="8dp"
                 android:paddingLeft="16dp"
                 android:paddingTop="8dp"
                 android:paddingRight="16dp"
@@ -87,7 +86,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:layout_marginLeft="8dp"
                 android:paddingLeft="16dp"
                 android:paddingTop="8dp"
                 android:paddingRight="16dp"
@@ -117,7 +115,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:layout_marginLeft="16dp"
                 android:paddingLeft="16dp"
                 android:paddingRight="16dp"
                 android:text="@string/required"
@@ -153,32 +150,6 @@
                 app:layout_constraintTop_toBottomOf="@+id/textViewReq" />
 
             <EditText
-                android:id="@+id/textViewEmail"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="24dp"
-                android:layout_marginLeft="24dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="24dp"
-                android:layout_marginRight="24dp"
-                android:overScrollMode="always"
-                android:scrollbars="horizontal"
-                android:background="@color/editTextBackground"
-                android:hint="@string/emailEditText"
-                android:importantForAutofill="no"
-                android:inputType="textEmailAddress"
-                android:paddingLeft="16dp"
-                android:paddingTop="8dp"
-                android:paddingRight="16dp"
-                android:paddingBottom="8dp"
-                android:textColor="@color/inputText"
-                android:textColorHint="@color/required"
-                android:textSize="15sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textViewName" />
-
-            <EditText
                 android:id="@+id/textViewMess"
                 android:layout_width="0dp"
                 android:layout_height="200dp"
@@ -206,7 +177,7 @@
                 app:layout_constraintBottom_toTopOf="@+id/button"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textViewEmail" />
+                app:layout_constraintTop_toBottomOf="@+id/textViewName" />
 
             <Button
                 android:id="@+id/button"
@@ -222,6 +193,7 @@
                 android:paddingBottom="8dp"
                 android:text="@string/sendBtn"
                 android:textSize="14sp"
+                android:enabled="false"
                 app:backgroundTint="@color/backgroundBtn"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"

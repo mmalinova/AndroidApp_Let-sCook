@@ -5,6 +5,9 @@ public class Messages {
     public static final String UPDATE = "Обновяване";
     public static final String USERNAME_LENGTH = "Потребителското име трябва да съдържа поне два символа!";
     public static final String EMAIL_REQ = "Моля, въведете валиден E-mail!";
+    public static final String EMAIL = "Моля, въведи валиден E-mail!";
+    public static final String MESS_REQ = "Моля, въведи съобщение!";
+    public static final String PASSWORD_REQ = "Моля, въведи паролата си!";
     public static final String PASS_REQ = "Моля, въведете парола с поне 3 символа!";
     public static final String REPEAT_PASS_REQ = "Моля, повторете паролата си!";
     public static final String EQUAL_PASS_REQ = "Паролите не съвпадат!";
@@ -69,4 +72,20 @@ public class Messages {
     public static final String MY_RES = "(Все още няма добавяни от теб рецепти)";
     public static final String MY_FAV = "(Все още нямаш рецепти, отбелязани като любими)";
     public static final String MY_VIEWED = "(Все още няма отваряни от теб рецепти)";
+
+    public static final String BROWSE_TITLE = "Качи снимка";
+    public static final String BROWSE_FROM_GALLERY = "Избери от галерия";
+    public static final String BROWSE_FROM_CAMERA = "Снимай с камерата";
+
+    public static final String SUCCESS_ADD = "Рецептата е изпратена за одобрение!\nИскаш ли да изпратиш и друга?";
+
+    public static final String DIALOG_MESS = "Изпращане на Email...";
+    public static final String FROM = "От: ";
+    public static final String SUCCESS_TITLE = "Успешно изпратено";
+    public static final String SUCCESS = "Твоето съобщение е изпратено успешно.\nБлагодаря за обратната връзка!";
+    public static final String ERROR = "Няма подходящи инсталирани клиентси приложения!";
+    public static final String ERROR_TITLE = "Грешка при изпращане";
+    public static final String FEEDBACK = "Обратна връзка за приложението \"Да сготвим\"";
+
+    public static final String AUTH_MESS = "За съжаление потребителят не е разпознат...";
 }

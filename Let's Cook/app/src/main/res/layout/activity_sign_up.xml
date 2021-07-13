@@ -264,6 +264,36 @@
             app:layout_constraintStart_toStartOf="@+id/register_btn"
             app:layout_constraintTop_toBottomOf="@+id/register_btn" />
 
+        <!-->
+        <com.facebook.login.widget.LoginButton
+            android:id="@+id/facebook_btn"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp"
+            android:background="@drawable/register_btn"
+            android:drawableStart="@drawable/ic_facebook"
+            android:drawablePadding="10dp"
+            android:paddingStart="20dp"
+            android:paddingTop="6dp"
+            android:paddingEnd="10dp"
+            android:paddingBottom="6dp"
+            android:text="@string/facebook_login"
+            android:textAllCaps="false"
+            android:textColor="@color/black"
+            app:backgroundTint="#D9FFFFFF"
+            app:icon="@drawable/ic_facebook"
+            app:iconGravity="textStart"
+            app:iconPadding="10dp"
+            app:iconTint="@color/white"
+            app:iconTintMode="multiply"
+            app:layout_constraintEnd_toEndOf="@+id/google_btn"
+            app:layout_constraintStart_toStartOf="@+id/google_btn"
+            app:layout_constraintTop_toBottomOf="@+id/google_btn" />
+-->
         <Button
             android:id="@+id/facebook_btn"
             android:layout_width="match_parent"
@@ -292,9 +322,9 @@
             app:layout_constraintEnd_toEndOf="@+id/google_btn"
             app:layout_constraintStart_toStartOf="@+id/google_btn"
             app:layout_constraintTop_toBottomOf="@+id/google_btn" />
-
+<!--
         <Button
-            android:id="@+id/instagram_btn"
+            android:id="@+id/linked_btn"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginStart="16dp"
@@ -303,17 +333,17 @@
             android:layout_marginEnd="16dp"
             android:layout_marginRight="16dp"
             android:background="@drawable/register_btn"
-            android:drawableStart="@drawable/ic_instagram"
+            android:drawableStart="@drawable/ic_linkedin"
             android:drawablePadding="10dp"
             android:paddingStart="20dp"
             android:paddingTop="6dp"
             android:paddingEnd="10dp"
             android:paddingBottom="6dp"
-            android:text="@string/instagram_login"
+            android:text="@string/linked_login"
             android:textAllCaps="false"
             android:textColor="@color/black"
             app:backgroundTint="#D9FFFFFF"
-            app:icon="@drawable/ic_instagram"
+            app:icon="@drawable/ic_linkedin"
             app:iconGravity="textStart"
             app:iconPadding="10dp"
             app:iconTint="@color/white"
@@ -321,6 +351,7 @@
             app:layout_constraintEnd_toEndOf="@+id/facebook_btn"
             app:layout_constraintStart_toStartOf="@+id/facebook_btn"
             app:layout_constraintTop_toBottomOf="@+id/facebook_btn" />
+            !-->
 
         <TextView
             android:id="@+id/with_register"
@@ -332,7 +363,7 @@
             android:textSize="10sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/instagram_btn" />
+            app:layout_constraintTop_toBottomOf="@+id/facebook_btn" />
 
         <TextView
             android:id="@+id/terms_textView"
@@ -347,7 +378,7 @@
             android:textSize="10sp"
             android:textStyle="bold"
             app:layout_constraintStart_toEndOf="@+id/with_register"
-            app:layout_constraintTop_toBottomOf="@+id/instagram_btn" />
+            app:layout_constraintTop_toBottomOf="@+id/facebook_btn" />
 
         <TextView
             android:id="@+id/politics_text"

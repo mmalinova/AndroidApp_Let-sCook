@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "528581322898",
+    "project_id": "let-s-cook-c810c",
+    "storage_bucket": "let-s-cook-c810c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:528581322898:android:83b80e3a25658f3ead1e4b",
+        "android_client_info": {
+          "package_name": "com.example.letscook"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "528581322898-h0hthpdlphqmbcp5bnlo9ob2vgq4sen4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyADccgXE7Ef135eYc_xuwGX0oWT3JEGgGI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "528581322898-h0hthpdlphqmbcp5bnlo9ob2vgq4sen4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -5,6 +5,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -36,14 +37,18 @@ import com.example.letscook.view.search.SearchActivity;
 import com.example.letscook.view.products.ShoppingListActivity;
 import com.example.letscook.view.info.TermsOfUseActivity;
 import com.example.letscook.view.search.WhatToCookActivity;
+import com.facebook.FacebookSdk;
+import com.facebook.appevents.AppEventsLogger;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.analytics.FirebaseAnalytics;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
 import static com.example.letscook.constants.Messages.*;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+    private FirebaseAnalytics analytics;
     private CardView whatToCookCard, searchCard, myRecipesCard, favCard, shoppingListCard,
             myProductsCard, addRecipeCard, profileCard, lastViewedCard, lastAddedCard, contactsCard,
             infoCard, policyCard, termsCard;
@@ -62,6 +67,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //FacebookSdk.sdkInitialize(getApplicationContext());
+        //AppEventsLogger.activateApp(this);
+
+        analytics = FirebaseAnalytics.getInstance(this);
         // Initialize profile  and my products links
         profile = findViewById(R.id.profile);
         my_products = findViewById(R.id.my_products);
@@ -75,10 +84,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             profile.setImageResource(R.drawable.ic_profile);
         } else {
             user = database.userDao().getUserByEmail(e);
-            if (user.getPhoto() != null) {
-                profile.setImageBitmap(DataConverter.byteArrayToImage(user.getPhoto()));
-            } else {
-                profile.setImageResource(R.drawable.ic_profile_photo);
+            if (user != null) {
+                if (user.getPhoto() != null) {
+                    profile.setImageBitmap(DataConverter.byteArrayToImage(user.getPhoto()));
+                } else {
+                    profile.setImageResource(R.drawable.ic_profile_photo);
+                }
             }
         }
 
@@ -95,11 +106,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onClick(View v) {
                 navigationClickListeners();
+                analytics.logEvent("clicked_profile_icon", null);
             }
         });
         my_products.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                analytics.logEvent("clicked_my_products_icon", null);
                 if (getSharedPreferences("PREFERENCE", MODE_PRIVATE)
                         .getString("email", null) == null) {
                     deniedDialog();
@@ -454,10 +467,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             profile.setImageResource(R.drawable.ic_profile);
         } else {
             user = database.userDao().getUserByEmail(e);
-            if (user.getPhoto() != null) {
-                profile.setImageBitmap(DataConverter.byteArrayToImage(user.getPhoto()));
-            } else {
-                profile.setImageResource(R.drawable.ic_profile_photo);
+            if (user != null) {
+                if (user.getPhoto() != null) {
+                    profile.setImageBitmap(DataConverter.byteArrayToImage(user.getPhoto()));
+                } else {
+                    profile.setImageResource(R.drawable.ic_profile_photo);
+                }
             }
         }
         bottomNavigationView.setSelectedItemId(R.id.home);
@@ -475,10 +490,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             profile.setImageResource(R.drawable.ic_profile);
         } else {
             user = database.userDao().getUserByEmail(e);
-            if (user.getPhoto() != null) {
-                profile.setImageBitmap(DataConverter.byteArrayToImage(user.getPhoto()));
-            } else {
-                profile.setImageResource(R.drawable.ic_profile_photo);
+            if (user != null) {
+                if (user.getPhoto() != null) {
+                    profile.setImageBitmap(DataConverter.byteArrayToImage(user.getPhoto()));
+                } else {
+                    profile.setImageResource(R.drawable.ic_profile_photo);
+                }
             }
         }
         super.onResume();

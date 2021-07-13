@@ -89,10 +89,12 @@ public class MyProductsActivity extends AppCompatActivity implements AdapterView
             profile.setImageResource(R.drawable.ic_profile);
         } else {
             user = database.userDao().getUserByEmail(e);
-            if (user.getPhoto() != null) {
-                profile.setImageBitmap(DataConverter.byteArrayToImage(user.getPhoto()));
-            } else {
-                profile.setImageResource(R.drawable.ic_profile_photo);
+            if (user != null) {
+                if (user.getPhoto() != null) {
+                    profile.setImageBitmap(DataConverter.byteArrayToImage(user.getPhoto()));
+                } else {
+                    profile.setImageResource(R.drawable.ic_profile_photo);
+                }
             }
         }
 
@@ -380,10 +382,12 @@ public class MyProductsActivity extends AppCompatActivity implements AdapterView
             profile.setImageResource(R.drawable.ic_profile);
         } else {
             user = database.userDao().getUserByEmail(e);
-            if (user.getPhoto() != null) {
-                profile.setImageBitmap(DataConverter.byteArrayToImage(user.getPhoto()));
-            } else {
-                profile.setImageResource(R.drawable.ic_profile_photo);
+            if (user != null) {
+                if (user.getPhoto() != null) {
+                    profile.setImageBitmap(DataConverter.byteArrayToImage(user.getPhoto()));
+                } else {
+                    profile.setImageResource(R.drawable.ic_profile_photo);
+                }
             }
         }
         super.onStart();
@@ -398,10 +402,12 @@ public class MyProductsActivity extends AppCompatActivity implements AdapterView
             profile.setImageResource(R.drawable.ic_profile);
         } else {
             user = database.userDao().getUserByEmail(e);
-            if (user.getPhoto() != null) {
-                profile.setImageBitmap(DataConverter.byteArrayToImage(user.getPhoto()));
-            } else {
-                profile.setImageResource(R.drawable.ic_profile_photo);
+            if (user != null) {
+                if (user.getPhoto() != null) {
+                    profile.setImageBitmap(DataConverter.byteArrayToImage(user.getPhoto()));
+                } else {
+                    profile.setImageResource(R.drawable.ic_profile_photo);
+                }
             }
         }
         super.onResume();

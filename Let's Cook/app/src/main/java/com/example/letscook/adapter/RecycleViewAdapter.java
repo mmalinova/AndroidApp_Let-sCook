@@ -44,7 +44,7 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
         Recipe recipe = recipeList.get(position);
         // Initialize database
         database = RoomDB.getInstance(context);
-        holder.imageView.setImageResource(recipe.getImages().get(0));
+        holder.imageView.setImageResource((int) recipe.getImages());
         holder.textView.setTextColor(Color.parseColor("#4E4E4E"));
         holder.textView.setText(recipe.getName());
     }

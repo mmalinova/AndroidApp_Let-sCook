@@ -10,7 +10,6 @@ import java.io.Serializable;
 //Define table
 @Entity(tableName = "product")
 public class Product implements Serializable {
-    @NonNull
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "product_id")
     private long ID;
@@ -20,8 +19,6 @@ public class Product implements Serializable {
     private String measureUnit;
     @ColumnInfo(name = "quantity")
     private float quantity;
-    @ColumnInfo(name = "mandatory")
-    private boolean mandatory;
     @ColumnInfo(name = "belonging")
     private String belonging;
     @ColumnInfo(name = "owner_id")
@@ -57,14 +54,6 @@ public class Product implements Serializable {
 
     public void setQuantity(float quantity) {
         this.quantity = quantity;
-    }
-
-    public boolean isMandatory() {
-        return mandatory;
-    }
-
-    public void setMandatory(boolean mandatory) {
-        this.mandatory = mandatory;
     }
 
     public String getBelonging() {

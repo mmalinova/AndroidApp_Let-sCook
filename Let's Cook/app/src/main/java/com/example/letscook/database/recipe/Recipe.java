@@ -4,7 +4,11 @@ import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
+import androidx.room.TypeConverters;
 
+
+import com.example.letscook.database.product.Product;
+import com.example.letscook.database.typeconverters.ConvertDate;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -24,7 +28,7 @@ public class Recipe implements Serializable {
     @ColumnInfo(name = "vegetarian")
     private boolean vegetarian;
     @ColumnInfo(name = "images")
-    private ArrayList<Integer> images;
+    private long images;
     @ColumnInfo(name = "portions")
     private int portions;
     @ColumnInfo(name = "steps")
@@ -34,6 +38,7 @@ public class Recipe implements Serializable {
     @ColumnInfo(name = "minutes")
     private int minutes;
     @ColumnInfo(name = "created_on")
+    @TypeConverters({ConvertDate.class})
     private Date createdOn;
     @ColumnInfo(name = "ingredients")
     private long ingredients;
@@ -72,11 +77,11 @@ public class Recipe implements Serializable {
         this.vegetarian = vegetarian;
     }
 
-    public ArrayList<Integer> getImages() {
+    public long getImages() {
         return images;
     }
 
-    public void setImages(ArrayList<Integer> images) {
+    public void setImages(long images) {
         this.images = images;
     }
 

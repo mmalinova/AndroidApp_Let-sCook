@@ -6,11 +6,15 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.Html;
+import android.text.TextWatcher;
 import android.util.Patterns;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -43,14 +47,14 @@ import static com.example.letscook.constants.Messages.*;
 
 public class ContactsActivity extends AppCompatActivity {
     private int id;
-    private TextView facebookText, linkedInText, instText;
+    private TextView facebookText, linkedInText, instText, required;
     private ImageView backIcon;
     private TextView actionText;
     private CircleImageView profile;
     private ImageView my_products;
     private NavigationView navigationView = null;
     private Button sendBtn;
-    private EditText username, email, message;
+    private EditText username, email, pass, message;
     private AlertDialog.Builder dialogBuilder;
     private AlertDialog dialog = null;
     private Button okButton;
@@ -76,10 +80,12 @@ public class ContactsActivity extends AppCompatActivity {
             profile.setImageResource(R.drawable.ic_profile);
         } else {
             user = database.userDao().getUserByEmail(e);
-            if (user.getPhoto() != null) {
-                profile.setImageBitmap(DataConverter.byteArrayToImage(user.getPhoto()));
-            } else {
-                profile.setImageResource(R.drawable.ic_profile_photo);
+            if (user != null) {
+                if (user.getPhoto() != null) {
+                    profile.setImageBitmap(DataConverter.byteArrayToImage(user.getPhoto()));
+                } else {
+                    profile.setImageResource(R.drawable.ic_profile_photo);
+                }
             }
         }
 
@@ -123,9 +129,10 @@ public class ContactsActivity extends AppCompatActivity {
         });
         actionText.setText(CONTACTS);
 
+        required = findViewById(R.id.textViewReq);
         sendBtn = findViewById(R.id.button);
-        sendBtn.setEnabled(false);
         username = findViewById(R.id.textViewName);
+        username.addTextChangedListener(watcher);
         username.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -135,17 +142,8 @@ public class ContactsActivity extends AppCompatActivity {
                 return false;
             }
         });
-        email = findViewById(R.id.textViewEmail);
-        email.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                if (navigationView != null && navigationView.getVisibility() == View.VISIBLE) {
-                    hideNavView();
-                }
-                return false;
-            }
-        });
         message = findViewById(R.id.textViewMess);
+        message.addTextChangedListener(watcher);
         message.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -241,6 +239,60 @@ public class ContactsActivity extends AppCompatActivity {
         });
     }
 
+    private final TextWatcher watcher = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+        }
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+        }
+        @Override
+        public void afterTextChanged(Editable s) {
+            String name = username.getText().toString().trim();
+            if (name.equals("")) {
+                return;
+            } else if (name.length() < 2) {
+                required.setText(USERNAME_LENGTH);
+                return;
+            }
+            String mess = message.getText().toString().trim();
+            if (mess.equals("")) {
+                required.setText(MESS_REQ);
+                return;
+            }
+            sendBtn.setEnabled(true);
+            sendBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent i = new Intent(Intent.ACTION_SEND);
+                    i.setType("message/rfc822");
+                    i.putExtra(Intent.EXTRA_EMAIL  , new String[]{"malinova29@gmail.com"});
+                    i.putExtra(Intent.EXTRA_SUBJECT, FEEDBACK);
+                    String messageToSend = String.format("%s %s\n\n\n%s", FROM, name, mess);
+                    i.putExtra(Intent.EXTRA_TEXT, messageToSend);
+                    try {
+                        startActivity(Intent.createChooser(i, DIALOG_MESS));
+                    } catch (android.content.ActivityNotFoundException ex) {
+                        // Initialize alert dialog
+                        AlertDialog.Builder builder = new AlertDialog.Builder(ContactsActivity.this);
+                        builder.setCancelable(false);
+                        builder.setTitle(Html.fromHtml("<font color='#509324'>" + ERROR_TITLE + "</font"));
+                        builder.setMessage(ERROR);
+                        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                                // Clear all fields
+                                username.setText("");
+                                message.setText("");
+                            }
+                        });
+                    }
+                }
+            });
+        }
+    };
+
     public void navigationClickListeners() {
         if (navigationView != null) {
             if (navigationView.getVisibility() == View.INVISIBLE) {
@@ -291,10 +343,12 @@ public class ContactsActivity extends AppCompatActivity {
             profile.setImageResource(R.drawable.ic_profile);
         } else {
             user = database.userDao().getUserByEmail(e);
-            if (user.getPhoto() != null) {
-                profile.setImageBitmap(DataConverter.byteArrayToImage(user.getPhoto()));
-            } else {
-                profile.setImageResource(R.drawable.ic_profile_photo);
+            if (user != null) {
+                if (user.getPhoto() != null) {
+                    profile.setImageBitmap(DataConverter.byteArrayToImage(user.getPhoto()));
+                } else {
+                    profile.setImageResource(R.drawable.ic_profile_photo);
+                }
             }
         }
     }
@@ -387,6 +441,8 @@ public class ContactsActivity extends AppCompatActivity {
 
     @Override
     protected void onStart() {
+        username.setText("");
+        message.setText("");
         profile.setBorderColor(Color.parseColor("#000000"));
         my_products.setColorFilter(Color.parseColor("#000000"));
         // Set view according session storage
@@ -396,10 +452,12 @@ public class ContactsActivity extends AppCompatActivity {
             profile.setImageResource(R.drawable.ic_profile);
         } else {
             user = database.userDao().getUserByEmail(e);
-            if (user.getPhoto() != null) {
-                profile.setImageBitmap(DataConverter.byteArrayToImage(user.getPhoto()));
-            } else {
-                profile.setImageResource(R.drawable.ic_profile_photo);
+            if (user != null) {
+                if (user.getPhoto() != null) {
+                    profile.setImageBitmap(DataConverter.byteArrayToImage(user.getPhoto()));
+                } else {
+                    profile.setImageResource(R.drawable.ic_profile_photo);
+                }
             }
         }
         super.onStart();
@@ -407,6 +465,8 @@ public class ContactsActivity extends AppCompatActivity {
 
     @Override
     protected void onResume() {
+        username.setText("");
+        message.setText("");
         profile.setBorderColor(Color.parseColor("#000000"));
         my_products.setColorFilter(Color.parseColor("#000000"));
         // Set view according session storage
@@ -416,10 +476,12 @@ public class ContactsActivity extends AppCompatActivity {
             profile.setImageResource(R.drawable.ic_profile);
         } else {
             user = database.userDao().getUserByEmail(e);
-            if (user.getPhoto() != null) {
-                profile.setImageBitmap(DataConverter.byteArrayToImage(user.getPhoto()));
-            } else {
-                profile.setImageResource(R.drawable.ic_profile_photo);
+            if (user != null) {
+                if (user.getPhoto() != null) {
+                    profile.setImageBitmap(DataConverter.byteArrayToImage(user.getPhoto()));
+                } else {
+                    profile.setImageResource(R.drawable.ic_profile_photo);
+                }
             }
         }
         super.onResume();

@@ -225,12 +225,48 @@
                 app:layout_constraintStart_toEndOf="@+id/textViewPhoto"
                 app:layout_constraintTop_toBottomOf="@+id/radioGroupVeg" />
 
+            <ImageView
+                android:id="@+id/firstRecipeImg"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:contentDescription="@string/main_src"
+                app:layout_constraintEnd_toStartOf="@+id/secondRecipeImg"
+                app:layout_constraintHorizontal_chainStyle="packed"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/uploadBtn" />
+
+            <ImageView
+                android:id="@+id/secondRecipeImg"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:contentDescription="@string/main_src"
+                app:layout_constraintEnd_toStartOf="@+id/thirdRecipeImg"
+                app:layout_constraintHorizontal_chainStyle="packed"
+                app:layout_constraintStart_toEndOf="@id/firstRecipeImg"
+                app:layout_constraintTop_toBottomOf="@+id/uploadBtn" />
+
+            <ImageView
+                android:id="@+id/thirdRecipeImg"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:contentDescription="@string/main_src"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_chainStyle="packed"
+                app:layout_constraintStart_toEndOf="@id/secondRecipeImg"
+                app:layout_constraintTop_toBottomOf="@+id/uploadBtn" />
+
             <TextView
-                android:id="@+id/textViewPortion"
+                android:id="@+id/count"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="32dp"
+                android:layout_marginTop="24dp"
                 android:layout_marginEnd="8dp"
                 android:gravity="center_horizontal"
                 android:text="@string/portions"
@@ -240,7 +276,7 @@
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintHorizontal_chainStyle="packed"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textViewPhoto" />
+                app:layout_constraintTop_toBottomOf="@id/firstRecipeImg" />
 
             <EditText
                 android:id="@+id/editTextPortion"
@@ -266,8 +302,8 @@
                 android:textSize="15sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/textViewPortion"
-                app:layout_constraintTop_toBottomOf="@+id/uploadBtn" />
+                app:layout_constraintStart_toEndOf="@+id/count"
+                app:layout_constraintTop_toBottomOf="@+id/secondRecipeImg" />
 
             <TextView
                 android:id="@+id/textViewProd"
@@ -358,6 +394,7 @@
                 android:layout_marginEnd="16dp"
                 android:text="@string/toAddBtn"
                 android:textSize="12sp"
+                android:enabled="false"
                 app:backgroundTint="@color/backgroundBtn"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -507,6 +544,7 @@
                 android:layout_marginEnd="16dp"
                 android:layout_marginRight="16dp"
                 android:text="@string/addBtn"
+                android:enabled="false"
                 app:backgroundTint="@color/backgroundBtn"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"

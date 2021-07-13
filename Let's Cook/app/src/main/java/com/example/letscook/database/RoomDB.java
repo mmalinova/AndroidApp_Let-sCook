@@ -7,6 +7,8 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
 
+import com.example.letscook.database.photo.Photo;
+import com.example.letscook.database.photo.PhotoDao;
 import com.example.letscook.database.product.Product;
 import com.example.letscook.database.product.ProductDao;
 import com.example.letscook.database.recipe.Recipe;
@@ -25,9 +27,9 @@ import com.example.letscook.database.user.User;
 import com.example.letscook.database.user.UserDao;
 
 // Create database
-@Database(entities = {Product.class, Recipe.class, Session.class, User.class,
+@Database(entities = {Product.class, Recipe.class, Session.class, User.class, Photo.class,
         RecipeProductCrossRef.class, UserMarksRecipeCrossRef.class, UserViewedRecipeCrossRef.class},
-        version = 1, exportSchema = false)
+        version = 2, exportSchema = false)
 @TypeConverters({ConvertDate.class, ConvertArrayList.class})
 public abstract class RoomDB extends RoomDatabase {
     // Create db instance
@@ -51,6 +53,7 @@ public abstract class RoomDB extends RoomDatabase {
     public abstract RecipeDao recipeDao();
     public abstract SessionDao sessionDao();
     public abstract UserDao userDao();
+    public abstract PhotoDao photoDao();
     public abstract RecipeProductCrossRefDao recipeProductCrossRefDao();
     public abstract UserMarksRecipeCrossRefDao userMarksRecipeCrossRefDao();
     public abstract UserViewedRecipeCrossRefDao userViewedRecipeCrossRefDao();
