@@ -31,4 +31,8 @@ public interface ProductDao {
     @Transaction
     @Query("SELECT * FROM product WHERE belonging = :belong AND owner_id = :sOwnerID ORDER BY name")
     public List<Product> getUserProducts(String belong, long sOwnerID);
+
+    @Transaction
+    @Query("SELECT * FROM product WHERE belonging = :belong AND owner_id = :sOwnerID ORDER BY name")
+    public List<Product> getRecipeProducts(String belong, long sOwnerID);
 }

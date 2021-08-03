@@ -12,7 +12,7 @@ public class Photo implements Serializable {
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "photo_id")
     private long ID;
-    @ColumnInfo(name = "photo")
+    @ColumnInfo(name = "photo", typeAffinity = ColumnInfo.BLOB)
     private byte[] photo;
     @ColumnInfo(name = "recipe_id")
     private long recipe_id;

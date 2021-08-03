@@ -21,20 +21,23 @@ public interface RecipeDao {
     @Query("SELECT * FROM recipe")
     public List<Recipe> getAllRecipes();
 
+    @Query("SELECT * FROM recipe ORDER BY created_on LIMIT 10")
+    public List<Recipe> getAllLastAddedRecipes();
+
     @Query("SELECT * FROM recipe WHERE recipe_id = :sID")
     public Recipe getRecipeById(long sID);
-
-    @Query("SELECT * FROM recipe WHERE vegetarian = 'true'")
-    public List<Recipe> getAllVegRecipes();
 
     @Query("SELECT * FROM recipe WHERE name = :sName")
     public Recipe getRecipeByName(String sName);
 
-    @Query("SELECT * FROM recipe WHERE name LIKE '%' + :sName + '%'")
+    @Query("SELECT * FROM recipe WHERE name LIKE '%' || :sName || '%'")
     public List<Recipe> getAllRecipeByName(String sName);
 
-    @Query("SELECT * FROM recipe WHERE category = :sCategory")
-    public List<Recipe> getAllRecipeByCategory(String sCategory);
+    @Query("SELECT * FROM recipe WHERE category LIKE '%' || :sCategory || '%' AND vegetarian = :sVeg")
+    public List<Recipe> getAllRecipeByCategoryAndVeg(String sCategory, int sVeg);
+
+    @Query("SELECT * FROM recipe WHERE owner_id = :sID")
+    public List<Recipe> getRecipesByOwnerId(long sID);
 
     @Transaction
     @Query("SELECT * FROM user")

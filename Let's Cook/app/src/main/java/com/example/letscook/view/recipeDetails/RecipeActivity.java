@@ -1,36 +1,69 @@
 package com.example.letscook.view.recipeDetails;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.os.Build;
 import android.os.Bundle;
+import android.text.method.ScrollingMovementMethod;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.ViewFlipper;
 
 import com.blogspot.atifsoftwares.animatoolib.Animatoo;
+import com.example.letscook.adapter.MainAdapter;
+import com.example.letscook.adapter.ProductsViewAdapter;
+import com.example.letscook.database.photo.Photo;
+import com.example.letscook.database.product.Product;
+import com.example.letscook.database.recipe.Recipe;
+import com.example.letscook.database.typeconverters.DataConverter;
+import com.example.letscook.database.user.User;
 import com.example.letscook.view.AddRecipeActivity;
 import com.example.letscook.R;
 import com.example.letscook.database.RoomDB;
 import com.example.letscook.view.home.MainActivity;
 import com.example.letscook.view.products.MyProductsActivity;
 import com.example.letscook.view.products.ShoppingListActivity;
+import com.example.letscook.view.recipesDashboard.RecipesActivity;
 import com.example.letscook.view.search.SearchActivity;
 import com.example.letscook.view.search.WhatToCookActivity;
+import com.google.android.material.appbar.AppBarLayout;
+import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 import technolifestyle.com.imageslider.FlipperLayout;
 import technolifestyle.com.imageslider.FlipperView;
 
 public class RecipeActivity extends AppCompatActivity {
     private int id;
-    private ImageView my_products;
-    private FlipperLayout flipperLayout;
+    private TextView my_products;
+    private Recipe recipe;
+    private User user;
+    private List<Photo> allPhotosFromRecipe = new ArrayList<>();
     private RoomDB database;
+    private List<Product> productsList = new ArrayList<>();
+    private LinearLayoutManager linearLayoutManager;
+    private RecyclerView recyclerView;
+    private ProductsViewAdapter productsAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,19 +75,35 @@ public class RecipeActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_recipe);
 
+        // Initialize db
+        database = RoomDB.getInstance(this);
+
+        // Get the user
+        String email = getSharedPreferences("PREFERENCE", MODE_PRIVATE).getString("email", null);
+        if (email != null) {
+            user = database.userDao().getUserByEmail(email);
+        }
+
+        // Get current recipe and its images and products
+        long recipeId = getIntent().getLongExtra("recipeId", -1);
+        recipe = database.recipeDao().getRecipeById(recipeId);
+        allPhotosFromRecipe = database.photoDao().getAllPhotosFromRecipe(recipeId);
+        productsList = database.productDao().getRecipeProducts("toRecipe", recipeId);
+
         // Initialize my products links
         my_products = findViewById(R.id.my_products);
 
         my_products.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.Q)
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(getApplicationContext(), MyProductsActivity.class));
                 Animatoo.animateZoom(RecipeActivity.this);
-                my_products.setColorFilter(Color.parseColor("#fef6d8"));
+                my_products.setTextColor(Color.parseColor("#fef6d8"));
+                my_products.getTextCursorDrawable().setColorFilter(Color.parseColor("#fef6d8"), PorterDuff.Mode.ADD);
             }
         });
 
-        flipperLayout = findViewById(R.id.flipper);
         setLayout();
 
         // Initialize and assign variable
@@ -90,20 +139,46 @@ public class RecipeActivity extends AppCompatActivity {
         });
     }
 
+    @SuppressLint("DefaultLocale")
     private void setLayout() {
-        String url[] = new String[]{
-                "https://www.thespruceeats.com/thmb/y7DaqIVN0WdRnpNHTJmBidyJLZE=/960x0/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/how-to-make-pancakes-from-scratch-995800-11-5b3f987cc9e77c0037d98e28.jpg",
-                "https://cdn.loveandlemons.com/wp-content/uploads/2020/10/almond-flour-pancakes.jpg",
-                "https://www.inspiredtaste.net/wp-content/uploads/2020/04/Vegan-Pancakes-Recipe-2-1200-1200x800.jpg"
-        };
-        for (int i = 0; i < url.length; i++) {
-            FlipperView flipperView = new FlipperView(getBaseContext());
-            flipperView.setImageUrl(url[i]);
-            flipperLayout.addFlipperView(flipperView);
-            flipperView.setOnFlipperClickListener(new FlipperView.OnFlipperClickListener() {
-                @Override
-                public void onFlipperClick(FlipperView flipperView) {
+        for (int i = 0; i < allPhotosFromRecipe.size(); i++) {
+            ViewFlipper flip = findViewById(R.id.flipper);
+            ImageView images = new ImageView(getApplicationContext());
+            images.setImageBitmap(DataConverter.byteArrayToImage(allPhotosFromRecipe.get(i).getPhoto()));
+            images.setScaleType(ImageView.ScaleType.FIT_XY);
+            flip.setInAnimation(AnimationUtils.loadAnimation(this, android.R.anim.slide_in_left));
+            flip.addView(images);
+            flip.setFlipInterval(3000);
+            flip.startFlipping();
 
+            CollapsingToolbarLayout layout = findViewById(R.id.collapsing_toolbar);
+            layout.setTitle(recipe.getName().substring(0, 1).toUpperCase() + recipe.getName().substring(1));
+            TextView category = findViewById(R.id.category);
+            category.setText(recipe.getCategory().substring(0, 1).toUpperCase() + recipe.getCategory().substring(1));
+            category.setSelected(true);
+            category.setMovementMethod(new ScrollingMovementMethod());
+            TextView prepTime = findViewById(R.id.preparing_time);
+            prepTime.setText(String.format("%02d:%02dч.", recipe.getHours(), recipe.getMinutes()));
+            TextView portions = findViewById(R.id.portions);
+            portions.setText(String.format("%d", recipe.getPortions()));
+
+            recyclerView = findViewById(R.id.products_view);
+            linearLayoutManager = new LinearLayoutManager(this);
+            recyclerView.setLayoutManager(linearLayoutManager);
+            if (user != null) {
+                productsAdapter = new ProductsViewAdapter(RecipeActivity.this, productsList, recipe.getID(), user.getID());
+            } else {
+                productsAdapter = new ProductsViewAdapter(RecipeActivity.this, productsList, recipe.getID(), 0);
+            }
+            recyclerView.setAdapter(productsAdapter);
+
+            TextView steps = findViewById(R.id.steps);
+            steps.setText(recipe.getSteps().substring(0, 1).toUpperCase() + recipe.getSteps().substring(1));
+            CircleImageView favourite = findViewById(R.id.heart);
+            favourite.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    favourite.setImageResource(R.drawable.ic_favorite_after);
                 }
             });
         }
@@ -111,7 +186,7 @@ public class RecipeActivity extends AppCompatActivity {
 
     @Override
     protected void onStart() {
-        my_products.setColorFilter(Color.parseColor("#000000"));
+        my_products.setTextColor(Color.parseColor("#4E4E4E"));
         super.onStart();
     }
 

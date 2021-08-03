@@ -62,7 +62,6 @@ public class SliderActivity extends AppCompatActivity {
             finish();
         }
 
-
         sliderView = findViewById(R.id.slider_view);
         btnSkip = findViewById(R.id.skip_btn);
         btnRegister = findViewById(R.id.btn_slider);

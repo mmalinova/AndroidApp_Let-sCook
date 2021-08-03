@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.util.Patterns;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,6 +21,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.blogspot.atifsoftwares.animatoolib.Animatoo;
+import com.example.letscook.database.photo.Photo;
 import com.example.letscook.view.AddRecipeActivity;
 import com.example.letscook.database.typeconverters.DataConverter;
 import com.example.letscook.database.user.User;
@@ -43,6 +45,7 @@ import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
+import static com.example.letscook.constants.Messages.APPROPRIATE_MESS;
 import static com.example.letscook.constants.Messages.BREAKFAST;
 import static com.example.letscook.constants.Messages.BREAKFAST_MESS;
 import static com.example.letscook.constants.Messages.DESSERT;
@@ -51,9 +54,17 @@ import static com.example.letscook.constants.Messages.DINNER;
 import static com.example.letscook.constants.Messages.DINNER_MESS;
 import static com.example.letscook.constants.Messages.EMAIL_NOT_EXIST;
 import static com.example.letscook.constants.Messages.EMAIL_REQ;
+import static com.example.letscook.constants.Messages.FAV_RECIPES;
+import static com.example.letscook.constants.Messages.LAST_ADD;
+import static com.example.letscook.constants.Messages.LAST_VIEW;
 import static com.example.letscook.constants.Messages.LOGIN;
 import static com.example.letscook.constants.Messages.LUNCH;
 import static com.example.letscook.constants.Messages.LUNCH_MESS;
+import static com.example.letscook.constants.Messages.MY_FAV;
+import static com.example.letscook.constants.Messages.MY_RECIPES;
+import static com.example.letscook.constants.Messages.MY_RES;
+import static com.example.letscook.constants.Messages.MY_VIEWED;
+import static com.example.letscook.constants.Messages.NO_REC;
 import static com.example.letscook.constants.Messages.PASS_REQ;
 import static com.example.letscook.constants.Messages.WRONG_PASS;
 
@@ -66,12 +77,14 @@ public class RecipesActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private RecyclerView.LayoutManager layoutManager;
     private List<Recipe> dataList = new ArrayList<>();
+    private List<Photo> images = new ArrayList<>();
     private RoomDB database;
     private RecycleViewAdapter recycleViewAdapter;
     private AlertDialog.Builder dialogBuilder;
     private AlertDialog dialog = null;
     private Button okButton;
     private User user;
+    private long userId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,6 +97,7 @@ public class RecipesActivity extends AppCompatActivity {
 
         // Initialize db
         database = RoomDB.getInstance(this);
+
         // Set view according session storage
         String e = getSharedPreferences("PREFERENCE", MODE_PRIVATE).getString("email", null);
         if (e == null) {
@@ -92,11 +106,92 @@ public class RecipesActivity extends AppCompatActivity {
         } else {
             user = database.userDao().getUserByEmail(e);
             if (user != null) {
+                userId = user.getID();
                 if (user.getPhoto() != null) {
                     profile.setImageBitmap(DataConverter.byteArrayToImage(user.getPhoto()));
                 } else {
                     profile.setImageResource(R.drawable.ic_profile_photo);
                 }
+            } else {
+                navigationView = findViewById(R.id.login_view);
+            }
+        }
+
+        // Initialize action bar variables
+        backIcon = findViewById(R.id.back_icon);
+        actionText = findViewById(R.id.action_bar_text);
+        backIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                RecipesActivity.super.onBackPressed();
+            }
+        });
+        textView = findViewById(R.id.textView);
+        recyclerView = findViewById(R.id.recycler_view);
+
+        String phrase = getIntent().getStringExtra("phrase");
+        String category = getIntent().getStringExtra("category");
+        String recipeName = getIntent().getStringExtra("recipeName");
+        int veg = getIntent().getIntExtra("vegetarian", -1);
+
+        if (phrase != null) {
+            actionText.setText(phrase);
+            switch (phrase) {
+                case MY_RECIPES:
+                    textView.setText(MY_RES);
+                    textView.setVisibility(View.VISIBLE);
+                    dataList = database.recipeDao().getRecipesByOwnerId(userId);
+                    if (dataList.size() > 0) {
+                        textView.setVisibility(View.INVISIBLE);
+                        recyclerView.setVisibility(View.VISIBLE);
+                    }
+                    break;
+                case FAV_RECIPES:
+                    textView.setText(MY_FAV);
+                    textView.setVisibility(View.VISIBLE);
+                    break;
+                case LAST_VIEW:
+                    textView.setText(MY_VIEWED);
+                    textView.setVisibility(View.VISIBLE);
+                    break;
+                case LAST_ADD:
+                    dataList = database.recipeDao().getAllLastAddedRecipes();
+                    if (dataList.size() > 0) {
+                        textView.setVisibility(View.INVISIBLE);
+                        recyclerView.setVisibility(View.VISIBLE);
+                    }
+                    break;
+            }
+        } else if (recipeName != null) {
+            actionText.setText(APPROPRIATE_MESS);
+            textView.setText(NO_REC);
+            textView.setVisibility(View.VISIBLE);
+            dataList = database.recipeDao().getAllRecipeByName(recipeName);
+            if (dataList.size() > 0) {
+                textView.setVisibility(View.INVISIBLE);
+                recyclerView.setVisibility(View.VISIBLE);
+            }
+        } else if (category != null) {
+            switch (category) {
+                case BREAKFAST:
+                    actionText.setText(BREAKFAST_MESS);
+                    break;
+                case LUNCH:
+                    actionText.setText(LUNCH_MESS);
+                    break;
+                case DINNER:
+                    actionText.setText(DINNER_MESS);
+                    break;
+                case DESSERT:
+                    actionText.setText(DESSERT_MESS);
+                    break;
+            }
+            textView.setText(NO_REC);
+            textView.setVisibility(View.VISIBLE);
+            dataList = database.recipeDao().getAllRecipeByCategoryAndVeg(category.toLowerCase().trim(), veg);
+            if (dataList.size() > 0) {
+                textView.setVisibility(View.INVISIBLE);
+                recyclerView.setVisibility(View.VISIBLE);
             }
         }
 
@@ -118,8 +213,7 @@ public class RecipesActivity extends AppCompatActivity {
         my_products.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (getSharedPreferences("PREFERENCE", MODE_PRIVATE)
-                        .getString("email", null) == null) {
+                if (user == null) {
                     deniedDialog();
                 } else {
                     startActivity(new Intent(getApplicationContext(), MyProductsActivity.class));
@@ -129,47 +223,11 @@ public class RecipesActivity extends AppCompatActivity {
             }
         });
 
-        // Initialize action bar variables
-        backIcon = findViewById(R.id.back_icon);
-        actionText = findViewById(R.id.action_bar_text);
-        backIcon.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                RecipesActivity.super.onBackPressed();
-            }
-        });
-        textView = findViewById(R.id.textView);
-        recyclerView = findViewById(R.id.recycler_view);
         layoutManager = new GridLayoutManager(this, 2);
         recyclerView.setLayoutManager(layoutManager);
         recycleViewAdapter = new RecycleViewAdapter(RecipesActivity.this, dataList);
         recyclerView.setAdapter(recycleViewAdapter);
         recyclerView.setHasFixedSize(true);
-
-        String phrase = getIntent().getStringExtra("phrase");
-        String text = getIntent().getStringExtra("text");
-        String category = getIntent().getStringExtra("category");
-        if (phrase != null) {
-            actionText.setText(phrase);
-            if (text != null) {
-                textView.setText(text);
-            }
-        } else if (category != null) {
-            switch (category) {
-                case BREAKFAST:
-                    actionText.setText(BREAKFAST_MESS);
-                    break;
-                case LUNCH:
-                    actionText.setText(LUNCH_MESS);
-                    break;
-                case DINNER:
-                    actionText.setText(DINNER_MESS);
-                    break;
-                case DESSERT:
-                    actionText.setText(DESSERT_MESS);
-                    break;
-            }
-        }
 
         // Initialize and assign variable
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_nav);
@@ -191,8 +249,7 @@ public class RecipesActivity extends AppCompatActivity {
                             intent = new Intent(getApplicationContext(), WhatToCookActivity.class);
                             break;
                         case R.id.add_recipe:
-                            if (getSharedPreferences("PREFERENCE", MODE_PRIVATE)
-                                    .getString("email", null) == null) {
+                            if (user == null) {
                                 deniedDialog();
                                 return false;
                             } else {
@@ -203,8 +260,7 @@ public class RecipesActivity extends AppCompatActivity {
                             intent = new Intent(getApplicationContext(), SearchActivity.class);
                             break;
                         case R.id.shopping_list:
-                            if (getSharedPreferences("PREFERENCE", MODE_PRIVATE)
-                                    .getString("email", null) == null) {
+                            if (user == null) {
                                 deniedDialog();
                                 return false;
                             } else {
@@ -277,6 +333,8 @@ public class RecipesActivity extends AppCompatActivity {
                 } else {
                     profile.setImageResource(R.drawable.ic_profile_photo);
                 }
+            } else {
+                navigationView = findViewById(R.id.login_view);
             }
         }
     }
@@ -385,6 +443,8 @@ public class RecipesActivity extends AppCompatActivity {
                 } else {
                     profile.setImageResource(R.drawable.ic_profile_photo);
                 }
+            } else {
+                navigationView = findViewById(R.id.login_view);
             }
         }
         super.onStart();
@@ -407,6 +467,8 @@ public class RecipesActivity extends AppCompatActivity {
                 } else {
                     profile.setImageResource(R.drawable.ic_profile_photo);
                 }
+            } else {
+                navigationView = findViewById(R.id.login_view);
             }
         }
         super.onResume();

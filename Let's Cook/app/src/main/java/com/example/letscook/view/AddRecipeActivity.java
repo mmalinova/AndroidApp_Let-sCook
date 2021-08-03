@@ -84,7 +84,6 @@ public class AddRecipeActivity extends AppCompatActivity implements AdapterView.
     private int count = 0;
     private ArrayList<Photo> photos = new ArrayList<>();
     private ImageView firstRecImg, secondRecImg, thirdRecImg;
-    private Photo photo = new Photo();
     private AlertDialog.Builder dialogBuilder;
     private Button yesButton;
     private Button noButton;
@@ -260,7 +259,7 @@ public class AddRecipeActivity extends AppCompatActivity implements AdapterView.
             public void onClick(View v) {
                 Product product = new Product();
                 float sQuantity = 0;
-                String sName = productName.getText().toString().trim();
+                String sName = productName.getText().toString().trim().toLowerCase();
                 String q = quantity.getText().toString().trim();
                 String sMeasureUnit = spinner.getSelectedItem().toString();
                 if (!sName.equals("")) {
@@ -315,7 +314,7 @@ public class AddRecipeActivity extends AppCompatActivity implements AdapterView.
             @Override
             public void onClick(View v) {
                 Recipe recipe = new Recipe();
-                String name = recipeName.getText().toString().trim();
+                String name = recipeName.getText().toString().trim().toLowerCase();
                 int portion = Integer.parseInt(String.valueOf(portions.getText()));
                 String step = steps.getText().toString();
                 int hour = Integer.parseInt(String.valueOf(hours.getText()));
@@ -352,6 +351,7 @@ public class AddRecipeActivity extends AppCompatActivity implements AdapterView.
                 recipe.setSteps(step);
                 recipe.setHours(hour);
                 recipe.setMinutes(min);
+                recipe.setImage(photos.get(0).getPhoto());
                 Date currentTime = Calendar.getInstance().getTime();
                 recipe.setCreatedOn(currentTime);
                 recipe.setOwnerID(user.getID());
@@ -444,7 +444,7 @@ public class AddRecipeActivity extends AppCompatActivity implements AdapterView.
 
         @Override
         public void afterTextChanged(Editable s) {
-            String name = recipeName.getText().toString().trim();
+            String name = recipeName.getText().toString().trim().toLowerCase();
             if (name.equals("")) {
                 return;
             }
@@ -452,7 +452,7 @@ public class AddRecipeActivity extends AppCompatActivity implements AdapterView.
             if (portion.equals("")) {
                 return;
             }
-            String prodName = productName.getText().toString().trim();
+            String prodName = productName.getText().toString().trim().toLowerCase();
             String q = quantity.getText().toString().trim();
             if (!prodName.equals("") && !q.equals("")) {
                 addProduct.setEnabled(true);
@@ -568,6 +568,7 @@ public class AddRecipeActivity extends AppCompatActivity implements AdapterView.
                             count++;
                             break;
                     }
+                    Photo photo = new Photo();
                     photo.setPhoto(DataConverter.imageToByteArray(bmpImage));
                     photos.add(photo);
                 } catch (Exception e) {
@@ -597,6 +598,7 @@ public class AddRecipeActivity extends AppCompatActivity implements AdapterView.
                             count++;
                             break;
                     }
+                    Photo photo = new Photo();
                     photo.setPhoto(DataConverter.imageToByteArray(selectedImage));
                     photos.add(photo);
                 } catch (FileNotFoundException e) {

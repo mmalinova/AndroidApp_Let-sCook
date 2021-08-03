@@ -15,6 +15,7 @@
     <color name="editTextBackground">#56FFCFA6</color>
     <color name="inputText">#4E4E4E</color>
     <color name="green">#06D55C</color>
+    <color name="dark_green">#017330</color>
     <color name="red">#D03A3A</color>
     <color name="yellow_icon">#FFD600</color>
     <color name="favourite">#C42F2F</color>

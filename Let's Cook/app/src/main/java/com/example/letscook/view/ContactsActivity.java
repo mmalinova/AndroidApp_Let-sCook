@@ -86,6 +86,8 @@ public class ContactsActivity extends AppCompatActivity {
                 } else {
                     profile.setImageResource(R.drawable.ic_profile_photo);
                 }
+            } else {
+                navigationView = findViewById(R.id.login_view);
             }
         }
 
@@ -107,8 +109,7 @@ public class ContactsActivity extends AppCompatActivity {
         my_products.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (getSharedPreferences("PREFERENCE", MODE_PRIVATE)
-                        .getString("email", null) == null) {
+                if (user == null) {
                     deniedDialog();
                 } else {
                     startActivity(new Intent(getApplicationContext(), MyProductsActivity.class));
@@ -178,8 +179,7 @@ public class ContactsActivity extends AppCompatActivity {
                             intent = new Intent(getApplicationContext(), WhatToCookActivity.class);
                             break;
                         case R.id.add_recipe:
-                            if (getSharedPreferences("PREFERENCE", MODE_PRIVATE)
-                                    .getString("email", null) == null) {
+                            if (user == null) {
                                 deniedDialog();
                                 return false;
                             } else {
@@ -190,8 +190,7 @@ public class ContactsActivity extends AppCompatActivity {
                             intent = new Intent(getApplicationContext(), SearchActivity.class);
                             break;
                         case R.id.shopping_list:
-                            if (getSharedPreferences("PREFERENCE", MODE_PRIVATE)
-                                    .getString("email", null) == null) {
+                            if (user == null) {
                                 deniedDialog();
                                 return false;
                             } else {
@@ -349,6 +348,8 @@ public class ContactsActivity extends AppCompatActivity {
                 } else {
                     profile.setImageResource(R.drawable.ic_profile_photo);
                 }
+            } else {
+                navigationView = findViewById(R.id.login_view);
             }
         }
     }
@@ -458,6 +459,8 @@ public class ContactsActivity extends AppCompatActivity {
                 } else {
                     profile.setImageResource(R.drawable.ic_profile_photo);
                 }
+            } else {
+                navigationView = findViewById(R.id.login_view);
             }
         }
         super.onStart();
@@ -482,6 +485,8 @@ public class ContactsActivity extends AppCompatActivity {
                 } else {
                     profile.setImageResource(R.drawable.ic_profile_photo);
                 }
+            } else {
+                navigationView = findViewById(R.id.login_view);
             }
         }
         super.onResume();

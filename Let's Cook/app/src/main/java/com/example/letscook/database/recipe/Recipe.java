@@ -27,8 +27,8 @@ public class Recipe implements Serializable {
     private String category;
     @ColumnInfo(name = "vegetarian")
     private boolean vegetarian;
-    @ColumnInfo(name = "images")
-    private long images;
+    @ColumnInfo(name = "image", typeAffinity = ColumnInfo.BLOB)
+    private byte[] image;
     @ColumnInfo(name = "portions")
     private int portions;
     @ColumnInfo(name = "steps")
@@ -77,12 +77,12 @@ public class Recipe implements Serializable {
         this.vegetarian = vegetarian;
     }
 
-    public long getImages() {
-        return images;
+    public byte[] getImage() {
+        return image;
     }
 
-    public void setImages(long images) {
-        this.images = images;
+    public void setImage(byte[] image) {
+        this.image = image;
     }
 
     public int getPortions() {

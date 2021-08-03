@@ -11,6 +11,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
@@ -79,6 +80,7 @@ import static com.example.letscook.constants.Messages.REGISTER;
 import static com.example.letscook.constants.Messages.REPEAT_PASS_REQ;
 import static com.example.letscook.constants.Messages.UPDATE;
 import static com.example.letscook.constants.Messages.USERNAME_LENGTH;
+import static com.example.letscook.constants.Messages.VERIFICATION;
 
 public class SignUpActivity extends AppCompatActivity {
     private TextView termsTextView, policyTextView, login, allFieldsReq, mess, required;
@@ -607,9 +609,20 @@ public class SignUpActivity extends AppCompatActivity {
         userToReg.setEmail(user.getEmail());
         userToReg.setPassword(user.getUid());
 
-        Bitmap image = DataConverter.getBitmapFromURL(String.valueOf(user.getPhotoUrl()));
-        if (image != null) {
-            userToReg.setPhoto(DataConverter.imageToByteArray(image));
+        final Bitmap[] image = new Bitmap[1];
+        Thread thread = new Thread(new Runnable(){
+            @Override
+            public void run() {
+                try {
+                     image[0] = DataConverter.getBitmapFromURL(String.valueOf(user.getPhotoUrl()));
+                } catch (Exception e) {
+                }
+            }
+        });
+        thread.start();
+
+        if (image[0] != null) {
+            userToReg.setPhoto(DataConverter.imageToByteArray(image[0]));
         }
 
         // Initialize db

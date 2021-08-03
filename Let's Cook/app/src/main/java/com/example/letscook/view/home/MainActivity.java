@@ -90,6 +90,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 } else {
                     profile.setImageResource(R.drawable.ic_profile_photo);
                 }
+            } else {
+                navigationView = findViewById(R.id.login_view);
             }
         }
 
@@ -113,8 +115,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onClick(View v) {
                 analytics.logEvent("clicked_my_products_icon", null);
-                if (getSharedPreferences("PREFERENCE", MODE_PRIVATE)
-                        .getString("email", null) == null) {
+                if (user == null) {
                     deniedDialog();
                 } else {
                     startActivity(new Intent(getApplicationContext(), MyProductsActivity.class));
@@ -177,8 +178,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             intent = new Intent(getApplicationContext(), WhatToCookActivity.class);
                             break;
                         case R.id.add_recipe:
-                            if (getSharedPreferences("PREFERENCE", MODE_PRIVATE)
-                                    .getString("email", null) == null) {
+                            if (user == null) {
                                 deniedDialog();
                                 return false;
                             } else {
@@ -189,8 +189,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             intent = new Intent(getApplicationContext(), SearchActivity.class);
                             break;
                         case R.id.shopping_list:
-                            if (getSharedPreferences("PREFERENCE", MODE_PRIVATE)
-                                    .getString("email", null) == null) {
+                            if (user == null) {
                                 deniedDialog();
                                 return false;
                             } else {
@@ -226,30 +225,25 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     startActivity(intent);
                     break;
                 case R.id.myRecipes_card:
-                    if (getSharedPreferences("PREFERENCE", MODE_PRIVATE)
-                            .getString("email", null) == null) {
+                    if (user == null) {
                         deniedDialog();
                     } else {
                         intent = new Intent(this, RecipesActivity.class);
                         intent.putExtra("phrase", MY_RECIPES);
-                        intent.putExtra("text", MY_RES);
                         startActivity(intent);
                     }
                     break;
                 case R.id.fav_card:
-                    if (getSharedPreferences("PREFERENCE", MODE_PRIVATE)
-                            .getString("email", null) == null) {
+                    if (user == null) {
                         deniedDialog();
                     } else {
                         intent = new Intent(this, RecipesActivity.class);
                         intent.putExtra("phrase", FAV_RECIPES);
-                        intent.putExtra("text", MY_FAV);
                         startActivity(intent);
                     }
                     break;
                 case R.id.shopping_card:
-                    if (getSharedPreferences("PREFERENCE", MODE_PRIVATE)
-                            .getString("email", null) == null) {
+                    if (user == null) {
                         deniedDialog();
                     } else {
                         intent = new Intent(this, ShoppingListActivity.class);
@@ -258,8 +252,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     }
                     break;
                 case R.id.myProducts_card:
-                    if (getSharedPreferences("PREFERENCE", MODE_PRIVATE)
-                            .getString("email", null) == null) {
+                    if (user == null) {
                         deniedDialog();
                     } else {
                         intent = new Intent(this, MyProductsActivity.class);
@@ -269,8 +262,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     }
                     break;
                 case R.id.addRecipe_card:
-                    if (getSharedPreferences("PREFERENCE", MODE_PRIVATE)
-                            .getString("email", null) == null) {
+                    if (user == null) {
                         deniedDialog();
                     } else {
                         intent = new Intent(this, AddRecipeActivity.class);
@@ -284,7 +276,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 case R.id.lastViewed_card:
                     intent = new Intent(this, RecipesActivity.class);
                     intent.putExtra("phrase", LAST_VIEW);
-                    intent.putExtra("text", MY_VIEWED);
                     startActivity(intent);
                     break;
                 case R.id.lastAdded_card:
@@ -362,10 +353,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             profile.setImageResource(R.drawable.ic_profile);
         } else {
             user = database.userDao().getUserByEmail(e);
-            if (user.getPhoto() != null) {
-                profile.setImageBitmap(DataConverter.byteArrayToImage(user.getPhoto()));
+            if (user != null) {
+                if (user.getPhoto() != null) {
+                    profile.setImageBitmap(DataConverter.byteArrayToImage(user.getPhoto()));
+                } else {
+                    profile.setImageResource(R.drawable.ic_profile_photo);
+                }
             } else {
-                profile.setImageResource(R.drawable.ic_profile_photo);
+                navigationView.setVisibility(View.INVISIBLE);
             }
         }
     }
@@ -473,6 +468,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 } else {
                     profile.setImageResource(R.drawable.ic_profile_photo);
                 }
+            } else {
+                navigationView = findViewById(R.id.login_view);
             }
         }
         bottomNavigationView.setSelectedItemId(R.id.home);
@@ -496,6 +493,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 } else {
                     profile.setImageResource(R.drawable.ic_profile_photo);
                 }
+            } else {
+                navigationView = findViewById(R.id.login_view);
             }
         }
         super.onResume();

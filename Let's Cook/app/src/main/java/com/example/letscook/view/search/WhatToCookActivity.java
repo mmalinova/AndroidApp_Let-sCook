@@ -88,6 +88,8 @@ public class WhatToCookActivity extends AppCompatActivity {
                 } else {
                     profile.setImageResource(R.drawable.ic_profile_photo);
                 }
+            } else {
+                navigationView = findViewById(R.id.login_view);
             }
         }
 
@@ -109,8 +111,7 @@ public class WhatToCookActivity extends AppCompatActivity {
         my_products.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (getSharedPreferences("PREFERENCE", MODE_PRIVATE)
-                        .getString("email", null) == null) {
+                if (user == null) {
                     deniedDialog();
                 } else {
                     startActivity(new Intent(getApplicationContext(), MyProductsActivity.class));
@@ -169,6 +170,7 @@ public class WhatToCookActivity extends AppCompatActivity {
             @Override
             public void onClick(@NonNull View widget) {
                 textView.setVisibility(View.INVISIBLE);
+
             }
 
             @Override
@@ -204,8 +206,7 @@ public class WhatToCookActivity extends AppCompatActivity {
                         case R.id.what_to_cook:
                             return true;
                         case R.id.add_recipe:
-                            if (getSharedPreferences("PREFERENCE", MODE_PRIVATE)
-                                    .getString("email", null) == null) {
+                            if (user == null) {
                                 deniedDialog();
                                 return false;
                             } else {
@@ -216,8 +217,7 @@ public class WhatToCookActivity extends AppCompatActivity {
                             intent = new Intent(getApplicationContext(), SearchActivity.class);
                             break;
                         case R.id.shopping_list:
-                            if (getSharedPreferences("PREFERENCE", MODE_PRIVATE)
-                                    .getString("email", null) == null) {
+                            if (user == null) {
                                 deniedDialog();
                                 return false;
                             } else {
@@ -291,6 +291,8 @@ public class WhatToCookActivity extends AppCompatActivity {
                 } else {
                     profile.setImageResource(R.drawable.ic_profile_photo);
                 }
+            } else {
+                navigationView = findViewById(R.id.login_view);
             }
         }
     }
@@ -516,6 +518,8 @@ public class WhatToCookActivity extends AppCompatActivity {
                 } else {
                     profile.setImageResource(R.drawable.ic_profile_photo);
                 }
+            } else {
+                navigationView = findViewById(R.id.login_view);
             }
         }
         bottomNavigationView.setSelectedItemId(R.id.what_to_cook);
@@ -539,6 +543,8 @@ public class WhatToCookActivity extends AppCompatActivity {
                 } else {
                     profile.setImageResource(R.drawable.ic_profile_photo);
                 }
+            } else {
+                navigationView = findViewById(R.id.login_view);
             }
         }
         super.onResume();

@@ -25,6 +25,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.blogspot.atifsoftwares.animatoolib.Animatoo;
+import com.example.letscook.database.recipe.Recipe;
 import com.example.letscook.view.AddRecipeActivity;
 import com.example.letscook.database.RoomDB;
 import com.example.letscook.database.typeconverters.DataConverter;
@@ -39,6 +40,8 @@ import com.example.letscook.view.recipesDashboard.RecipesActivity;
 import com.example.letscook.view.register.SignUpActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
+
+import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -88,6 +91,8 @@ public class SearchActivity extends AppCompatActivity {
                 } else {
                     profile.setImageResource(R.drawable.ic_profile_photo);
                 }
+            } else {
+                navigationView = findViewById(R.id.login_view);
             }
         }
 
@@ -109,8 +114,7 @@ public class SearchActivity extends AppCompatActivity {
         my_products.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (getSharedPreferences("PREFERENCE", MODE_PRIVATE)
-                        .getString("email", null) == null) {
+                if (user == null) {
                     deniedDialog();
                 } else {
                     startActivity(new Intent(getApplicationContext(), MyProductsActivity.class));
@@ -146,10 +150,21 @@ public class SearchActivity extends AppCompatActivity {
                                 break;
                         }
                     }
+                    final int DRAWABLE_RIGHT = 2;
+                    if(event.getAction() == MotionEvent.ACTION_UP) {
+                        if(event.getRawX() >= (searchRecipe.getRight() - searchRecipe.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
+                            Intent intent = new Intent(getApplicationContext(), RecipesActivity.class);
+                            intent.putExtra("recipeName", searchRecipe.getText().toString().toLowerCase().trim());
+                            startActivity(intent);
+                            return true;
+                        }
+                    }
+                    return false;
                 }
                 return false;
             }
         });
+
         // Initialize list view
         listView = findViewById(R.id.list);
         CustomAdapter customAdapter = new CustomAdapter();
@@ -188,8 +203,7 @@ public class SearchActivity extends AppCompatActivity {
                             intent = new Intent(getApplicationContext(), WhatToCookActivity.class);
                             break;
                         case R.id.add_recipe:
-                            if (getSharedPreferences("PREFERENCE", MODE_PRIVATE)
-                                    .getString("email", null) == null) {
+                            if (user == null) {
                                 deniedDialog();
                                 return false;
                             } else {
@@ -199,8 +213,7 @@ public class SearchActivity extends AppCompatActivity {
                         case R.id.search:
                             return true;
                         case R.id.shopping_list:
-                            if (getSharedPreferences("PREFERENCE", MODE_PRIVATE)
-                                    .getString("email", null) == null) {
+                            if (user == null) {
                                 deniedDialog();
                                 return false;
                             } else {
@@ -273,6 +286,8 @@ public class SearchActivity extends AppCompatActivity {
                 } else {
                     profile.setImageResource(R.drawable.ic_profile_photo);
                 }
+            } else {
+                navigationView = findViewById(R.id.login_view);
             }
         }
     }
@@ -380,7 +395,7 @@ public class SearchActivity extends AppCompatActivity {
             public void onClick(View v) {
                 // Start activity
                 Intent intent = new Intent(getApplicationContext(), RecipesActivity.class);
-                intent.putExtra("vegetarian", 0);
+                intent.putExtra("vegetarian", 1);
                 intent.putExtra("category", categories[position]);
                 startActivity(intent);
             }
@@ -390,7 +405,7 @@ public class SearchActivity extends AppCompatActivity {
             public void onClick(View v) {
                 // Start activity
                 Intent intent = new Intent(getApplicationContext(), RecipesActivity.class);
-                intent.putExtra("vegetarian", 1);
+                intent.putExtra("vegetarian", 0);
                 intent.putExtra("category", categories[position]);
                 startActivity(intent);
             }
@@ -414,6 +429,8 @@ public class SearchActivity extends AppCompatActivity {
                 } else {
                     profile.setImageResource(R.drawable.ic_profile_photo);
                 }
+            } else {
+                navigationView = findViewById(R.id.login_view);
             }
         }
         bottomNavigationView.setSelectedItemId(R.id.search);
@@ -437,6 +454,8 @@ public class SearchActivity extends AppCompatActivity {
                 } else {
                     profile.setImageResource(R.drawable.ic_profile_photo);
                 }
+            } else {
+                navigationView = findViewById(R.id.login_view);
             }
         }
         super.onResume();

@@ -69,9 +69,10 @@ public class Messages {
     public static final String LAST_VIEW = "Последно разглеждани\nрецепти";
     public static final String LAST_ADD = "Последно добавени\nрецепти";
 
-    public static final String MY_RES = "(Все още няма добавяни от теб рецепти)";
+    public static final String MY_RES = "(Все още няма добавени от теб рецепти)";
     public static final String MY_FAV = "(Все още нямаш рецепти, отбелязани като любими)";
     public static final String MY_VIEWED = "(Все още няма отваряни от теб рецепти)";
+    public static final String NO_REC = "(Все още не съществува такава рецепта)";
 
     public static final String BROWSE_TITLE = "Качи снимка";
     public static final String BROWSE_FROM_GALLERY = "Избери от галерия";
@@ -88,4 +89,6 @@ public class Messages {
     public static final String FEEDBACK = "Обратна връзка за приложението \"Да сготвим\"";
 
     public static final String AUTH_MESS = "За съжаление потребителят не е разпознат...";
+
+    public static final String VERIFICATION = "За да завършите регистрацията си, потвърдете имейла си във Вашата поща!";
 }

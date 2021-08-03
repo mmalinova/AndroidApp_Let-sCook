@@ -33,14 +33,18 @@
                     app:layout_scrollFlags="scroll|exitUntilCollapsed"
                     app:title="@string/aboutMe">
 
-                    <technolifestyle.com.imageslider.FlipperLayout
+                    <ViewFlipper
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:id="@+id/flipper">
-                    </technolifestyle.com.imageslider.FlipperLayout>
+                        android:scaleType="fitXY"
+                        android:adjustViewBounds="true"
+                        android:id="@+id/flipper"
+                        android:clickable="true"
+                        android:focusable="true">
+                    </ViewFlipper>
 
                     <de.hdodenhof.circleimageview.CircleImageView
-                        android:id="@+id/favourite"
+                        android:id="@+id/heart"
                         android:layout_width="30dp"
                         android:layout_height="30dp"
                         android:layout_marginRight="16dp"
@@ -51,6 +55,8 @@
                     <ImageView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        android:scaleType="fitXY"
+                        android:adjustViewBounds="true"
                         android:contentDescription="@string/main_src"
                         android:src="@drawable/shadow_bottom_to_top" />
 
@@ -112,20 +118,27 @@
                                     android:paddingTop="14dp"
                                     android:paddingRight="14dp"
                                     android:text="@string/category"
-                                    android:textColor="@color/inputText" />
+                                    android:textColor="@color/inputText"
+                                    android:textStyle="bold" />
 
                                 <TextView
                                     android:id="@+id/category"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginTop="17dp"
-                                    android:paddingLeft="14dp"
+                                    android:overScrollMode="always"
+                                    android:scrollbars="horizontal"
+                                    android:fillViewport="true"
+                                    android:focusable="true"
+                                    android:focusableInTouchMode="true"
+                                    android:scrollHorizontally="true"
+                                    android:layout_marginTop="5dp"
+                                    android:paddingLeft="10dp"
                                     android:paddingTop="5dp"
-                                    android:paddingRight="14dp"
-                                    android:paddingBottom="14dp"
+                                    android:paddingRight="10dp"
+                                    android:paddingBottom="10dp"
                                     android:text=""
                                     android:textColor="@color/inputText"
-                                    android:textSize="16sp" />
+                                    android:textSize="15sp" />
                             </LinearLayout>
                         </androidx.cardview.widget.CardView>
 
@@ -150,7 +163,8 @@
                                     android:paddingTop="14dp"
                                     android:paddingRight="14dp"
                                     android:text="@string/prepare_time"
-                                    android:textColor="@color/inputText" />
+                                    android:textColor="@color/inputText"
+                                    android:textStyle="bold" />
 
                                 <TextView
                                     android:id="@+id/preparing_time"
@@ -162,7 +176,7 @@
                                     android:paddingBottom="14dp"
                                     android:text=""
                                     android:textColor="@color/inputText"
-                                    android:textSize="16sp" />
+                                    android:textSize="15sp" />
                             </LinearLayout>
                         </androidx.cardview.widget.CardView>
 
@@ -187,7 +201,8 @@
                                     android:paddingTop="14dp"
                                     android:paddingRight="14dp"
                                     android:text="@string/portions"
-                                    android:textColor="@color/inputText" />
+                                    android:textColor="@color/inputText"
+                                    android:textStyle="bold" />
 
                                 <TextView
                                     android:id="@+id/portions"
@@ -200,7 +215,7 @@
                                     android:paddingBottom="14dp"
                                     android:text=""
                                     android:textColor="@color/inputText"
-                                    android:textSize="16sp" />
+                                    android:textSize="15sp" />
                             </LinearLayout>
                         </androidx.cardview.widget.CardView>
                     </LinearLayout>
@@ -227,8 +242,10 @@
                                 android:drawablePadding="10dp"
                                 android:paddingLeft="14dp"
                                 android:paddingRight="14dp"
+                                android:paddingBottom="8dp"
                                 android:text="@string/ingredients"
                                 android:textColor="@color/inputText"
+                                android:textStyle="bold"
                                 app:drawableEndCompat="@drawable/ic_my_products"
                                 app:drawableRightCompat="@drawable/ic_my_products" />
 
@@ -240,64 +257,16 @@
                                 android:baselineAligned="false"
                                 android:orientation="horizontal">
 
-                                <TextView
-                                    android:id="@+id/product_name"
-                                    android:layout_width="130dp"
+                                <androidx.recyclerview.widget.RecyclerView
+                                    android:id="@+id/products_view"
+                                    android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginTop="2dp"
-                                    android:paddingStart="14dp"
-                                    android:paddingEnd="10dp"
-                                    android:textColor="@color/inputText"
-                                    android:textSize="16sp"
-                                    app:layout_constraintStart_toStartOf="parent"
-                                    app:layout_constraintTop_toTopOf="parent" />
-
-                                <TextView
-                                    android:id="@+id/quantity"
-                                    android:layout_width="60dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginStart="4dp"
-                                    android:layout_marginTop="2dp"
-                                    android:paddingStart="14dp"
-                                    android:paddingLeft="10dp"
-                                    android:paddingEnd="10dp"
-                                    android:paddingRight="10dp"
-                                    android:textColor="@color/inputText"
-                                    android:textSize="16sp"
-                                    app:layout_constraintStart_toEndOf="@+id/product_name"
-                                    app:layout_constraintTop_toTopOf="parent" />
-
-                                <TextView
-                                    android:id="@+id/measure"
-                                    android:layout_width="80dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginStart="4dp"
-                                    android:layout_marginTop="2dp"
-                                    android:paddingStart="14dp"
-                                    android:paddingLeft="10dp"
-                                    android:paddingEnd="10dp"
-                                    android:paddingRight="10dp"
-                                    android:textColor="@color/inputText"
-                                    android:textSize="16sp"
-                                    app:layout_constraintStart_toEndOf="@+id/quantity"
-                                    app:layout_constraintTop_toTopOf="parent" />
-
-                                <ImageView
-                                    android:id="@+id/add_to_list"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginStart="4dp"
-                                    android:layout_marginTop="2dp"
-                                    android:layout_marginEnd="24dp"
-                                    android:contentDescription="@string/main_icon"
-                                    android:paddingStart="14dp"
-                                    android:paddingLeft="10dp"
-                                    android:paddingEnd="10dp"
-                                    android:paddingRight="10dp"
-                                    android:src="@drawable/ic_add_shopping"
+                                    android:layoutAnimation="@anim/layout_fall_down"
+                                    android:visibility="visible"
+                                    app:layout_constraintBottom_toBottomOf="parent"
                                     app:layout_constraintEnd_toEndOf="parent"
-                                    app:layout_constraintStart_toEndOf="@+id/measure"
-                                    app:layout_constraintTop_toTopOf="parent" />
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    tools:listitem="@layout/products_list_data" />
 
                             </androidx.constraintlayout.widget.ConstraintLayout>
                         </LinearLayout>
@@ -327,6 +296,7 @@
                                 android:paddingRight="14dp"
                                 android:text="@string/steps"
                                 android:textColor="@color/inputText"
+                                android:textStyle="bold"
                                 app:drawableEndCompat="@drawable/ic_info"
                                 app:drawableRightCompat="@drawable/ic_info" />
 
@@ -340,7 +310,7 @@
                                 android:paddingBottom="15dp"
                                 android:text=""
                                 android:textColor="@color/inputText"
-                                android:textSize="16sp" />
+                                android:textSize="15sp" />
                         </LinearLayout>
                     </androidx.cardview.widget.CardView>
                 </LinearLayout>

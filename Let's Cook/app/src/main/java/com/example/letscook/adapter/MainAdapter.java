@@ -141,8 +141,8 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
                 });
                 // Set text on edit text
                 name.setText(sName);
-                if (product.getQuantity() > 0) {
-                    holder.quantity.setText(String.valueOf(product.getQuantity()));
+                if (sQuantity > 0) {
+                    quantity.setText(String.valueOf(sQuantity));
                 }
                 unit.setText(sMeasure_unit);
             }

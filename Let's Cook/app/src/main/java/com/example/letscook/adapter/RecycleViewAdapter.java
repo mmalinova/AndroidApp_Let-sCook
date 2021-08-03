@@ -1,6 +1,7 @@
 package com.example.letscook.adapter;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,8 +15,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.letscook.R;
 import com.example.letscook.database.recipe.Recipe;
 import com.example.letscook.database.RoomDB;
+import com.example.letscook.database.typeconverters.DataConverter;
+import com.example.letscook.view.recipeDetails.RecipeActivity;
 
 import java.util.List;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.ViewHolder> {
     private List<Recipe> recipeList;
@@ -34,7 +39,6 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
         // Initialize view
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.recipes_list_data, parent, false);
-        //view.setBackgroundColor(Color.parseColor("#36FFCFA6"));
         return new ViewHolder(view);
     }
 
@@ -44,9 +48,39 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
         Recipe recipe = recipeList.get(position);
         // Initialize database
         database = RoomDB.getInstance(context);
-        holder.imageView.setImageResource((int) recipe.getImages());
+        //holder.imageView.setImageResource(imagesList.get(position));
         holder.textView.setTextColor(Color.parseColor("#4E4E4E"));
         holder.textView.setText(recipe.getName());
+        holder.imageView.setImageBitmap(DataConverter.byteArrayToImage(recipe.getImage()));
+        holder.imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent (v.getContext(), RecipeActivity.class);
+                intent.putExtra("recipeId", recipe.getID());
+                v.getContext().startActivity(intent);
+            }
+        });
+        holder.textView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent (v.getContext(), RecipeActivity.class);
+                intent.putExtra("recipeId", recipe.getID());
+                v.getContext().startActivity(intent);
+            }
+        });
+
+        holder.favourite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (holder.favourite.getDrawable().getConstantState() == context.getResources().getDrawable(R.drawable.ic_favorite_before).getConstantState())
+                {
+                    holder.favourite.setImageResource(R.drawable.ic_favorite_after);
+                } else
+                {
+                    holder.favourite.setImageResource(R.drawable.ic_favorite_before);
+                }
+            }
+        });
     }
 
     @Override
@@ -57,11 +91,13 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
     public class ViewHolder extends RecyclerView.ViewHolder {
         ImageView imageView;
         TextView textView;
+        CircleImageView favourite;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             imageView = itemView.findViewById(R.id.recipe_image);
             textView = itemView.findViewById(R.id.recipe_name);
+            favourite = itemView.findViewById(R.id.favourite);
         }
     }
 }
