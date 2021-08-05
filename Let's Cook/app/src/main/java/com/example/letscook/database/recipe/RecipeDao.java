@@ -18,9 +18,6 @@ public interface RecipeDao {
     @Delete
     void delete(Recipe recipe);
 
-    @Query("SELECT * FROM recipe")
-    public List<Recipe> getAllRecipes();
-
     @Query("SELECT * FROM recipe ORDER BY created_on LIMIT 10")
     public List<Recipe> getAllLastAddedRecipes();
 

@@ -10,6 +10,7 @@ import androidx.core.content.ContextCompat;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.ActivityNotFoundException;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -509,9 +510,9 @@ public class AddRecipeActivity extends AppCompatActivity implements AdapterView.
                         MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
                 Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                 intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
-                if (intent.resolveActivity(getPackageManager()) != null) {
+                //if (intent.resolveActivity(getPackageManager()) != null) {
                     startActivityForResult(intent, CAMERA_INTENT);
-                }
+                //}
                 dialog.dismiss();
             }
         });

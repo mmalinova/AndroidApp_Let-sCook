@@ -22,6 +22,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toolbar;
 import android.widget.ViewFlipper;
 
 import com.blogspot.atifsoftwares.animatoolib.Animatoo;
@@ -30,6 +31,8 @@ import com.example.letscook.adapter.ProductsViewAdapter;
 import com.example.letscook.database.photo.Photo;
 import com.example.letscook.database.product.Product;
 import com.example.letscook.database.recipe.Recipe;
+import com.example.letscook.database.relationships.UserMarksRecipeCrossRef;
+import com.example.letscook.database.relationships.UserViewsRecipeCrossRef;
 import com.example.letscook.database.typeconverters.DataConverter;
 import com.example.letscook.database.user.User;
 import com.example.letscook.view.AddRecipeActivity;
@@ -89,6 +92,9 @@ public class RecipeActivity extends AppCompatActivity {
         recipe = database.recipeDao().getRecipeById(recipeId);
         allPhotosFromRecipe = database.photoDao().getAllPhotosFromRecipe(recipeId);
         productsList = database.productDao().getRecipeProducts("toRecipe", recipeId);
+
+        // Set as the recipe as viewed recipe
+        database.userDao().insertUserViewsRecipeCrossRef(new UserViewsRecipeCrossRef(user.getID(), recipe.getID()));
 
         // Initialize my products links
         my_products = findViewById(R.id.my_products);
@@ -153,8 +159,23 @@ public class RecipeActivity extends AppCompatActivity {
 
             CollapsingToolbarLayout layout = findViewById(R.id.collapsing_toolbar);
             layout.setTitle(recipe.getName().substring(0, 1).toUpperCase() + recipe.getName().substring(1));
+            CircleImageView favourite = findViewById(R.id.favourite);
+            favourite.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (favourite.getDrawable().getConstantState() == getResources().getDrawable(R.drawable.ic_favorite_before).getConstantState())
+                    {
+                        favourite.setImageResource(R.drawable.ic_favorite_after);
+                        database.userDao().insertUserMarksRecipeCrossRef(new UserMarksRecipeCrossRef(user.getID(), recipe.getID()));
+                    } else
+                    {
+                        favourite.setImageResource(R.drawable.ic_favorite_before);
+                        database.userDao().deleteUserMarksRecipeCrossRef(new UserMarksRecipeCrossRef(user.getID(), recipe.getID()));
+                    }
+                }
+            });
             TextView category = findViewById(R.id.category);
-            category.setText(recipe.getCategory().substring(0, 1).toUpperCase() + recipe.getCategory().substring(1));
+            category.setText(String.format("%s",recipe.getCategory().substring(0, 1).toUpperCase() + recipe.getCategory().substring(1)));
             category.setSelected(true);
             category.setMovementMethod(new ScrollingMovementMethod());
             TextView prepTime = findViewById(R.id.preparing_time);
@@ -173,14 +194,7 @@ public class RecipeActivity extends AppCompatActivity {
             recyclerView.setAdapter(productsAdapter);
 
             TextView steps = findViewById(R.id.steps);
-            steps.setText(recipe.getSteps().substring(0, 1).toUpperCase() + recipe.getSteps().substring(1));
-            CircleImageView favourite = findViewById(R.id.heart);
-            favourite.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    favourite.setImageResource(R.drawable.ic_favorite_after);
-                }
-            });
+            steps.setText(String.format("%s", recipe.getSteps().substring(0, 1).toUpperCase() + recipe.getSteps().substring(1)));
         }
     }
 

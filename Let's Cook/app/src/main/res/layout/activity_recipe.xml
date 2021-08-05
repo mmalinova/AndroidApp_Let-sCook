@@ -43,15 +43,6 @@
                         android:focusable="true">
                     </ViewFlipper>
 
-                    <de.hdodenhof.circleimageview.CircleImageView
-                        android:id="@+id/heart"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:layout_marginRight="16dp"
-                        android:layout_marginLeft="16dp"
-                        android:layout_marginTop="10dp"
-                        android:src="@drawable/ic_favorite_before"
-                        android:layout_gravity="top|end"/>
                     <ImageView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
@@ -89,12 +80,31 @@
                         android:layout_marginTop="-7dp"
                         android:indeterminate="true" />
 
+                    <TextView
+                        android:id="@+id/text_fav"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="@string/fav"
+                        android:textColor="@color/inputText"
+                        android:textSize="16sp"
+                        android:textStyle="bold|italic" />
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/favourite"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_gravity="center"
+                        android:foregroundGravity="center"
+                        android:src="@drawable/ic_favorite_before" />
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
                         android:paddingLeft="10dp"
-                        android:paddingTop="10dp"
+                        android:paddingTop="5dp"
                         android:paddingRight="10dp">
 
                         <androidx.cardview.widget.CardView
@@ -125,17 +135,17 @@
                                     android:id="@+id/category"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:overScrollMode="always"
-                                    android:scrollbars="horizontal"
+                                    android:layout_marginTop="5dp"
                                     android:fillViewport="true"
                                     android:focusable="true"
                                     android:focusableInTouchMode="true"
-                                    android:scrollHorizontally="true"
-                                    android:layout_marginTop="5dp"
+                                    android:overScrollMode="always"
                                     android:paddingLeft="10dp"
                                     android:paddingTop="5dp"
                                     android:paddingRight="10dp"
                                     android:paddingBottom="10dp"
+                                    android:scrollbars="horizontal"
+                                    android:scrollHorizontally="true"
                                     android:text=""
                                     android:textColor="@color/inputText"
                                     android:textSize="15sp" />

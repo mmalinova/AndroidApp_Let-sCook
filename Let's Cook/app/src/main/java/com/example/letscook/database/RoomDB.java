@@ -13,12 +13,8 @@ import com.example.letscook.database.product.Product;
 import com.example.letscook.database.product.ProductDao;
 import com.example.letscook.database.recipe.Recipe;
 import com.example.letscook.database.recipe.RecipeDao;
-import com.example.letscook.database.relationships.RecipeProductCrossRef;
-import com.example.letscook.database.relationships.RecipeProductCrossRefDao;
 import com.example.letscook.database.relationships.UserMarksRecipeCrossRef;
-import com.example.letscook.database.relationships.UserMarksRecipeCrossRefDao;
-import com.example.letscook.database.relationships.UserViewedRecipeCrossRef;
-import com.example.letscook.database.relationships.UserViewedRecipeCrossRefDao;
+import com.example.letscook.database.relationships.UserViewsRecipeCrossRef;
 import com.example.letscook.database.session.Session;
 import com.example.letscook.database.session.SessionDao;
 import com.example.letscook.database.typeconverters.ConvertArrayList;
@@ -28,7 +24,7 @@ import com.example.letscook.database.user.UserDao;
 
 // Create database
 @Database(entities = {Product.class, Recipe.class, Session.class, User.class, Photo.class,
-        RecipeProductCrossRef.class, UserMarksRecipeCrossRef.class, UserViewedRecipeCrossRef.class},
+        UserMarksRecipeCrossRef.class, UserViewsRecipeCrossRef.class},
         version = 1, exportSchema = false)
 @TypeConverters({ConvertDate.class, ConvertArrayList.class})
 public abstract class RoomDB extends RoomDatabase {
@@ -54,7 +50,4 @@ public abstract class RoomDB extends RoomDatabase {
     public abstract SessionDao sessionDao();
     public abstract UserDao userDao();
     public abstract PhotoDao photoDao();
-    public abstract RecipeProductCrossRefDao recipeProductCrossRefDao();
-    public abstract UserMarksRecipeCrossRefDao userMarksRecipeCrossRefDao();
-    public abstract UserViewedRecipeCrossRefDao userViewedRecipeCrossRefDao();
 }

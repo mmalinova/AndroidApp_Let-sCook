@@ -22,6 +22,8 @@ import android.widget.TextView;
 
 import com.blogspot.atifsoftwares.animatoolib.Animatoo;
 import com.example.letscook.database.photo.Photo;
+import com.example.letscook.database.relationships.UserMarksRecipes;
+import com.example.letscook.database.relationships.UserViewsRecipes;
 import com.example.letscook.view.AddRecipeActivity;
 import com.example.letscook.database.typeconverters.DataConverter;
 import com.example.letscook.database.user.User;
@@ -149,10 +151,22 @@ public class RecipesActivity extends AppCompatActivity {
                 case FAV_RECIPES:
                     textView.setText(MY_FAV);
                     textView.setVisibility(View.VISIBLE);
+                    List<UserMarksRecipes> userFavRecipes = database.userDao().getUserMarksRecipes(userId);
+                    dataList = userFavRecipes.get(0).recipeList;
+                    if (dataList.size() > 0) {
+                        textView.setVisibility(View.INVISIBLE);
+                        recyclerView.setVisibility(View.VISIBLE);
+                    }
                     break;
                 case LAST_VIEW:
                     textView.setText(MY_VIEWED);
                     textView.setVisibility(View.VISIBLE);
+                    List<UserViewsRecipes> userViewsRecipes = database.userDao().getUserViewsRecipes(userId);
+                    dataList = userViewsRecipes.get(0).recipeList;
+                    if (dataList.size() > 0) {
+                        textView.setVisibility(View.INVISIBLE);
+                        recyclerView.setVisibility(View.VISIBLE);
+                    }
                     break;
                 case LAST_ADD:
                     dataList = database.recipeDao().getAllLastAddedRecipes();

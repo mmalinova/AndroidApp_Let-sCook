@@ -1,9 +1,15 @@
 package com.example.letscook.database.user;
 
 import androidx.room.Dao;
+import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
 import androidx.room.Transaction;
+
+import com.example.letscook.database.relationships.UserMarksRecipeCrossRef;
+import com.example.letscook.database.relationships.UserMarksRecipes;
+import com.example.letscook.database.relationships.UserViewsRecipeCrossRef;
+import com.example.letscook.database.relationships.UserViewsRecipes;
 
 import java.util.List;
 
@@ -18,7 +24,7 @@ public interface UserDao {
     void updatePass(long sID, String sPassword);
 
     @Query("SELECT * FROM user WHERE email = :sEmail")
-    public User getUserByEmail(String sEmail);
+    User getUserByEmail(String sEmail);
 
     @Query("UPDATE user SET photo = :sPhoto WHERE user_id = :sID")
     void setPhoto(long sID, byte[] sPhoto);
@@ -30,4 +36,26 @@ public interface UserDao {
     @Transaction
     @Query("SELECT * FROM user WHERE user_id = :sID")
     public User getUserSession(long sID);
+
+    // Many-to-many relationship
+    @Insert(onConflict = REPLACE)
+    void insertUserMarksRecipeCrossRef(UserMarksRecipeCrossRef crossRef);
+
+    @Delete
+    void deleteUserMarksRecipeCrossRef(UserMarksRecipeCrossRef crossRef);
+
+    @Transaction
+    @Query("SELECT * FROM user WHERE user_id = :sID")
+    List<UserMarksRecipes> getUserMarksRecipes(long sID);
+
+    // Many-to-many relationship
+    @Insert(onConflict = REPLACE)
+    void insertUserViewsRecipeCrossRef(UserViewsRecipeCrossRef crossRef);
+
+    @Delete
+    void deleteUserViewsRecipeCrossRef(UserViewsRecipeCrossRef crossRef);
+
+    @Transaction
+    @Query("SELECT * FROM user WHERE user_id = :sID")
+    List<UserViewsRecipes> getUserViewsRecipes(long sID);
 }

@@ -7,15 +7,16 @@ import androidx.room.Relation;
 import com.example.letscook.database.recipe.Recipe;
 import com.example.letscook.database.user.User;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class UserMarksRecipes {
+public class UserMarksRecipes implements Serializable {
     @Embedded
     public User user;
     @Relation(
             parentColumn = "user_id",
             entityColumn = "recipe_id",
-            associateBy = @Junction(UserViewedRecipeCrossRef.class)
+            associateBy = @Junction(UserMarksRecipeCrossRef.class)
     )
     public List<Recipe> recipeList;
 }

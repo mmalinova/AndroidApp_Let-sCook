@@ -221,9 +221,9 @@ public class ProfileActivity extends AppCompatActivity {
                         MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
                 Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                 intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
-                if (intent.resolveActivity(getPackageManager()) != null) {
+                //if (intent.resolveActivity(getPackageManager()) != null) {
                     startActivityForResult(intent, CAMERA_INTENT);
-                }
+                //}
                 dialog.dismiss();
             }
         });

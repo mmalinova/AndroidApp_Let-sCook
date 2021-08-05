@@ -69,6 +69,7 @@
     <string name="portions">Порции:</string>
     <string name="ingredients">Необходими продукти:</string>
     <string name="steps">Начин на приготвяне:</string>
+    <string name="fav">Добави в любими:</string>
     <!-- Shopping list activity -->
     <string name="productsList">(Все още нямаш добавени продукти)</string>
     <string name="toAddBtn">Добави</string>
