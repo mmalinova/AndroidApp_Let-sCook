@@ -23,7 +23,7 @@ public class Messages {
     public static final String MY_RECIPES = "Моите рецепти";
     public static final String FAV_RECIPES = "Любими рецепти";
     public static final String SHOPPING_LIST = "Списък за пазаруване";
-    public static final String MY_PRODUCTS = "Моите продукти";
+    public static final String MY_PRODUCTS = "Налични продукти";
     public static final String ADD_RECIPE = "Добавяне на рецепта";
     public static final String LAST_VIEWED = "Последно разглеждани";
     public static final String LAST_ADDED = "Последно добавени";
@@ -73,6 +73,7 @@ public class Messages {
     public static final String MY_FAV = "(Все още нямаш рецепти, отбелязани като любими)";
     public static final String MY_VIEWED = "(Все още няма отваряни от теб рецепти)";
     public static final String NO_REC = "(Все още не съществува такава рецепта)";
+    public static final String NO_REC_FOR_PRODUCTS = "(Не са намерени подходящи рецепти. Наличните продукти са твърде малко.)";
 
     public static final String BROWSE_TITLE = "Качи снимка";
     public static final String BROWSE_FROM_GALLERY = "Избери от галерия";

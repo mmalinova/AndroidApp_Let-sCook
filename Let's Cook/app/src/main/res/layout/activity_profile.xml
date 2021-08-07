@@ -193,7 +193,7 @@
                         android:layout_marginEnd="40dp"
                         android:layout_marginBottom="16dp"
                         android:contentDescription="@string/floating_desc"
-                        android:src="@drawable/ic_share"
+                        android:src="@drawable/ic_edit"
                         app:backgroundTint="@color/beige"
                         app:tint="@color/yellow_icon" />
 
@@ -202,7 +202,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="6dp"
                         android:fontFamily="@font/kurale"
-                        android:text="@string/shareWith"
+                        android:text="@string/edit"
                         android:textAppearance="?android:attr/textAppearanceMedium"
                         android:textColor="@color/black"
                         android:textSize="14sp" />

@@ -10,6 +10,7 @@ import androidx.core.content.ContextCompat;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -25,9 +26,13 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.blogspot.atifsoftwares.animatoolib.Animatoo;
+import com.example.letscook.database.product.Product;
 import com.example.letscook.view.AddRecipeActivity;
 import com.example.letscook.R;
 import com.example.letscook.database.RoomDB;
@@ -45,6 +50,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -77,18 +83,6 @@ public class ProfileActivity extends AppCompatActivity {
                 editor.apply();
                 FirebaseAuth.getInstance().signOut();
                 startActivity(new Intent(ProfileActivity.this, MainActivity.class));
-            }
-        });
-        FloatingActionButton floatingBtn = findViewById(R.id.floating_btn);
-        floatingBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ApplicationInfo api = getApplicationContext().getApplicationInfo();
-                String apkPath = api.sourceDir;
-                Intent intent = new Intent(Intent.ACTION_SEND);
-                intent.setType("application/vnd.android.package-archive");
-                intent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(new File(apkPath)));
-                startActivity(Intent.createChooser(intent, SHARE));
             }
         });
         uploadPhoto = findViewById(R.id.photo);
@@ -165,6 +159,7 @@ public class ProfileActivity extends AppCompatActivity {
             }
         }
         // Set data
+        assert user != null;
         String username = user.getName();
         TextView name = findViewById(R.id.name);
         name.setText(username);
@@ -186,6 +181,53 @@ public class ProfileActivity extends AppCompatActivity {
         }
         //Change text
         greetingText.setText(greeting);
+
+        FloatingActionButton floatingBtn = findViewById(R.id.floating_btn);
+        floatingBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                long sID = user.getID();
+                String sName = user.getName();
+                // Create dialog
+                Dialog dialog = new Dialog(ProfileActivity.this);
+                dialog.setContentView(R.layout.edit_profile);
+                int width = WindowManager.LayoutParams.MATCH_PARENT;
+                int height = WindowManager.LayoutParams.WRAP_CONTENT;
+                dialog.getWindow().setLayout(width, height);
+                dialog.show();
+
+                // Initialize and assign variables
+                EditText name = dialog.findViewById(R.id.editName);
+                EditText eMail = dialog.findViewById(R.id.editEmail);
+                TextView required = dialog.findViewById(R.id.firstTextView);
+                Button update = dialog.findViewById(R.id.update);
+                update.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        required.setVisibility(View.INVISIBLE);
+                        String uName = name.getText().toString().trim();
+                        String uEmail = eMail.getText().toString().trim();
+                        if (uName.equals("") && uEmail.equals("")) {
+                            required.setVisibility(View.VISIBLE);
+                            return;
+                        }
+                        if (!uName.equals("")) {
+                            database.userDao().updateName(sID, uName);
+                        }
+                        if (!uEmail.equals("")) {
+                            database.userDao().updateEmail(sID, uEmail);
+                        }
+                        // Notify
+                        required.setVisibility(View.INVISIBLE);
+                        dialog.dismiss();
+                        startActivity(new Intent(ProfileActivity.this, MainActivity.class));
+                    }
+                });
+                // Set text on edit text
+                name.setText(sName);
+                eMail.setText(userEmail);
+            }
+        });
     }
 
     public void uploadPictureDialog() {

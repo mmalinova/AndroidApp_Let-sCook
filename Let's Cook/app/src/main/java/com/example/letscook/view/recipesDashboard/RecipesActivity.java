@@ -22,6 +22,7 @@ import android.widget.TextView;
 
 import com.blogspot.atifsoftwares.animatoolib.Animatoo;
 import com.example.letscook.database.photo.Photo;
+import com.example.letscook.database.product.Product;
 import com.example.letscook.database.relationships.UserMarksRecipes;
 import com.example.letscook.database.relationships.UserViewsRecipes;
 import com.example.letscook.view.AddRecipeActivity;
@@ -67,6 +68,7 @@ import static com.example.letscook.constants.Messages.MY_RECIPES;
 import static com.example.letscook.constants.Messages.MY_RES;
 import static com.example.letscook.constants.Messages.MY_VIEWED;
 import static com.example.letscook.constants.Messages.NO_REC;
+import static com.example.letscook.constants.Messages.NO_REC_FOR_PRODUCTS;
 import static com.example.letscook.constants.Messages.PASS_REQ;
 import static com.example.letscook.constants.Messages.WRONG_PASS;
 
@@ -135,6 +137,8 @@ public class RecipesActivity extends AppCompatActivity {
         String category = getIntent().getStringExtra("category");
         String recipeName = getIntent().getStringExtra("recipeName");
         int veg = getIntent().getIntExtra("vegetarian", -1);
+        int productsNeed = getIntent().getIntExtra("products", -1);
+        ArrayList<? extends Parcelable> productsList = getIntent().getParcelableArrayListExtra("myProductsList");
 
         if (phrase != null) {
             actionText.setText(phrase);
@@ -173,6 +177,18 @@ public class RecipesActivity extends AppCompatActivity {
                     if (dataList.size() > 0) {
                         textView.setVisibility(View.INVISIBLE);
                         recyclerView.setVisibility(View.VISIBLE);
+                    }
+                    break;
+                case APPROPRIATE_MESS:
+                    textView.setText(NO_REC_FOR_PRODUCTS);
+                    dataList = database.recipeDao().getAllRecipeByCategoryAndVeg(category, veg);
+                    for (Recipe recipe : dataList) {
+                        List<Product> products = database.productDao().getRecipeProducts("toRecipe", recipe.getID());
+                        if (products.size() > productsList.size() + productsNeed) {
+                            textView.setVisibility(View.VISIBLE);
+                        } else {
+                            recyclerView.setVisibility(View.VISIBLE);
+                        }
                     }
                     break;
             }

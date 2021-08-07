@@ -17,9 +17,6 @@ public interface PhotoDao {
     @Delete
     void delete(Photo photo);
 
-    @Delete
-    void deleteAll(List<Photo> photos);
-
     @Query("SELECT * FROM photo WHERE recipe_id = :sRecipe_id")
-    public List<Photo> getAllPhotosFromRecipe(long sRecipe_id);
+    List<Photo> getAllPhotosFromRecipe(long sRecipe_id);
 }

@@ -23,6 +23,12 @@ public interface UserDao {
     @Query("UPDATE user SET password = :sPassword WHERE user_id = :sID")
     void updatePass(long sID, String sPassword);
 
+    @Query("UPDATE user SET name = :sName WHERE user_id = :sID")
+    void updateName(long sID, String sName);
+
+    @Query("UPDATE user SET email = :sEmail WHERE user_id = :sID")
+    void updateEmail(long sID, String sEmail);
+
     @Query("SELECT * FROM user WHERE email = :sEmail")
     User getUserByEmail(String sEmail);
 
@@ -31,11 +37,6 @@ public interface UserDao {
 
     @Query("UPDATE user SET photo = NULL WHERE user_id = :sID")
     void removePhoto(long sID);
-
-    // One-to-one relationship
-    @Transaction
-    @Query("SELECT * FROM user WHERE user_id = :sID")
-    public User getUserSession(long sID);
 
     // Many-to-many relationship
     @Insert(onConflict = REPLACE)
@@ -51,9 +52,6 @@ public interface UserDao {
     // Many-to-many relationship
     @Insert(onConflict = REPLACE)
     void insertUserViewsRecipeCrossRef(UserViewsRecipeCrossRef crossRef);
-
-    @Delete
-    void deleteUserViewsRecipeCrossRef(UserViewsRecipeCrossRef crossRef);
 
     @Transaction
     @Query("SELECT * FROM user WHERE user_id = :sID")

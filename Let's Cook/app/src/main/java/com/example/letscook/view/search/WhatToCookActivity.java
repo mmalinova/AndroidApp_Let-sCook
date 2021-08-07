@@ -3,6 +3,8 @@ package com.example.letscook.view.search;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -11,6 +13,7 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.TextPaint;
@@ -29,6 +32,9 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.blogspot.atifsoftwares.animatoolib.Animatoo;
+import com.example.letscook.adapter.MainAdapter;
+import com.example.letscook.adapter.ProductsForRecipeAdapter;
+import com.example.letscook.database.product.Product;
 import com.example.letscook.view.AddRecipeActivity;
 import com.example.letscook.database.RoomDB;
 import com.example.letscook.database.typeconverters.DataConverter;
@@ -44,13 +50,16 @@ import com.example.letscook.view.register.SignUpActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import de.hdodenhof.circleimageview.CircleImageView;
 
 import static com.example.letscook.constants.Messages.*;
 
 public class WhatToCookActivity extends AppCompatActivity {
     private int id;
-    private TextView actionText, textView;
+    private TextView actionText, textView, initialTextView;
     private ImageView backIcon, my_products;
     private CircleImageView profile;
     private NavigationView navigationView = null;
@@ -62,6 +71,11 @@ public class WhatToCookActivity extends AppCompatActivity {
     private Button okButton;
     private RoomDB database;
     private User user;
+    private RecyclerView recyclerView;
+    private ArrayList<Product> dataList = new ArrayList<>();
+    private LinearLayoutManager linearLayoutManager;
+    private ProductsForRecipeAdapter productsForRecipeAdapter;
+    private String[] categories = {BREAKFAST, LUNCH, DINNER, DESSERT};
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -131,11 +145,15 @@ public class WhatToCookActivity extends AppCompatActivity {
             }
         });
         actionText.setText(WHAT_TO_COOK);
-
         productName = findViewById(R.id.product_name);
         productName.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
+                final int DRAWABLE_LEFT = 0;
+                final int DRAWABLE_TOP = 1;
+                final int DRAWABLE_RIGHT = 2;
+                final int DRAWABLE_BOTTOM = 3;
+
                 if (navigationView != null && navigationView.getVisibility() == View.VISIBLE) {
                     hideNavView();
                 } else {
@@ -145,6 +163,28 @@ public class WhatToCookActivity extends AppCompatActivity {
                             case MotionEvent.ACTION_UP:
                                 v.getParent().requestDisallowInterceptTouchEvent(false);
                                 break;
+                        }
+                    }
+                    if (event.getAction() == MotionEvent.ACTION_UP) {
+                        if(event.getRawX() >= (productName.getRight() - productName.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
+                            Product product = new Product();
+                            String name = productName.getText().toString().trim();
+                            if (!name.equals("")) {
+                                product.setName(name);
+                                dataList.add(product);
+                                productName.setText("");
+                                if (dataList.size() > 0) {
+                                    initialTextView.setVisibility(View.INVISIBLE);
+                                    textView.setVisibility(View.INVISIBLE);
+                                    recyclerView.setVisibility(View.VISIBLE);
+                                    searchBtn.setEnabled(true);
+                                }
+                                linearLayoutManager = new LinearLayoutManager(WhatToCookActivity.this);
+                                recyclerView.setLayoutManager(linearLayoutManager);
+                                productsForRecipeAdapter = new ProductsForRecipeAdapter(WhatToCookActivity.this, dataList, "myProducts");
+                                recyclerView.setAdapter(productsForRecipeAdapter);
+                            }
+                            return true;
                         }
                     }
                 }
@@ -164,15 +204,33 @@ public class WhatToCookActivity extends AppCompatActivity {
                 }
             }
         });
+        recyclerView = findViewById(R.id.recycler_view);
+        initialTextView = findViewById(R.id.initialTextView);
         textView = findViewById(R.id.textView);
         SpannableString spannableString = new SpannableString(WHAT_TO_COOK_INFO);
         ClickableSpan clickableSpan = new ClickableSpan() {
             @Override
             public void onClick(@NonNull View widget) {
-                textView.setVisibility(View.INVISIBLE);
-
+                if (user == null) {
+                    deniedDialog();
+                } else {
+                    initialTextView.setVisibility(View.INVISIBLE);
+                    // Store db value in product list
+                    dataList = (ArrayList) database.productDao().getUserProducts("myProducts", user.getID());
+                    if (dataList.size() > 0) {
+                        textView.setVisibility(View.INVISIBLE);
+                        recyclerView.setVisibility(View.VISIBLE);
+                        searchBtn.setEnabled(true);
+                    } else {
+                        recyclerView.setVisibility(View.INVISIBLE);
+                        textView.setVisibility(View.VISIBLE);
+                    }
+                    linearLayoutManager = new LinearLayoutManager(WhatToCookActivity.this);
+                    recyclerView.setLayoutManager(linearLayoutManager);
+                    productsForRecipeAdapter = new ProductsForRecipeAdapter(WhatToCookActivity.this, dataList, "myProducts");
+                    recyclerView.setAdapter(productsForRecipeAdapter);
+                }
             }
-
             @Override
             public void updateDrawState(@NonNull TextPaint ds) {
                 super.updateDrawState(ds);
@@ -181,8 +239,8 @@ public class WhatToCookActivity extends AppCompatActivity {
             }
         };
         spannableString.setSpan(clickableSpan, 90, 96, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        textView.setText(spannableString);
-        textView.setMovementMethod(LinkMovementMethod.getInstance());
+        initialTextView.setText(spannableString);
+        initialTextView.setMovementMethod(LinkMovementMethod.getInstance());
 
         // Initialize and assign variable
         bottomNavigationView = findViewById(R.id.bottom_nav);
@@ -277,7 +335,6 @@ public class WhatToCookActivity extends AppCompatActivity {
         }
         navigationView.setVisibility(View.INVISIBLE);
         profile.setBorderColor(Color.parseColor("#000000"));
-        searchBtn.setEnabled(true);
         // Set view according session storage
         String e = getSharedPreferences("PREFERENCE", MODE_PRIVATE).getString("email", null);
         if (e == null) {
@@ -404,10 +461,10 @@ public class WhatToCookActivity extends AppCompatActivity {
                 // Attempt to query according to index
                 switch (text) {
                     case "Закуска":
-                        vegTermsDialog(0);
+                        vegTermsDialog(categories[0]);
                         break;
                     case "Вечеря":
-                        vegTermsDialog(3);
+                        vegTermsDialog(categories[2]);
                         break;
                 }
                 radioButton.setChecked(false);
@@ -422,10 +479,10 @@ public class WhatToCookActivity extends AppCompatActivity {
                 // Attempt to query according to index
                 switch (text) {
                     case "Обяд":
-                        vegTermsDialog(1);
+                        vegTermsDialog(categories[1]);
                         break;
                     case "Десерт":
-                        vegTermsDialog(4);
+                        vegTermsDialog(categories[3]);
                         break;
                 }
                 radioButton.setChecked(false);
@@ -433,7 +490,7 @@ public class WhatToCookActivity extends AppCompatActivity {
         });
     }
 
-    public void vegTermsDialog(int catIndex) {
+    public void vegTermsDialog(String cat) {
         dialogBuilder = new AlertDialog.Builder(this);
         final View popupView = getLayoutInflater().inflate(R.layout.veg_popup, null);
 
@@ -448,19 +505,19 @@ public class WhatToCookActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // Append filter to request
-                prodTermsDialog(catIndex, 0);
+                prodTermsDialog(cat, 1);
             }
         });
         noButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // Start activity
-                prodTermsDialog(catIndex, 1);
+                prodTermsDialog(cat, 0);
             }
         });
     }
 
-    public void prodTermsDialog(int catIndex, int vegIndex) {
+    public void prodTermsDialog(String cat, int vegIndex) {
         dialogBuilder = new AlertDialog.Builder(this);
         final View popupView = getLayoutInflater().inflate(R.layout.products_popup, null);
 
@@ -478,24 +535,22 @@ public class WhatToCookActivity extends AppCompatActivity {
                 int prodIndex = radioGroup.indexOfChild(radioButton);
 
                 Intent intent = new Intent(getApplicationContext(), RecipesActivity.class);
-                intent.putExtra("category", catIndex);
+                intent.putExtra("category", cat);
                 intent.putExtra("vegetarian", vegIndex);
-                // Attempt to query according to index
                 switch (prodIndex) {
                     case 0:
-                        intent.putExtra("products", 0);
+                        intent.putExtra("products", 3);
                         break;
                     case 1:
-                        intent.putExtra("products", 1);
+                        intent.putExtra("products", 5);
                         break;
                     case 2:
-                        intent.putExtra("products", 2);
+                        intent.putExtra("products", 0);
                         break;
                 }
                 radioButton.setChecked(false);
-                intent.putExtra("products", prodIndex);
                 intent.putExtra("phrase", APPROPRIATE_MESS);
-                // Query
+                intent.putParcelableArrayListExtra("myProductsList", dataList);
                 startActivity(intent);
             }
         });

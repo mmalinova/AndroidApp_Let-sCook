@@ -10,6 +10,7 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
@@ -106,6 +107,7 @@ public class RecipeActivity extends AppCompatActivity {
                 startActivity(new Intent(getApplicationContext(), MyProductsActivity.class));
                 Animatoo.animateZoom(RecipeActivity.this);
                 my_products.setTextColor(Color.parseColor("#fef6d8"));
+                my_products.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, R.drawable.ic_my_products_after,0);
                 my_products.getTextCursorDrawable().setColorFilter(Color.parseColor("#fef6d8"), PorterDuff.Mode.ADD);
             }
         });
@@ -201,6 +203,7 @@ public class RecipeActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         my_products.setTextColor(Color.parseColor("#4E4E4E"));
+        my_products.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, R.drawable.ic_my_products,0);
         super.onStart();
     }
 

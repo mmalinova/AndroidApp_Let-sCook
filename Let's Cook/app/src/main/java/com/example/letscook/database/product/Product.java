@@ -1,5 +1,8 @@
 package com.example.letscook.database.product;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
@@ -9,7 +12,7 @@ import java.io.Serializable;
 
 //Define table
 @Entity(tableName = "product")
-public class Product implements Serializable {
+public class Product implements Serializable, Parcelable {
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "product_id")
     private long ID;
@@ -23,6 +26,30 @@ public class Product implements Serializable {
     private String belonging;
     @ColumnInfo(name = "owner_id")
     private long ownerId;
+
+    public Product() {
+    }
+
+    protected Product(Parcel in) {
+        ID = in.readLong();
+        name = in.readString();
+        measureUnit = in.readString();
+        quantity = in.readFloat();
+        belonging = in.readString();
+        ownerId = in.readLong();
+    }
+
+    public static final Creator<Product> CREATOR = new Creator<Product>() {
+        @Override
+        public Product createFromParcel(Parcel in) {
+            return new Product(in);
+        }
+
+        @Override
+        public Product[] newArray(int size) {
+            return new Product[size];
+        }
+    };
 
     public long getID() {
         return ID;
@@ -70,5 +97,20 @@ public class Product implements Serializable {
 
     public void setOwnerId(long ownerId) {
         this.ownerId = ownerId;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeLong(ID);
+        dest.writeString(name);
+        dest.writeString(measureUnit);
+        dest.writeFloat(quantity);
+        dest.writeString(belonging);
+        dest.writeLong(ownerId);
     }
 }

@@ -63,6 +63,7 @@
     <string name="three">До 3 продукта</string>
     <string name="five">До 5 продукта</string>
     <string name="without">Без нужда</string>
+    <string name="myProducts">(Все още нямаш добавени продукти в секцията \"Налични продукти\")</string>
     <!-- Recipe activity -->
     <string name="category">Категория:</string>
     <string name="prepare_time">Време за приготвяне:</string>
@@ -74,11 +75,12 @@
     <string name="productsList">(Все още нямаш добавени продукти)</string>
     <string name="toAddBtn">Добави</string>
     <string name="product">Име на продукта:</string>
+    <string name="prodNameReq">Въведи име на продукта!</string>
     <string name="quantity">Количество:</string>
     <string name="deleteAllBtn">Изтрий всички</string>
     <string name="addBtn">Добавяне</string>
     <string name="unit">Мерна единица:</string>
-    <string name="prodNameReq">Въведи име на продукта!</string>
+    <string name="fieldReq">Въведи промяна поне в едно от полетата, за да направиш редакция!</string>
     <string name="quantityReq">Количеството не може да бъде 0!</string>
     <string name="unitReq">Въведи валидна мерна единица: мл., л., гр., кг., ч.ч., к.ч., с.л., ч.л., щипка, щипки, пакетче, пакетчета!</string>
     <string name="editBtn">Редактиране</string>
@@ -87,16 +89,18 @@
     <!-- Profile -->
     <string name="myData">Лични данни:</string>
     <string name="name">Име:</string>
-    <string name="shareWith">Сподели приложението</string>
+    <string name="edit">Редактиране на профила</string>
     <string name="email">E-mail:</string>
     <string name="photo_desc">Профилна снимка</string>
     <string name="share_icon">Икона</string>
-    <string name="floating_desc">Бутон \"Сподели с\"</string>
+    <string name="floating_desc">Бутон \"Редактиране\"</string>
     <string name="exit">Изход</string>
     <string name="choose_title">Задай своята снимка</string>
     <string name="gallery">Избери от галерия</string>
     <string name="takeAPhoto">Снимай с камерата</string>
     <string name="removePhoto">Премахни снимката</string>
+    <string name="nameToEdit">Име</string>
+    <string name="emailToEdit">E-mail</string>
     <!-- Info activity -->
     <string name="aboutApp_title">За приложението</string>
     <string name="aboutMe">Добре дошъл в приложението \"Да сготвим\".</string>
