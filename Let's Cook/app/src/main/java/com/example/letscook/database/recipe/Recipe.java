@@ -1,23 +1,19 @@
 package com.example.letscook.database.recipe;
 
-import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
 
 
-import com.example.letscook.database.product.Product;
 import com.example.letscook.database.typeconverters.ConvertDate;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Date;
 
 //Define table
 @Entity(tableName = "recipe")
 public class Recipe implements Serializable {
-    @NonNull
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "recipe_id")
     private long ID;
@@ -25,8 +21,8 @@ public class Recipe implements Serializable {
     private String name;
     @ColumnInfo(name = "category")
     private String category;
-    @ColumnInfo(name = "vegetarian")
-    private boolean vegetarian;
+    @ColumnInfo(name = "is_vegetarian")
+    private boolean isVegetarian;
     @ColumnInfo(name = "image", typeAffinity = ColumnInfo.BLOB)
     private byte[] image;
     @ColumnInfo(name = "portions")
@@ -40,8 +36,8 @@ public class Recipe implements Serializable {
     @ColumnInfo(name = "created_on")
     @TypeConverters({ConvertDate.class})
     private Date createdOn;
-    @ColumnInfo(name = "ingredients")
-    private long ingredients;
+    @ColumnInfo(name = "is_approved")
+    private boolean isApproved;
     @ColumnInfo(name = "owner_id")
     private long ownerID;
 
@@ -70,11 +66,11 @@ public class Recipe implements Serializable {
     }
 
     public boolean isVegetarian() {
-        return vegetarian;
+        return isVegetarian;
     }
 
     public void setVegetarian(boolean vegetarian) {
-        this.vegetarian = vegetarian;
+        this.isVegetarian = vegetarian;
     }
 
     public byte[] getImage() {
@@ -133,11 +129,11 @@ public class Recipe implements Serializable {
         this.ownerID = ownerID;
     }
 
-    public long getIngredients() {
-        return ingredients;
+    public boolean getIsApproved() {
+        return isApproved;
     }
 
-    public void setIngredients(long ingredients) {
-        this.ingredients = ingredients;
+    public void setIsApproved(boolean isApproved) {
+        this.isApproved = isApproved;
     }
 }

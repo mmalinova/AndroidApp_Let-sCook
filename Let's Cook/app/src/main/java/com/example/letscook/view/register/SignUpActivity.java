@@ -4,14 +4,12 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
-import android.os.StrictMode;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
@@ -34,11 +32,7 @@ import com.example.letscook.database.user.UserDao;
 import com.example.letscook.view.home.MainActivity;
 import com.example.letscook.view.login.LoginActivity;
 
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 import com.facebook.AccessToken;
@@ -49,10 +43,8 @@ import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
-import com.facebook.appevents.AppEventsLogger;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
-import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -80,7 +72,6 @@ import static com.example.letscook.constants.Messages.REGISTER;
 import static com.example.letscook.constants.Messages.REPEAT_PASS_REQ;
 import static com.example.letscook.constants.Messages.UPDATE;
 import static com.example.letscook.constants.Messages.USERNAME_LENGTH;
-import static com.example.letscook.constants.Messages.VERIFICATION;
 
 public class SignUpActivity extends AppCompatActivity {
     private TextView termsTextView, policyTextView, login, allFieldsReq, mess, required;
@@ -90,8 +81,6 @@ public class SignUpActivity extends AppCompatActivity {
     private EditText editTextName;
     private CallbackManager callbackManager;
     private FirebaseAuth firebaseAuth;
-    private AccessTokenTracker accessTokenTracker;
-    private Button fbLogin, googleLogin;
     private GoogleSignInClient mGoogleSignInClient;
     private final static int RC_SIGN_IN = 123;
 
@@ -117,14 +106,14 @@ public class SignUpActivity extends AppCompatActivity {
         allFieldsReq = findViewById(R.id.allReq_textView);
         mess = findViewById(R.id.textView);
 
-        googleLogin = findViewById(R.id.google_btn);
+        Button googleLogin = findViewById(R.id.google_btn);
         googleLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 signIn();
             }
         });
-        fbLogin = findViewById(R.id.facebook_btn);
+        Button fbLogin = findViewById(R.id.facebook_btn);
         callbackManager = CallbackManager.Factory.create();
         fbLogin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -204,8 +193,14 @@ public class SignUpActivity extends AppCompatActivity {
                 .requestEmail()
                 .build();
 
-        // Build a GoogleSignInClient with the options specified by gso.
+        // Build a GoogleSignInAccount with the options specified by gso.
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+        GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(this);
+        if (acct != null) {
+            String personEmail = acct.getEmail();
+            Uri personPhoto = acct.getPhotoUrl();
+            Bitmap image = DataConverter.getBitmapFromURL(String.valueOf(personPhoto));
+        }
     }
 
     private void signIn() {
@@ -235,7 +230,7 @@ public class SignUpActivity extends AppCompatActivity {
             }
         });
         loginManager.logInWithReadPermissions(this, getReadPermissions());
-        accessTokenTracker = new AccessTokenTracker() {
+        AccessTokenTracker accessTokenTracker = new AccessTokenTracker() {
             @Override
             protected void onCurrentAccessTokenChanged(AccessToken oldAccessToken, AccessToken currentAccessToken) {
                 if (currentAccessToken == null) {
@@ -267,12 +262,16 @@ public class SignUpActivity extends AppCompatActivity {
                             String first_name = object.getString("first_name");
                             Bitmap image = DataConverter.getBitmapFromURL("https://graph.facebook.com/" + id + "/picture?type=large");
 
+                            User userToReg = new User();
                             String email = null;
                             if (object.has("email")) {
                                 email = object.getString("email");
+                                if (email.equals("mihaela__eli@abv.bg")) {
+                                    userToReg.setAdmin(true);
+                                } else {
+                                    userToReg.setAdmin(false);
+                                }
                             }
-
-                            User userToReg = new User();
                             userToReg.setName(first_name);
                             userToReg.setEmail(email);
                             userToReg.setPassword(id);
@@ -456,6 +455,11 @@ public class SignUpActivity extends AppCompatActivity {
         }
         userToReg.setName(name);
         userToReg.setEmail(email);
+        if (email.equals("malinova29@gmail.com") || email.equals("mihaela__eli@abv.bg")) {
+            userToReg.setAdmin(true);
+        } else {
+            userToReg.setAdmin(false);
+        }
         userToReg.setPassword(password);
         // Initialize db
         RoomDB database = RoomDB.getInstance(this);
@@ -607,6 +611,11 @@ public class SignUpActivity extends AppCompatActivity {
         User userToReg = new User();
         userToReg.setName(user.getDisplayName());
         userToReg.setEmail(user.getEmail());
+        if (userToReg.getEmail().equals("malinova29@gmail.com")) {
+            userToReg.setAdmin(true);
+        } else {
+            userToReg.setAdmin(false);
+        }
         userToReg.setPassword(user.getUid());
 
         final Bitmap[] image = new Bitmap[1];
@@ -615,7 +624,7 @@ public class SignUpActivity extends AppCompatActivity {
             public void run() {
                 try {
                      image[0] = DataConverter.getBitmapFromURL(String.valueOf(user.getPhotoUrl()));
-                } catch (Exception e) {
+                } catch (Exception ignored) {
                 }
             }
         });

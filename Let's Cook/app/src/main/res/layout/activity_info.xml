@@ -49,7 +49,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginStart="200dp"
-                android:layout_marginLeft="200dp"
                 android:paddingTop="16dp"
                 android:text="@string/aboutMe"
                 android:textColor="@color/black"
@@ -74,9 +73,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/imageView" />
-
         </androidx.constraintlayout.widget.ConstraintLayout>
-
     </ScrollView>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView

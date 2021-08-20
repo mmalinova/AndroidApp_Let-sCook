@@ -49,22 +49,20 @@ import static com.example.letscook.constants.Messages.*;
 
 public class ShoppingListActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
     private int id;
-    private ImageView backIcon, my_products;
+    private ImageView my_products;
     private CircleImageView profile;
-    private TextView actionText, textView;
+    private TextView textView;
     private Spinner spinner;
-    private Button addBtn, deleteAll, addedBtn;
     private ConstraintLayout constraintLayout = null;
     private EditText name, quantity;
     private RecyclerView recyclerView;
     private List<Product> dataList = new ArrayList<>();
-    private LinearLayoutManager linearLayoutManager;
     private RoomDB database;
     private MainAdapter mainAdapter;
     private BottomNavigationView bottomNavigationView;
     private AlertDialog.Builder dialogBuilder;
     private AlertDialog dialog = null;
-    private Button okButton, noButton;
+    private Button okButton;
     private User user;
 
     @SuppressLint("ClickableViewAccessibility")
@@ -94,7 +92,6 @@ public class ShoppingListActivity extends AppCompatActivity implements AdapterVi
             }
         }
 
-        // Add click event listeners
         profile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -114,8 +111,8 @@ public class ShoppingListActivity extends AppCompatActivity implements AdapterVi
         });
 
         // Initialize action bar variables
-        backIcon = findViewById(R.id.back_icon);
-        actionText = findViewById(R.id.action_bar_text);
+        ImageView backIcon = findViewById(R.id.back_icon);
+        TextView actionText = findViewById(R.id.action_bar_text);
         backIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -125,17 +122,15 @@ public class ShoppingListActivity extends AppCompatActivity implements AdapterVi
         actionText.setText(SHOPPING_LIST);
 
         // Initialize attributes
-        addBtn = findViewById(R.id.addProdBtn);
+        Button addBtn = findViewById(R.id.addProdBtn);
         name = findViewById(R.id.editTextProduct);
         name.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 if (v.getId() == R.id.editTextProduct) {
                     v.getParent().requestDisallowInterceptTouchEvent(true);
-                    switch (event.getAction() & MotionEvent.ACTION_MASK) {
-                        case MotionEvent.ACTION_UP:
-                            v.getParent().requestDisallowInterceptTouchEvent(false);
-                            break;
+                    if ((event.getAction() & MotionEvent.ACTION_MASK) == MotionEvent.ACTION_UP) {
+                        v.getParent().requestDisallowInterceptTouchEvent(false);
                     }
                 }
                 return false;
@@ -180,12 +175,12 @@ public class ShoppingListActivity extends AppCompatActivity implements AdapterVi
             recyclerView.setVisibility(View.INVISIBLE);
             textView.setVisibility(View.VISIBLE);
         }
-        linearLayoutManager = new LinearLayoutManager(this);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(linearLayoutManager);
         mainAdapter = new MainAdapter(ShoppingListActivity.this, dataList, "shoppingList", user.getID());
         recyclerView.setAdapter(mainAdapter);
 
-        deleteAll = findViewById(R.id.delAllProd);
+        Button deleteAll = findViewById(R.id.delAllProd);
         deleteAll.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -202,7 +197,7 @@ public class ShoppingListActivity extends AppCompatActivity implements AdapterVi
                 }
             }
         });
-        addedBtn = findViewById(R.id.added);
+        Button addedBtn = findViewById(R.id.added);
         addedBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -261,12 +256,11 @@ public class ShoppingListActivity extends AppCompatActivity implements AdapterVi
         });
         // Initialize and assign variable
         bottomNavigationView = findViewById(R.id.bottom_nav);
-
         // Set selected
         bottomNavigationView.setSelectedItemId(R.id.shopping_list);
-
         // Perform item selected list
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @SuppressLint("NonConstantResourceId")
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 id = item.getItemId();
@@ -317,7 +311,7 @@ public class ShoppingListActivity extends AppCompatActivity implements AdapterVi
         final View popupView = getLayoutInflater().inflate(R.layout.delete_popup, null);
 
         okButton = popupView.findViewById(R.id.okBtn);
-        noButton = popupView.findViewById(R.id.noBtn);
+        Button noButton = popupView.findViewById(R.id.noBtn);
 
         dialogBuilder.setView(popupView);
         dialog = dialogBuilder.create();

@@ -36,7 +36,7 @@ public class SliderAdp extends SliderViewAdapter<SliderAdp.Holder> {
         return images.length;
     }
 
-    public class Holder extends SliderViewAdapter.ViewHolder {
+    public static class Holder extends SliderViewAdapter.ViewHolder {
         //Initialize variables
         ImageView imageView;
 

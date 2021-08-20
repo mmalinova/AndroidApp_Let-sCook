@@ -48,16 +48,12 @@ import static com.example.letscook.constants.Messages.*;
 public class ContactsActivity extends AppCompatActivity {
     private int id;
     private TextView facebookText, linkedInText, instText, required;
-    private ImageView backIcon;
-    private TextView actionText;
     private CircleImageView profile;
     private ImageView my_products;
     private NavigationView navigationView = null;
     private Button sendBtn;
-    private EditText username, email, pass, message;
-    private AlertDialog.Builder dialogBuilder;
+    private EditText username, message;
     private AlertDialog dialog = null;
-    private Button okButton;
     private RoomDB database;
     private User user;
 
@@ -91,7 +87,6 @@ public class ContactsActivity extends AppCompatActivity {
             }
         }
 
-        // Add click event listeners
         findViewById(R.id.constraint).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -120,8 +115,8 @@ public class ContactsActivity extends AppCompatActivity {
         });
 
         // Initialize action bar variables
-        backIcon = findViewById(R.id.back_icon);
-        actionText = findViewById(R.id.action_bar_text);
+        ImageView backIcon = findViewById(R.id.back_icon);
+        TextView actionText = findViewById(R.id.action_bar_text);
         backIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -150,20 +145,19 @@ public class ContactsActivity extends AppCompatActivity {
             public boolean onTouch(View v, MotionEvent event) {
                 if (v.getId() == R.id.textViewMess) {
                     v.getParent().requestDisallowInterceptTouchEvent(true);
-                    switch (event.getAction()&MotionEvent.ACTION_MASK){
-                        case MotionEvent.ACTION_UP:
-                            v.getParent().requestDisallowInterceptTouchEvent(false);
-                            break;
+                    if ((event.getAction() & MotionEvent.ACTION_MASK) == MotionEvent.ACTION_UP) {
+                        v.getParent().requestDisallowInterceptTouchEvent(false);
                     }
                 }
                 return false;
             }
         });
+
         // Initialize and assign variable
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_nav);
-
         // Perform item selected list
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @SuppressLint("NonConstantResourceId")
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 if (navigationView != null && navigationView.getVisibility() == View.VISIBLE) {
@@ -214,7 +208,7 @@ public class ContactsActivity extends AppCompatActivity {
                     startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(FB_URI)));
                     //100000685270756
                     facebookText.setLinkTextColor(Color.parseColor("#55067D"));
-                } catch (Exception e) {
+                } catch (Exception ignored) {
                 }
             }
         });
@@ -423,10 +417,10 @@ public class ContactsActivity extends AppCompatActivity {
     }
 
     public void deniedDialog() {
-        dialogBuilder = new AlertDialog.Builder(this);
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
         final View popupView = getLayoutInflater().inflate(R.layout.denied_access, null);
 
-        okButton = popupView.findViewById(R.id.okBtn);
+        Button okButton = popupView.findViewById(R.id.okBtn);
 
         dialogBuilder.setView(popupView);
         dialog = dialogBuilder.create();

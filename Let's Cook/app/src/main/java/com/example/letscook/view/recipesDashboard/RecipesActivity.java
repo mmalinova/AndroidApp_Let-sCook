@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -70,25 +71,24 @@ import static com.example.letscook.constants.Messages.MY_VIEWED;
 import static com.example.letscook.constants.Messages.NO_REC;
 import static com.example.letscook.constants.Messages.NO_REC_FOR_PRODUCTS;
 import static com.example.letscook.constants.Messages.PASS_REQ;
+import static com.example.letscook.constants.Messages.TO_APPROVE;
 import static com.example.letscook.constants.Messages.WRONG_PASS;
 
 public class RecipesActivity extends AppCompatActivity {
     private int id;
-    private ImageView backIcon, my_products;
+    private ImageView my_products;
     private CircleImageView profile;
-    private TextView actionText, textView;
     private NavigationView navigationView = null;
-    private RecyclerView recyclerView;
-    private RecyclerView.LayoutManager layoutManager;
-    private List<Recipe> dataList = new ArrayList<>();
+    public static RecyclerView recyclerView;
+    public static List<Recipe> dataList = new ArrayList<>();
     private List<Photo> images = new ArrayList<>();
     private RoomDB database;
-    private RecycleViewAdapter recycleViewAdapter;
-    private AlertDialog.Builder dialogBuilder;
     private AlertDialog dialog = null;
-    private Button okButton;
     private User user;
     private long userId;
+    private boolean isAtFav = false;
+    private boolean isAtMyRec = false;
+    private boolean isAtApprove = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -122,15 +122,15 @@ public class RecipesActivity extends AppCompatActivity {
         }
 
         // Initialize action bar variables
-        backIcon = findViewById(R.id.back_icon);
-        actionText = findViewById(R.id.action_bar_text);
+        ImageView backIcon = findViewById(R.id.back_icon);
+        TextView actionText = findViewById(R.id.action_bar_text);
         backIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 RecipesActivity.super.onBackPressed();
             }
         });
-        textView = findViewById(R.id.textView);
+        TextView textView = findViewById(R.id.textView);
         recyclerView = findViewById(R.id.recycler_view);
 
         String phrase = getIntent().getStringExtra("phrase");
@@ -147,6 +147,7 @@ public class RecipesActivity extends AppCompatActivity {
                     textView.setText(MY_RES);
                     textView.setVisibility(View.VISIBLE);
                     dataList = database.recipeDao().getRecipesByOwnerId(userId);
+                    isAtMyRec = true;
                     if (dataList.size() > 0) {
                         textView.setVisibility(View.INVISIBLE);
                         recyclerView.setVisibility(View.VISIBLE);
@@ -156,6 +157,7 @@ public class RecipesActivity extends AppCompatActivity {
                     textView.setText(MY_FAV);
                     textView.setVisibility(View.VISIBLE);
                     List<UserMarksRecipes> userFavRecipes = database.userDao().getUserMarksRecipes(userId);
+                    isAtFav = true;
                     dataList = userFavRecipes.get(0).recipeList;
                     if (dataList.size() > 0) {
                         textView.setVisibility(View.INVISIBLE);
@@ -187,9 +189,28 @@ public class RecipesActivity extends AppCompatActivity {
                         if (products.size() > productsList.size() + productsNeed) {
                             textView.setVisibility(View.VISIBLE);
                         } else {
-                            recyclerView.setVisibility(View.VISIBLE);
+                            int count = 0;
+                            for (Product product : products) {
+                                for (Parcelable prod : productsList) {
+                                    Product myProduct = (Product) prod;
+                                    if (product.getName().toLowerCase().equals(myProduct.getName().toLowerCase())) {
+                                        count++;
+                                    }
+                                }
+                            }
+                            if (products.size() <= count + productsNeed) {
+                                recyclerView.setVisibility(View.VISIBLE);
+                            } else {
+                                textView.setVisibility(View.VISIBLE);
+                            }
                         }
                     }
+                    break;
+                case TO_APPROVE:
+                    isAtApprove = true;
+                    dataList = database.recipeDao().getAllUnapprovedRecipes();
+                    textView.setVisibility(View.INVISIBLE);
+                    recyclerView.setVisibility(View.VISIBLE);
                     break;
             }
         } else if (recipeName != null) {
@@ -253,17 +274,17 @@ public class RecipesActivity extends AppCompatActivity {
             }
         });
 
-        layoutManager = new GridLayoutManager(this, 2);
+        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(this, 2);
         recyclerView.setLayoutManager(layoutManager);
-        recycleViewAdapter = new RecycleViewAdapter(RecipesActivity.this, dataList);
+        RecycleViewAdapter recycleViewAdapter = new RecycleViewAdapter(RecipesActivity.this, dataList, userId, isAtFav, isAtMyRec, isAtApprove);
         recyclerView.setAdapter(recycleViewAdapter);
         recyclerView.setHasFixedSize(true);
 
         // Initialize and assign variable
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_nav);
-
         // Perform item selected list
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @SuppressLint("NonConstantResourceId")
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 if (navigationView != null && navigationView.getVisibility() == View.VISIBLE) {
@@ -439,10 +460,10 @@ public class RecipesActivity extends AppCompatActivity {
     }
 
     public void deniedDialog() {
-        dialogBuilder = new AlertDialog.Builder(this);
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
         final View popupView = getLayoutInflater().inflate(R.layout.denied_access, null);
 
-        okButton = popupView.findViewById(R.id.okBtn);
+        Button okButton = popupView.findViewById(R.id.okBtn);
 
         dialogBuilder.setView(popupView);
         dialog = dialogBuilder.create();

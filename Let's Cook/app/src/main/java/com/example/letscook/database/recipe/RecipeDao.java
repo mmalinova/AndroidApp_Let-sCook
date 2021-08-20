@@ -4,7 +4,6 @@ import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
-import androidx.room.Transaction;
 
 import java.util.List;
 
@@ -18,7 +17,13 @@ public interface RecipeDao {
     @Delete
     void delete(Recipe recipe);
 
-    @Query("SELECT * FROM recipe ORDER BY created_on LIMIT 10")
+    @Query("SELECT * FROM recipe WHERE is_approved = 0 ORDER BY created_on")
+    List<Recipe> getAllUnapprovedRecipes();
+
+    @Query("UPDATE recipe SET is_approved = 1 WHERE recipe_id = :sID")
+    void approveRecipeById(long sID);
+
+    @Query("SELECT * FROM recipe WHERE is_approved = 1 ORDER BY created_on LIMIT 10")
     List<Recipe> getAllLastAddedRecipes();
 
     @Query("SELECT * FROM recipe WHERE recipe_id = :sID")
@@ -27,10 +32,10 @@ public interface RecipeDao {
     @Query("SELECT * FROM recipe WHERE name = :sName")
     Recipe getRecipeByName(String sName);
 
-    @Query("SELECT * FROM recipe WHERE name LIKE '%' || :sName || '%'")
+    @Query("SELECT * FROM recipe WHERE is_approved = 1 AND name LIKE '%' || :sName || '%'")
     List<Recipe> getAllRecipeByName(String sName);
 
-    @Query("SELECT * FROM recipe WHERE category LIKE '%' || :sCategory || '%' AND vegetarian = :sVeg")
+    @Query("SELECT * FROM recipe WHERE is_approved = 1 AND category LIKE '%' || :sCategory || '%' AND vegetarian = :sVeg")
     List<Recipe> getAllRecipeByCategoryAndVeg(String sCategory, int sVeg);
 
     @Query("SELECT * FROM recipe WHERE owner_id = :sID")

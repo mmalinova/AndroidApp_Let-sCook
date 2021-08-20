@@ -77,7 +77,6 @@
                     android:inputType="textEmailAddress"
                     android:textColor="@color/inputText"
                     android:textColorHint="@color/inputText" />
-
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -100,7 +99,6 @@
                     android:inputType="textPassword"
                     android:textColor="@color/inputText"
                     android:textColorHint="@color/black" />
-
             </com.google.android.material.textfield.TextInputLayout>
 
             <Button
@@ -140,8 +138,6 @@
                 android:text="@string/reg_question"
                 android:textColorLink="@color/secondLink"
                 android:textSize="16sp" />
-
         </LinearLayout>
     </ScrollView>
-
 </RelativeLayout>

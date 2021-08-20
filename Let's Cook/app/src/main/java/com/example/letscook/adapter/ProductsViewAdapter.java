@@ -21,13 +21,11 @@ public class ProductsViewAdapter extends RecyclerView.Adapter<ProductsViewAdapte
     private List<Product> productList;
     private Activity context;
     private RoomDB database;
-    private long ownerId;
     private long userId;
 
     public ProductsViewAdapter(Activity context, List<Product> productList, long ownerId, long userId) {
         this.context = context;
         this.productList = productList;
-        this.ownerId = ownerId;
         this.userId = userId;
         notifyDataSetChanged();
     }
@@ -79,7 +77,7 @@ public class ProductsViewAdapter extends RecyclerView.Adapter<ProductsViewAdapte
         return productList.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder {
         // Initialize variable
         TextView name, quantity, unit;
         ImageView add;

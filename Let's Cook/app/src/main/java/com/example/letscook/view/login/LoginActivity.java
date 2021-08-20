@@ -18,7 +18,6 @@ import com.example.letscook.database.user.UserDao;
 import com.example.letscook.view.home.MainActivity;
 import com.example.letscook.view.register.SignUpActivity;
 
-import java.util.List;
 
 import static com.example.letscook.constants.Messages.EMAIL_NOT_EXIST;
 import static com.example.letscook.constants.Messages.EMAIL_REQ;

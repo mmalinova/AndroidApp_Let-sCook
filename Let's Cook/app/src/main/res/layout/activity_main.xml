@@ -47,6 +47,43 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
+            <TextView
+                android:id="@+id/to_approve"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_marginStart="16dp"
+                android:fontFamily="@font/marckscript_regular"
+                android:foregroundGravity="center"
+                android:gravity="center_horizontal|center_vertical"
+                android:text="@string/to_approve"
+                android:textColor="@color/inputText"
+                android:textSize="18sp"
+                android:textStyle="bold|italic"
+                android:visibility="invisible"
+                app:layout_constraintEnd_toStartOf="@id/number"
+                app:layout_constraintHorizontal_chainStyle="spread"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/welcome" />
+
+            <TextView
+                android:id="@+id/number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_marginBottom="2dp"
+                android:gravity="center_horizontal"
+                android:text=""
+                android:clickable="true"
+                android:textColor="@color/link"
+                android:textSize="18sp"
+                android:textStyle="bold|italic"
+                android:visibility="invisible"
+                app:layout_constraintBottom_toBottomOf="@id/to_approve"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/to_approve"
+                android:focusable="true" />
+
             <LinearLayout
                 android:id="@+id/linearLayout"
                 android:layout_width="0dp"
@@ -152,14 +189,14 @@
 
                 <androidx.cardview.widget.CardView
                     android:id="@+id/myRecipes_card"
-                    app:cardBackgroundColor="@color/white"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_margin="10dp"
                     android:layout_weight="1"
-                    app:cardElevation="4dp"
                     android:shape="ring"
-                    app:cardCornerRadius="12dp">
+                    app:cardBackgroundColor="@color/white"
+                    app:cardCornerRadius="12dp"
+                    app:cardElevation="4dp">
 
                     <RelativeLayout
                         android:layout_width="match_parent"
@@ -192,14 +229,14 @@
 
                 <androidx.cardview.widget.CardView
                     android:id="@+id/fav_card"
-                    app:cardBackgroundColor="@color/white"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_margin="10dp"
                     android:layout_weight="1"
-                    app:cardElevation="4dp"
                     android:shape="ring"
-                    app:cardCornerRadius="12dp">
+                    app:cardBackgroundColor="@color/white"
+                    app:cardCornerRadius="12dp"
+                    app:cardElevation="4dp">
 
                     <RelativeLayout
                         android:layout_width="match_parent"
@@ -244,14 +281,14 @@
 
                 <androidx.cardview.widget.CardView
                     android:id="@+id/shopping_card"
-                    app:cardBackgroundColor="@color/white"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_margin="10dp"
                     android:layout_weight="1"
-                    app:cardElevation="4dp"
                     android:shape="ring"
-                    app:cardCornerRadius="12dp">
+                    app:cardBackgroundColor="@color/white"
+                    app:cardCornerRadius="12dp"
+                    app:cardElevation="4dp">
 
                     <RelativeLayout
                         android:layout_width="match_parent"
@@ -283,14 +320,14 @@
 
                 <androidx.cardview.widget.CardView
                     android:id="@+id/myProducts_card"
-                    app:cardBackgroundColor="@color/white"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_margin="10dp"
                     android:layout_weight="1"
-                    app:cardElevation="4dp"
                     android:shape="ring"
-                    app:cardCornerRadius="12dp">
+                    app:cardBackgroundColor="@color/white"
+                    app:cardCornerRadius="12dp"
+                    app:cardElevation="4dp">
 
                     <RelativeLayout
                         android:layout_width="match_parent"
@@ -335,14 +372,14 @@
 
                 <androidx.cardview.widget.CardView
                     android:id="@+id/addRecipe_card"
-                    app:cardBackgroundColor="@color/white"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_margin="10dp"
                     android:layout_weight="1"
-                    app:cardElevation="4dp"
                     android:shape="ring"
-                    app:cardCornerRadius="12dp">
+                    app:cardBackgroundColor="@color/white"
+                    app:cardCornerRadius="12dp"
+                    app:cardElevation="4dp">
 
                     <RelativeLayout
                         android:layout_width="match_parent"
@@ -375,14 +412,14 @@
 
                 <androidx.cardview.widget.CardView
                     android:id="@+id/myProfile_card"
-                    app:cardBackgroundColor="@color/white"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_margin="10dp"
                     android:layout_weight="1"
-                    app:cardElevation="4dp"
                     android:shape="ring"
-                    app:cardCornerRadius="12dp">
+                    app:cardBackgroundColor="@color/white"
+                    app:cardCornerRadius="12dp"
+                    app:cardElevation="4dp">
 
                     <RelativeLayout
                         android:layout_width="match_parent"
@@ -427,14 +464,14 @@
 
                 <androidx.cardview.widget.CardView
                     android:id="@+id/lastViewed_card"
-                    app:cardBackgroundColor="@color/white"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_margin="10dp"
                     android:layout_weight="1"
-                    app:cardElevation="4dp"
                     android:shape="ring"
-                    app:cardCornerRadius="12dp">
+                    app:cardBackgroundColor="@color/white"
+                    app:cardCornerRadius="12dp"
+                    app:cardElevation="4dp">
 
                     <RelativeLayout
                         android:layout_width="match_parent"
@@ -467,14 +504,14 @@
 
                 <androidx.cardview.widget.CardView
                     android:id="@+id/lastAdded_card"
-                    app:cardBackgroundColor="@color/white"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_margin="10dp"
                     android:layout_weight="1"
-                    app:cardElevation="4dp"
                     android:shape="ring"
-                    app:cardCornerRadius="12dp">
+                    app:cardBackgroundColor="@color/white"
+                    app:cardCornerRadius="12dp"
+                    app:cardElevation="4dp">
 
                     <RelativeLayout
                         android:layout_width="match_parent"
@@ -519,14 +556,14 @@
 
                 <androidx.cardview.widget.CardView
                     android:id="@+id/contacts_card"
-                    app:cardBackgroundColor="@color/white"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_margin="10dp"
                     android:layout_weight="1"
-                    app:cardElevation="4dp"
                     android:shape="ring"
-                    app:cardCornerRadius="12dp">
+                    app:cardBackgroundColor="@color/white"
+                    app:cardCornerRadius="12dp"
+                    app:cardElevation="4dp">
 
                     <RelativeLayout
                         android:layout_width="match_parent"
@@ -559,14 +596,14 @@
 
                 <androidx.cardview.widget.CardView
                     android:id="@+id/info_card"
-                    app:cardBackgroundColor="@color/white"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_margin="10dp"
                     android:layout_weight="1"
-                    app:cardElevation="4dp"
                     android:shape="ring"
-                    app:cardCornerRadius="12dp">
+                    app:cardBackgroundColor="@color/white"
+                    app:cardCornerRadius="12dp"
+                    app:cardElevation="4dp">
 
                     <RelativeLayout
                         android:layout_width="match_parent"
@@ -610,14 +647,14 @@
 
                 <androidx.cardview.widget.CardView
                     android:id="@+id/policy_card"
-                    app:cardBackgroundColor="@color/white"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_margin="10dp"
                     android:layout_weight="1"
-                    app:cardElevation="4dp"
                     android:shape="ring"
-                    app:cardCornerRadius="12dp">
+                    app:cardBackgroundColor="@color/white"
+                    app:cardCornerRadius="12dp"
+                    app:cardElevation="4dp">
 
                     <RelativeLayout
                         android:layout_width="match_parent"
@@ -649,14 +686,14 @@
 
                 <androidx.cardview.widget.CardView
                     android:id="@+id/terms_card"
-                    app:cardBackgroundColor="@color/white"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_margin="10dp"
                     android:layout_weight="1"
-                    app:cardElevation="4dp"
                     android:shape="ring"
-                    app:cardCornerRadius="12dp">
+                    app:cardBackgroundColor="@color/white"
+                    app:cardCornerRadius="12dp"
+                    app:cardElevation="4dp">
 
                     <RelativeLayout
                         android:layout_width="match_parent"
@@ -687,9 +724,7 @@
                     </RelativeLayout>
                 </androidx.cardview.widget.CardView>
             </LinearLayout>
-
         </androidx.constraintlayout.widget.ConstraintLayout>
-
     </ScrollView>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
@@ -701,5 +736,4 @@
         app:itemIconTint="@drawable/selector"
         app:menu="@menu/bottom_menu"
         android:layout_alignParentBottom="true"/>
-
 </RelativeLayout>

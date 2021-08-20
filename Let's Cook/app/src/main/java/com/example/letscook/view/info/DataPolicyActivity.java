@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -45,14 +46,10 @@ import static com.example.letscook.constants.Messages.WRONG_PASS;
 
 public class DataPolicyActivity extends AppCompatActivity {
     private int id;
-    private ImageView backIcon;
-    private TextView actionText;
     private ImageView my_products;
     private CircleImageView profile;
     private NavigationView navigationView = null;
-    private AlertDialog.Builder dialogBuilder;
     private AlertDialog dialog = null;
-    private Button okButton;
     private RoomDB database;
     private User user;
 
@@ -85,7 +82,6 @@ public class DataPolicyActivity extends AppCompatActivity {
             }
         }
 
-        // Add click event listeners
         findViewById(R.id.layout).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -112,10 +108,9 @@ public class DataPolicyActivity extends AppCompatActivity {
                 }
             }
         });
-
         // Initialize action bar variables
-        backIcon = findViewById(R.id.back_icon);
-        actionText = findViewById(R.id.action_bar_text);
+        ImageView backIcon = findViewById(R.id.back_icon);
+        TextView actionText = findViewById(R.id.action_bar_text);
         backIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -126,9 +121,9 @@ public class DataPolicyActivity extends AppCompatActivity {
 
         // Initialize and assign variable
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_nav);
-
         // Perform item selected list
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @SuppressLint("NonConstantResourceId")
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 if (navigationView != null && navigationView.getVisibility() == View.VISIBLE) {
@@ -304,10 +299,10 @@ public class DataPolicyActivity extends AppCompatActivity {
     }
 
     public void deniedDialog() {
-        dialogBuilder = new AlertDialog.Builder(this);
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
         final View popupView = getLayoutInflater().inflate(R.layout.denied_access, null);
 
-        okButton = popupView.findViewById(R.id.okBtn);
+        Button okButton = popupView.findViewById(R.id.okBtn);
 
         dialogBuilder.setView(popupView);
         dialog = dialogBuilder.create();

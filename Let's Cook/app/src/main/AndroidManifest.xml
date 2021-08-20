@@ -95,21 +95,11 @@
             android:name=".view.recipesDashboard.RecipesActivity" />
         <activity
             android:name=".view.recipeDetails.RecipeActivity"
+            android:keepScreenOn="true"
             android:parentActivityName=".view.recipesDashboard.RecipesActivity" />
         <activity
             android:name=".view.info.DataPolicyActivity"
             android:parentActivityName=".view.home.MainActivity" />
-
-<!--        <provider-->
-<!--            android:authorities="com.example.letscook.fileprovider"-->
-<!--            android:name="androidx.core.content.FileProvider"-->
-<!--            android:exported="false"-->
-<!--            android:grantUriPermissions="true">-->
-<!--            <meta-data-->
-<!--                android:name="android.support.FILE_PROVIDER_PATHS"-->
-<!--                android:resource="@xml/file_paths" />-->
-
-<!--        </provider>-->
 
         <meta-data
             android:name="preloaded_fonts"

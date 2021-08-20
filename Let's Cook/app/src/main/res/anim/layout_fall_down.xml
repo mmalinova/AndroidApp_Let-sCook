@@ -3,5 +3,4 @@
     android:animation="@anim/item_fall_down"
     android:animationOrder="normal"
     android:delay="15%">
-
 </layoutAnimation>

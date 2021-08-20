@@ -11,6 +11,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.text.SpannableString;
+import android.text.style.UnderlineSpan;
 import android.util.Patterns;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,6 +22,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.blogspot.atifsoftwares.animatoolib.Animatoo;
+import com.example.letscook.database.recipe.Recipe;
 import com.example.letscook.view.AddRecipeActivity;
 import com.example.letscook.view.ContactsActivity;
 import com.example.letscook.database.RoomDB;
@@ -37,28 +40,22 @@ import com.example.letscook.view.search.SearchActivity;
 import com.example.letscook.view.products.ShoppingListActivity;
 import com.example.letscook.view.info.TermsOfUseActivity;
 import com.example.letscook.view.search.WhatToCookActivity;
-import com.facebook.FacebookSdk;
-import com.facebook.appevents.AppEventsLogger;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.analytics.FirebaseAnalytics;
+
+import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
 import static com.example.letscook.constants.Messages.*;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
-    private FirebaseAnalytics analytics;
-    private CardView whatToCookCard, searchCard, myRecipesCard, favCard, shoppingListCard,
-            myProductsCard, addRecipeCard, profileCard, lastViewedCard, lastAddedCard, contactsCard,
-            infoCard, policyCard, termsCard;
     private ImageView my_products;
     private CircleImageView profile;
     private NavigationView navigationView = null;
     private BottomNavigationView bottomNavigationView;
-    private AlertDialog.Builder dialogBuilder;
     private AlertDialog dialog = null;
-    private Button okButton;
     private RoomDB database;
     private User user;
 
@@ -67,10 +64,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //FacebookSdk.sdkInitialize(getApplicationContext());
-        //AppEventsLogger.activateApp(this);
-
-        analytics = FirebaseAnalytics.getInstance(this);
         // Initialize profile  and my products links
         profile = findViewById(R.id.profile);
         my_products = findViewById(R.id.my_products);
@@ -94,8 +87,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 navigationView = findViewById(R.id.login_view);
             }
         }
-
-        // Add click event listeners
         findViewById(R.id.constraint).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -108,13 +99,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onClick(View v) {
                 navigationClickListeners();
-                analytics.logEvent("clicked_profile_icon", null);
             }
         });
         my_products.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                analytics.logEvent("clicked_my_products_icon", null);
                 if (user == null) {
                     deniedDialog();
                 } else {
@@ -124,22 +113,41 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
             }
         });
+        if (user != null && user.isAdmin()) {
+            findViewById(R.id.to_approve).setVisibility(View.VISIBLE);
+            TextView num = findViewById(R.id.number);
+            List<Recipe> unapprovedRecipes = database.recipeDao().getAllUnapprovedRecipes();
+            SpannableString content = new SpannableString(String.valueOf(unapprovedRecipes.size()));
+            content.setSpan(new UnderlineSpan(), 0, content.length(), 0);
+            num.setText(content);
+            num.setVisibility(View.VISIBLE);
+            if (unapprovedRecipes.size() > 0) {
+                num.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(MainActivity.this, RecipesActivity.class);
+                        intent.putExtra("phrase", TO_APPROVE);
+                        startActivity(intent);
+                    }
+                });
+            }
+        }
 
         // Initialize cards
-        whatToCookCard = findViewById(R.id.whatToCook_card);
-        searchCard = findViewById(R.id.search_card);
-        myRecipesCard = findViewById(R.id.myRecipes_card);
-        favCard = findViewById(R.id.fav_card);
-        shoppingListCard = findViewById(R.id.shopping_card);
-        myProductsCard = findViewById(R.id.myProducts_card);
-        addRecipeCard = findViewById(R.id.addRecipe_card);
-        profileCard = findViewById(R.id.myProfile_card);
-        lastViewedCard = findViewById(R.id.lastViewed_card);
-        lastAddedCard = findViewById(R.id.lastAdded_card);
-        contactsCard = findViewById(R.id.contacts_card);
-        infoCard = findViewById(R.id.info_card);
-        policyCard = findViewById(R.id.policy_card);
-        termsCard = findViewById(R.id.terms_card);
+        CardView whatToCookCard = findViewById(R.id.whatToCook_card);
+        CardView searchCard = findViewById(R.id.search_card);
+        CardView myRecipesCard = findViewById(R.id.myRecipes_card);
+        CardView favCard = findViewById(R.id.fav_card);
+        CardView shoppingListCard = findViewById(R.id.shopping_card);
+        CardView myProductsCard = findViewById(R.id.myProducts_card);
+        CardView addRecipeCard = findViewById(R.id.addRecipe_card);
+        CardView profileCard = findViewById(R.id.myProfile_card);
+        CardView lastViewedCard = findViewById(R.id.lastViewed_card);
+        CardView lastAddedCard = findViewById(R.id.lastAdded_card);
+        CardView contactsCard = findViewById(R.id.contacts_card);
+        CardView infoCard = findViewById(R.id.info_card);
+        CardView policyCard = findViewById(R.id.policy_card);
+        CardView termsCard = findViewById(R.id.terms_card);
 
         // Add click listeners to the cards
         whatToCookCard.setOnClickListener(this);
@@ -159,12 +167,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         // Initialize and assign variable
         bottomNavigationView = findViewById(R.id.bottom_nav);
-
         // Set home selected
         bottomNavigationView.setSelectedItemId(R.id.home);
-
         // Perform item selected list
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @SuppressLint("NonConstantResourceId")
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 if (navigationView != null && navigationView.getVisibility() == View.VISIBLE) {
@@ -207,6 +214,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         });
     }
 
+    @SuppressLint("NonConstantResourceId")
     @Override
     public void onClick(View v) {
         if (navigationView != null && navigationView.getVisibility() == View.VISIBLE) {
@@ -274,9 +282,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     navigationClickListeners();
                     break;
                 case R.id.lastViewed_card:
-                    intent = new Intent(this, RecipesActivity.class);
-                    intent.putExtra("phrase", LAST_VIEW);
-                    startActivity(intent);
+                    if (user == null) {
+                        deniedDialog();
+                    } else {
+                        intent = new Intent(this, RecipesActivity.class);
+                        intent.putExtra("phrase", LAST_VIEW);
+                        startActivity(intent);
+                    }
                     break;
                 case R.id.lastAdded_card:
                     intent = new Intent(this, RecipesActivity.class);
@@ -423,7 +435,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         @Override
                         public void run() {
                             if (navigationView != null && navigationView.getVisibility() == View.VISIBLE) {
-                                hideNavView();
+                                startActivity(new Intent(getApplicationContext(), MainActivity.class));
                                 navigationView = null;
                             }
                         }
@@ -434,10 +446,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     public void deniedDialog() {
-        dialogBuilder = new AlertDialog.Builder(this);
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
         final View popupView = getLayoutInflater().inflate(R.layout.denied_access, null);
 
-        okButton = popupView.findViewById(R.id.okBtn);
+        Button okButton = popupView.findViewById(R.id.okBtn);
 
         dialogBuilder.setView(popupView);
         dialog = dialogBuilder.create();

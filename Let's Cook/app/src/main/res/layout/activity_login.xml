@@ -100,7 +100,6 @@
                     android:inputType="textPassword"
                     android:textColor="@color/inputText"
                     android:textColorHint="@color/black" />
-
             </com.google.android.material.textfield.TextInputLayout>
 
             <CheckBox
@@ -137,8 +136,6 @@
                 android:text="@string/forgot_pass"
                 android:textColorLink="@color/secondLink"
                 android:textSize="16sp" />
-
         </LinearLayout>
     </ScrollView>
-
 </RelativeLayout>

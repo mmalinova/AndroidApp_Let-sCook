@@ -1,8 +1,11 @@
 package com.example.letscook.adapter;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,11 +13,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.letscook.R;
 import com.example.letscook.database.recipe.Recipe;
 import com.example.letscook.database.RoomDB;
+import com.example.letscook.database.relationships.UserMarksRecipeCrossRef;
+import com.example.letscook.database.relationships.UserMarksRecipes;
 import com.example.letscook.database.typeconverters.DataConverter;
 import com.example.letscook.view.recipeDetails.RecipeActivity;
 
@@ -25,11 +31,19 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.ViewHolder> {
     private List<Recipe> recipeList;
     private Activity context;
+    private long userId;
+    private boolean isAtFav;
+    private boolean isAtMyRec;
+    private boolean isAtApprove;
     private RoomDB database;
 
-    public RecycleViewAdapter(Activity context, List<Recipe> recipeList) {
+    public RecycleViewAdapter(Activity context, List<Recipe> recipeList, long userId, boolean isAtFav, boolean isAtMyRec, boolean isAtApprove) {
         this.context = context;
         this.recipeList = recipeList;
+        this.userId = userId;
+        this.isAtFav = isAtFav;
+        this.isAtMyRec = isAtMyRec;
+        this.isAtApprove = isAtApprove;
         notifyDataSetChanged();
     }
 
@@ -48,36 +62,67 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
         Recipe recipe = recipeList.get(position);
         // Initialize database
         database = RoomDB.getInstance(context);
-        //holder.imageView.setImageResource(imagesList.get(position));
+        // Check for favourite recipe
+        List<UserMarksRecipes> userFavRecipes = database.userDao().getUserMarksRecipes(userId);
+        boolean isMarked = false;
+        for (Recipe rec : userFavRecipes.get(0).recipeList) {
+            if (rec.getID() == recipe.getID()) {
+                holder.favourite.setImageResource(R.drawable.ic_favorite_after);
+                isMarked = true;
+            }
+        }
+        if (!isMarked) {
+            holder.favourite.setImageResource(R.drawable.ic_favorite_before);
+        }
         holder.textView.setTextColor(Color.parseColor("#4E4E4E"));
         holder.textView.setText(recipe.getName());
         holder.imageView.setImageBitmap(DataConverter.byteArrayToImage(recipe.getImage()));
         holder.imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent (v.getContext(), RecipeActivity.class);
+                Intent intent = new Intent(v.getContext(), RecipeActivity.class);
                 intent.putExtra("recipeId", recipe.getID());
+                if (isAtMyRec) {
+                    intent.putExtra("isAtMyRec", true);
+                } else if (isAtApprove) {
+                    intent.putExtra("isAtApprove", true);
+                }
                 v.getContext().startActivity(intent);
             }
         });
         holder.textView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent (v.getContext(), RecipeActivity.class);
+                Intent intent = new Intent(v.getContext(), RecipeActivity.class);
                 intent.putExtra("recipeId", recipe.getID());
+                if (isAtMyRec) {
+                    intent.putExtra("isAtMyRec", true);
+                } else if (isAtApprove) {
+                    intent.putExtra("isAtApprove", true);
+                }
                 v.getContext().startActivity(intent);
             }
         });
-
         holder.favourite.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("UseCompatLoadingForDrawables")
             @Override
             public void onClick(View v) {
-                if (holder.favourite.getDrawable().getConstantState() == context.getResources().getDrawable(R.drawable.ic_favorite_before).getConstantState())
-                {
+                if (holder.favourite.getDrawable().getConstantState() == context.getResources().getDrawable(R.drawable.ic_favorite_before).getConstantState()) {
                     holder.favourite.setImageResource(R.drawable.ic_favorite_after);
-                } else
-                {
+                    database.userDao().insertUserMarksRecipeCrossRef(new UserMarksRecipeCrossRef(userId, recipe.getID()));
+                    notifyDataSetChanged();
+                } else {
                     holder.favourite.setImageResource(R.drawable.ic_favorite_before);
+                    database.userDao().deleteUserMarksRecipeCrossRef(new UserMarksRecipeCrossRef(userId, recipe.getID()));
+                    notifyDataSetChanged();
+                    if (isAtFav) {
+                        notifyItemRemoved(position);
+                        recipeList.remove(recipe);
+                        if (getItemCount() <= 0) {
+                            context.findViewById(R.id.recycler_view).setVisibility(View.INVISIBLE);
+                            context.findViewById(R.id.textView).setVisibility(View.VISIBLE);
+                        }
+                    }
                 }
             }
         });
@@ -88,7 +133,7 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
         return recipeList.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder {
         ImageView imageView;
         TextView textView;
         CircleImageView favourite;
@@ -98,6 +143,33 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
             imageView = itemView.findViewById(R.id.recipe_image);
             textView = itemView.findViewById(R.id.recipe_name);
             favourite = itemView.findViewById(R.id.favourite);
+        }
+    }
+
+    /**
+     * No Predictive Animations GridLayoutManager
+     */
+    private static class NpaGridLayoutManager extends GridLayoutManager {
+        /**
+         * Disable predictive animations. There is a bug in RecyclerView which causes views that
+         * are being reloaded to pull invalid ViewHolders from the internal recycler stack if the
+         * adapter size has decreased since the ViewHolder was recycled.
+         */
+        @Override
+        public boolean supportsPredictiveItemAnimations() {
+            return false;
+        }
+
+        public NpaGridLayoutManager(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+            super(context, attrs, defStyleAttr, defStyleRes);
+        }
+
+        public NpaGridLayoutManager(Context context, int spanCount) {
+            super(context, spanCount);
+        }
+
+        public NpaGridLayoutManager(Context context, int spanCount, int orientation, boolean reverseLayout) {
+            super(context, spanCount, orientation, reverseLayout);
         }
     }
 }

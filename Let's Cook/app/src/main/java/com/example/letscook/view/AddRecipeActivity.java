@@ -10,7 +10,6 @@ import androidx.core.content.ContextCompat;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.ActivityNotFoundException;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -65,12 +64,11 @@ import static com.example.letscook.constants.Messages.*;
 
 public class AddRecipeActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
     private int id;
-    private ImageView backIcon;
-    private TextView actionText, required;
     private ImageView my_products;
     private CircleImageView profile;
     private Spinner spinner;
-    private Button addProduct, addRecipe, browseBtn;
+    private Button addProduct;
+    private Button addRecipe;
     private RadioGroup firstRG, secondRG, vegRG;
     private EditText recipeName, portions, productName, quantity, steps, hours, minutes;
     private BottomNavigationView bottomNavigationView;
@@ -81,13 +79,9 @@ public class AddRecipeActivity extends AppCompatActivity implements AdapterView.
     private Uri imageUri;
     private final int CAMERA_INTENT = 1;
     private final int SELECT_PHOTO = 2;
-    private Bitmap bmpImage = null, selectedImage = null;
     private int count = 0;
     private ArrayList<Photo> photos = new ArrayList<>();
     private ImageView firstRecImg, secondRecImg, thirdRecImg;
-    private AlertDialog.Builder dialogBuilder;
-    private Button yesButton;
-    private Button noButton;
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -116,7 +110,6 @@ public class AddRecipeActivity extends AppCompatActivity implements AdapterView.
             }
         }
 
-        // Add click event listeners
         profile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -136,8 +129,8 @@ public class AddRecipeActivity extends AppCompatActivity implements AdapterView.
         });
 
         // Initialize action bar variables
-        backIcon = findViewById(R.id.back_icon);
-        actionText = findViewById(R.id.action_bar_text);
+        ImageView backIcon = findViewById(R.id.back_icon);
+        TextView actionText = findViewById(R.id.action_bar_text);
         backIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -150,7 +143,7 @@ public class AddRecipeActivity extends AppCompatActivity implements AdapterView.
         String userEmail = getSharedPreferences("PREFERENCE", MODE_PRIVATE)
                 .getString("email", null);
         user = database.userDao().getUserByEmail(userEmail);
-        required = findViewById(R.id.textViewRequired);
+        TextView required = findViewById(R.id.textViewRequired);
         recipeName = findViewById(R.id.editTextName);
         recipeName.addTextChangedListener(watcher);
         final String[] firstCategory = new String[1];
@@ -211,7 +204,7 @@ public class AddRecipeActivity extends AppCompatActivity implements AdapterView.
                 }
             }
         });
-        browseBtn = findViewById(R.id.uploadBtn);
+        Button browseBtn = findViewById(R.id.uploadBtn);
         browseBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -234,7 +227,6 @@ public class AddRecipeActivity extends AppCompatActivity implements AdapterView.
                 }
             }
         });
-
         firstRecImg = findViewById(R.id.firstRecipeImg);
         secondRecImg = findViewById(R.id.secondRecipeImg);
         thirdRecImg = findViewById(R.id.thirdRecipeImg);
@@ -269,10 +261,6 @@ public class AddRecipeActivity extends AppCompatActivity implements AdapterView.
                     }
                     if (!q.equals("") && !q.equals(".")) {
                         sQuantity = Float.parseFloat(q);
-//                        if (sQuantity <= 0) {
-//                            findViewById(R.id.secondTextView).setVisibility(View.VISIBLE);
-//                            return;
-//                        }
                     }
                     product.setName(sName);
                     product.setMeasureUnit(sMeasureUnit);
@@ -295,16 +283,13 @@ public class AddRecipeActivity extends AppCompatActivity implements AdapterView.
             public boolean onTouch(View v, MotionEvent event) {
                 if (v.getId() == R.id.editTextPrep) {
                     v.getParent().requestDisallowInterceptTouchEvent(true);
-                    switch (event.getAction() & MotionEvent.ACTION_MASK) {
-                        case MotionEvent.ACTION_UP:
-                            v.getParent().requestDisallowInterceptTouchEvent(false);
-                            break;
+                    if ((event.getAction() & MotionEvent.ACTION_MASK) == MotionEvent.ACTION_UP) {
+                        v.getParent().requestDisallowInterceptTouchEvent(false);
                     }
                 }
                 return false;
             }
         });
-
         hours = findViewById(R.id.editTextH);
         hours.addTextChangedListener(watcher);
         minutes = findViewById(R.id.editTextMin);
@@ -353,6 +338,11 @@ public class AddRecipeActivity extends AppCompatActivity implements AdapterView.
                 recipe.setHours(hour);
                 recipe.setMinutes(min);
                 recipe.setImage(photos.get(0).getPhoto());
+                if (user.isAdmin()) {
+                    recipe.setIsApproved(true);
+                } else {
+                    recipe.setIsApproved(false);
+                }
                 Date currentTime = Calendar.getInstance().getTime();
                 recipe.setCreatedOn(currentTime);
                 recipe.setOwnerID(user.getID());
@@ -366,18 +356,21 @@ public class AddRecipeActivity extends AppCompatActivity implements AdapterView.
                     product.setOwnerId(rec.getID());
                     database.productDao().insert(product);
                 }
-                deniedDialog();
+                if (user.isAdmin()) {
+                    startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                } else {
+                    deniedDialog();
+                }
             }
         });
 
         // Initialize and assign variable
         bottomNavigationView = findViewById(R.id.bottom_nav);
-
         // Set selected
         bottomNavigationView.setSelectedItemId(R.id.add_recipe);
-
         // Perform item selected list
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @SuppressLint("NonConstantResourceId")
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 id = item.getItemId();
@@ -406,13 +399,13 @@ public class AddRecipeActivity extends AppCompatActivity implements AdapterView.
     }
 
     public void deniedDialog() {
-        dialogBuilder = new AlertDialog.Builder(this);
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
         final View popupView = getLayoutInflater().inflate(R.layout.veg_popup, null);
         TextView textView = popupView.findViewById(R.id.veg_question);
         textView.setText(SUCCESS_ADD);
 
-        yesButton = popupView.findViewById(R.id.okBtn);
-        noButton = popupView.findViewById(R.id.noBtn);
+        Button yesButton = popupView.findViewById(R.id.okBtn);
+        Button noButton = popupView.findViewById(R.id.noBtn);
 
         dialogBuilder.setView(popupView);
         dialog = dialogBuilder.create();
@@ -552,7 +545,7 @@ public class AddRecipeActivity extends AppCompatActivity implements AdapterView.
         if (requestCode == CAMERA_INTENT) {
             if (resultCode == Activity.RESULT_OK) {
                 try {
-                    bmpImage = MediaStore.Images.Media.getBitmap(
+                    Bitmap bmpImage = MediaStore.Images.Media.getBitmap(
                             getContentResolver(), imageUri);
                     bmpImage = getResizedBitmap(bmpImage, 900, 1000);
                     switch (count) {
@@ -582,7 +575,7 @@ public class AddRecipeActivity extends AppCompatActivity implements AdapterView.
                     assert data != null;
                     final Uri img = data.getData();
                     final InputStream stream = getContentResolver().openInputStream(img);
-                    selectedImage = BitmapFactory.decodeStream(stream);
+                    Bitmap selectedImage = BitmapFactory.decodeStream(stream);
                     selectedImage = getResizedBitmap(selectedImage, 900, 1000);
                     final RecipeDao recipeDao = database.recipeDao();
                     switch (count) {

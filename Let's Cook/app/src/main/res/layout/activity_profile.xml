@@ -207,9 +207,7 @@
                         android:textColor="@color/black"
                         android:textSize="14sp" />
                 </FrameLayout>
-
             </androidx.coordinatorlayout.widget.CoordinatorLayout>
-
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 
@@ -222,5 +220,4 @@
         app:menu="@menu/bottom_menu"
         android:layout_alignParentBottom="true"
         app:labelVisibilityMode="unlabeled"/>
-
 </RelativeLayout>

@@ -11,7 +11,6 @@ import java.io.Serializable;
 //Define table
 @Entity(tableName = "user", indices = @Index(value = "email", unique = true))
 public class User implements Serializable {
-    @NonNull
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "user_id")
     private long ID;
@@ -21,20 +20,10 @@ public class User implements Serializable {
     private String email;
     @ColumnInfo(name = "password")
     private String password;
+    @ColumnInfo(name = "is_admin")
+    private boolean isAdmin;
     @ColumnInfo(name = "photo", typeAffinity = ColumnInfo.BLOB)
     private byte[] photo;
-    @ColumnInfo(name = "my_products")
-    private long myProducts;
-    @ColumnInfo(name = "shopping_list")
-    private long shoppingList;
-    @ColumnInfo(name = "fav_recipes")
-    private long favRecipes;
-    @ColumnInfo(name = "last_viewed")
-    private long lastViewed;
-    @ColumnInfo(name = "my_recipes")
-    private long myRecipes;
-    @ColumnInfo(name = "my_session")
-    private long mySession;
 
     public long getID() {
         return ID;
@@ -76,51 +65,11 @@ public class User implements Serializable {
         this.photo = photo;
     }
 
-    public long getMyProducts() {
-        return myProducts;
+    public boolean isAdmin() {
+        return isAdmin;
     }
 
-    public void setMyProducts(long myProducts) {
-        this.myProducts = myProducts;
-    }
-
-    public long getShoppingList() {
-        return shoppingList;
-    }
-
-    public void setShoppingList(long shoppingList) {
-        this.shoppingList = shoppingList;
-    }
-
-    public long getFavRecipes() {
-        return favRecipes;
-    }
-
-    public void setFavRecipes(long favRecipes) {
-        this.favRecipes = favRecipes;
-    }
-
-    public long getLastViewed() {
-        return lastViewed;
-    }
-
-    public void setLastViewed(long lastViewed) {
-        this.lastViewed = lastViewed;
-    }
-
-    public long getMyRecipes() {
-        return myRecipes;
-    }
-
-    public void setMyRecipes(long myRecipes) {
-        this.myRecipes = myRecipes;
-    }
-
-    public long getMySession() {
-        return mySession;
-    }
-
-    public void setMySession(long mySession) {
-        this.mySession = mySession;
+    public void setAdmin(boolean admin) {
+        isAdmin = admin;
     }
 }

@@ -13,7 +13,6 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.TextPaint;
@@ -32,7 +31,6 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.blogspot.atifsoftwares.animatoolib.Animatoo;
-import com.example.letscook.adapter.MainAdapter;
 import com.example.letscook.adapter.ProductsForRecipeAdapter;
 import com.example.letscook.database.product.Product;
 import com.example.letscook.view.AddRecipeActivity;
@@ -51,7 +49,6 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -59,23 +56,23 @@ import static com.example.letscook.constants.Messages.*;
 
 public class WhatToCookActivity extends AppCompatActivity {
     private int id;
-    private TextView actionText, textView, initialTextView;
-    private ImageView backIcon, my_products;
+    private TextView textView;
+    private TextView initialTextView;
+    private ImageView my_products;
     private CircleImageView profile;
     private NavigationView navigationView = null;
     private AlertDialog.Builder dialogBuilder;
     private AlertDialog dialog = null;
-    private Button yesButton, noButton, searchBtn;
+    private Button searchBtn;
     private BottomNavigationView bottomNavigationView;
     private EditText productName;
-    private Button okButton;
     private RoomDB database;
     private User user;
     private RecyclerView recyclerView;
     private ArrayList<Product> dataList = new ArrayList<>();
     private LinearLayoutManager linearLayoutManager;
     private ProductsForRecipeAdapter productsForRecipeAdapter;
-    private String[] categories = {BREAKFAST, LUNCH, DINNER, DESSERT};
+    private final String[] categories = {BREAKFAST, LUNCH, DINNER, DESSERT};
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -107,7 +104,6 @@ public class WhatToCookActivity extends AppCompatActivity {
             }
         }
 
-        // Add click event listeners
         findViewById(R.id.constraint).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -136,8 +132,8 @@ public class WhatToCookActivity extends AppCompatActivity {
         });
 
         // Initialize action bar variables
-        backIcon = findViewById(R.id.back_icon);
-        actionText = findViewById(R.id.action_bar_text);
+        ImageView backIcon = findViewById(R.id.back_icon);
+        TextView actionText = findViewById(R.id.action_bar_text);
         backIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -216,7 +212,7 @@ public class WhatToCookActivity extends AppCompatActivity {
                 } else {
                     initialTextView.setVisibility(View.INVISIBLE);
                     // Store db value in product list
-                    dataList = (ArrayList) database.productDao().getUserProducts("myProducts", user.getID());
+                    dataList = (ArrayList<Product>) database.productDao().getUserProducts("myProducts", user.getID());
                     if (dataList.size() > 0) {
                         textView.setVisibility(View.INVISIBLE);
                         recyclerView.setVisibility(View.VISIBLE);
@@ -244,12 +240,11 @@ public class WhatToCookActivity extends AppCompatActivity {
 
         // Initialize and assign variable
         bottomNavigationView = findViewById(R.id.bottom_nav);
-
         // Set selected
         bottomNavigationView.setSelectedItemId(R.id.what_to_cook);
-
         // Perform item selected list
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @SuppressLint("NonConstantResourceId")
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 if (navigationView != null && navigationView.getVisibility() == View.VISIBLE) {
@@ -427,7 +422,7 @@ public class WhatToCookActivity extends AppCompatActivity {
         dialogBuilder = new AlertDialog.Builder(this);
         final View popupView = getLayoutInflater().inflate(R.layout.denied_access, null);
 
-        okButton = popupView.findViewById(R.id.okBtn);
+        Button okButton = popupView.findViewById(R.id.okBtn);
 
         dialogBuilder.setView(popupView);
         dialog = dialogBuilder.create();
@@ -494,8 +489,8 @@ public class WhatToCookActivity extends AppCompatActivity {
         dialogBuilder = new AlertDialog.Builder(this);
         final View popupView = getLayoutInflater().inflate(R.layout.veg_popup, null);
 
-        yesButton = popupView.findViewById(R.id.okBtn);
-        noButton = popupView.findViewById(R.id.noBtn);
+        Button yesButton = popupView.findViewById(R.id.okBtn);
+        Button noButton = popupView.findViewById(R.id.noBtn);
 
         dialogBuilder.setView(popupView);
         dialog = dialogBuilder.create();

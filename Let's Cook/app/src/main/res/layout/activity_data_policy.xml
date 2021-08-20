@@ -52,13 +52,15 @@
                 android:id="@+id/data_title"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="@string/data_title"
-                android:textColor="@color/black"
+                android:layout_below="@id/policy_info"
                 android:layout_marginStart="16dp"
                 android:layout_marginLeft="16dp"
+                android:layout_marginTop="8dp"
                 android:layout_marginEnd="16dp"
                 android:layout_marginRight="16dp"
-                android:layout_below="@id/policy_info"/>
+                android:text="@string/data_title"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/data_info"
@@ -76,13 +78,15 @@
                 android:id="@+id/processing_title"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="@string/processing_title"
-                android:textColor="@color/black"
+                android:layout_below="@id/data_info"
                 android:layout_marginStart="16dp"
                 android:layout_marginLeft="16dp"
+                android:layout_marginTop="8dp"
                 android:layout_marginEnd="16dp"
                 android:layout_marginRight="16dp"
-                android:layout_below="@id/data_info"/>
+                android:text="@string/processing_title"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/processing_info"
@@ -100,13 +104,15 @@
                 android:id="@+id/providing_title"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="@string/providing_title"
-                android:textColor="@color/black"
+                android:layout_below="@id/processing_info"
                 android:layout_marginStart="16dp"
                 android:layout_marginLeft="16dp"
+                android:layout_marginTop="8dp"
                 android:layout_marginEnd="16dp"
                 android:layout_marginRight="16dp"
-                android:layout_below="@id/processing_info"/>
+                android:text="@string/providing_title"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/providing_info"
@@ -124,13 +130,15 @@
                 android:id="@+id/rights_title"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="@string/rights_title"
-                android:textColor="@color/black"
+                android:layout_below="@id/providing_info"
                 android:layout_marginStart="16dp"
                 android:layout_marginLeft="16dp"
+                android:layout_marginTop="8dp"
                 android:layout_marginEnd="16dp"
                 android:layout_marginRight="16dp"
-                android:layout_below="@id/providing_info"/>
+                android:textStyle="bold"
+                android:text="@string/rights_title"
+                android:textColor="@color/black" />
 
             <TextView
                 android:id="@+id/rights_info"
@@ -148,13 +156,15 @@
                 android:id="@+id/connection_title"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="@string/connection_title"
-                android:textColor="@color/black"
+                android:layout_below="@id/rights_info"
                 android:layout_marginStart="16dp"
                 android:layout_marginLeft="16dp"
+                android:layout_marginTop="8dp"
                 android:layout_marginEnd="16dp"
                 android:layout_marginRight="16dp"
-                android:layout_below="@id/rights_info"/>
+                android:text="@string/connection_title"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/connection_info"
@@ -179,5 +189,4 @@
         app:menu="@menu/bottom_menu"
         android:layout_alignParentBottom="true"
         app:labelVisibilityMode="unlabeled"/>
-
 </RelativeLayout>

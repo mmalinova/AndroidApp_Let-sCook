@@ -52,5 +52,4 @@
             android:textColor="@color/black" />
 
     </RadioGroup>
-
 </androidx.constraintlayout.widget.ConstraintLayout>

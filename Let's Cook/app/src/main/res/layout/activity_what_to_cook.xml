@@ -140,7 +140,6 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/searchBtn"
                 tools:listitem="@layout/products_for_recipe" />
-
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 

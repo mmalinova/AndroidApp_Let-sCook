@@ -85,27 +85,28 @@
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
                         android:gravity="center"
-                        android:paddingLeft="10dp"
-                        android:paddingRight="10dp">
+                        android:paddingLeft="8dp"
+                        android:paddingRight="8dp">
 
-                        <TextView
-                            android:id="@+id/text_fav"
+                        <Button
+                            android:id="@+id/approve"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_marginStart="31dp"
-                            android:layout_marginEnd="2dp"
-                            android:text="@string/fav"
-                            android:textColor="@color/inputText"
-                            android:textSize="16sp"
-                            android:textStyle="bold|italic" />
+                            android:layout_marginEnd="16dp"
+                            android:text="@string/approve"
+                            android:textColor="@color/white"
+                            app:backgroundTint="@color/dark_green"
+                            tools:ignore="ButtonStyle" />
 
-                        <de.hdodenhof.circleimageview.CircleImageView
-                            android:id="@+id/favourite"
-                            android:layout_width="30dp"
-                            android:layout_height="30dp"
-                            android:foregroundGravity="center"
-                            android:src="@drawable/ic_favorite_before" />
+                        <Button
+                            android:id="@+id/unapprove"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="16dp"
+                            android:text="@string/not_approve"
+                            android:textColor="@color/white"
+                            app:backgroundTint="@color/favourite"
+                            tools:ignore="ButtonStyle" />
                     </LinearLayout>
 
                     <LinearLayout

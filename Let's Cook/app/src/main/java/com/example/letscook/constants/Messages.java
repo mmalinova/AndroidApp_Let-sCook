@@ -5,9 +5,7 @@ public class Messages {
     public static final String UPDATE = "Обновяване";
     public static final String USERNAME_LENGTH = "Потребителското име трябва да съдържа поне два символа!";
     public static final String EMAIL_REQ = "Моля, въведете валиден E-mail!";
-    public static final String EMAIL = "Моля, въведи валиден E-mail!";
     public static final String MESS_REQ = "Моля, въведи съобщение!";
-    public static final String PASSWORD_REQ = "Моля, въведи паролата си!";
     public static final String PASS_REQ = "Моля, въведете парола с поне 3 символа!";
     public static final String REPEAT_PASS_REQ = "Моля, повторете паролата си!";
     public static final String EQUAL_PASS_REQ = "Паролите не съвпадат!";
@@ -25,8 +23,7 @@ public class Messages {
     public static final String SHOPPING_LIST = "Списък за пазаруване";
     public static final String MY_PRODUCTS = "Налични продукти";
     public static final String ADD_RECIPE = "Добавяне на рецепта";
-    public static final String LAST_VIEWED = "Последно разглеждани";
-    public static final String LAST_ADDED = "Последно добавени";
+    public static final String TO_APPROVE = "Рецепти, чакащи одобрение";
     public static final String CONTACTS = "Контакти";
     public static final String FB_URI = "https://www.facebook.com/mihaela.malinova.98";
     public static final String LINKED_IN_URI = "https://www.linkedin.com/in/mihaela-malinova-72352319a/";
@@ -59,8 +56,6 @@ public class Messages {
     public static final String PACKET = "пакетче";
     public static final String PACKETS = "пакетчета";
 
-    public static final String SHARE = "Сподели чрез";
-
     public static final String BREAKFAST_MESS = "Добро утро пожелай\nс чаша чай";
     public static final String LUNCH_MESS = "Мохабетче на обедче";
     public static final String DINNER_MESS = "Чаша вино си\nсипи и се отпусни";
@@ -76,20 +71,17 @@ public class Messages {
     public static final String NO_REC_FOR_PRODUCTS = "(Не са намерени подходящи рецепти. Наличните продукти са твърде малко.)";
 
     public static final String BROWSE_TITLE = "Качи снимка";
-    public static final String BROWSE_FROM_GALLERY = "Избери от галерия";
     public static final String BROWSE_FROM_CAMERA = "Снимай с камерата";
+    public static final String REMOVE_FAV = "Премахни от любими:";
 
-    public static final String SUCCESS_ADD = "Рецептата е изпратена за одобрение!\nИскаш ли да изпратиш и друга?";
+    public static final String SUCCESS_ADD = "Рецептата ти е изпратена за одобрение. Може да следиш статуса ѝ в секцията \"Моите рецепти\".\nИскаш ли да изпратиш и друга?";
+    public static final String APPROVED = "Одобрена";
 
     public static final String DIALOG_MESS = "Изпращане на Email...";
     public static final String FROM = "От: ";
-    public static final String SUCCESS_TITLE = "Успешно изпратено";
-    public static final String SUCCESS = "Твоето съобщение е изпратено успешно.\nБлагодаря за обратната връзка!";
     public static final String ERROR = "Няма подходящи инсталирани клиентси приложения!";
     public static final String ERROR_TITLE = "Грешка при изпращане";
     public static final String FEEDBACK = "Обратна връзка за приложението \"Да сготвим\"";
 
     public static final String AUTH_MESS = "За съжаление потребителят не е разпознат...";
-
-    public static final String VERIFICATION = "За да завършите регистрацията си, потвърдете имейла си във Вашата поща!";
 }

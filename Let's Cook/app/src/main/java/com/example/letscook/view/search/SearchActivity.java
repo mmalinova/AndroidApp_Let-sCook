@@ -25,7 +25,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.blogspot.atifsoftwares.animatoolib.Animatoo;
-import com.example.letscook.database.recipe.Recipe;
 import com.example.letscook.view.AddRecipeActivity;
 import com.example.letscook.database.RoomDB;
 import com.example.letscook.database.typeconverters.DataConverter;
@@ -41,28 +40,21 @@ import com.example.letscook.view.register.SignUpActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 
-import java.util.List;
-
 import de.hdodenhof.circleimageview.CircleImageView;
 
 import static com.example.letscook.constants.Messages.*;
 
 public class SearchActivity extends AppCompatActivity {
     private int id;
-    private ImageView backIcon;
-    private TextView actionText;
     private ImageView my_products;
     private CircleImageView profile;
     private NavigationView navigationView = null;
-    private ListView listView;
-    private String[] categories = {BREAKFAST, LUNCH, DINNER, DESSERT};
+    private final String[] categories = {BREAKFAST, LUNCH, DINNER, DESSERT};
     int[] listImages = {R.drawable.breakfast, R.drawable.lunch, R.drawable.dinner, R.drawable.dessert};
     private AlertDialog.Builder dialogBuilder;
     private AlertDialog dialog = null;
-    private Button yesButton, noButton;
     private BottomNavigationView bottomNavigationView;
     private EditText searchRecipe;
-    private Button okButton;
     private RoomDB database;
     private User user;
 
@@ -96,7 +88,6 @@ public class SearchActivity extends AppCompatActivity {
             }
         }
 
-        // Add click event listeners
         findViewById(R.id.constraint).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -125,8 +116,8 @@ public class SearchActivity extends AppCompatActivity {
         });
 
         // Initialize action bar variables
-        backIcon = findViewById(R.id.back_icon);
-        actionText = findViewById(R.id.action_bar_text);
+        ImageView backIcon = findViewById(R.id.back_icon);
+        TextView actionText = findViewById(R.id.action_bar_text);
         backIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -144,10 +135,8 @@ public class SearchActivity extends AppCompatActivity {
                 } else {
                     if (v.getId() == R.id.recipe_name) {
                         v.getParent().requestDisallowInterceptTouchEvent(true);
-                        switch (event.getAction() & MotionEvent.ACTION_MASK) {
-                            case MotionEvent.ACTION_UP:
-                                v.getParent().requestDisallowInterceptTouchEvent(false);
-                                break;
+                        if ((event.getAction() & MotionEvent.ACTION_MASK) == MotionEvent.ACTION_UP) {
+                            v.getParent().requestDisallowInterceptTouchEvent(false);
                         }
                     }
                     final int DRAWABLE_RIGHT = 2;
@@ -166,7 +155,7 @@ public class SearchActivity extends AppCompatActivity {
         });
 
         // Initialize list view
-        listView = findViewById(R.id.list);
+        ListView listView = findViewById(R.id.list);
         CustomAdapter customAdapter = new CustomAdapter();
         listView.setAdapter(customAdapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -182,12 +171,11 @@ public class SearchActivity extends AppCompatActivity {
 
         // Initialize and assign variable
         bottomNavigationView = findViewById(R.id.bottom_nav);
-
         // Set selected
         bottomNavigationView.setSelectedItemId(R.id.search);
-
         // Perform item selected list
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @SuppressLint("NonConstantResourceId")
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 if (navigationView != null && navigationView.getVisibility() == View.VISIBLE) {
@@ -365,7 +353,7 @@ public class SearchActivity extends AppCompatActivity {
         dialogBuilder = new AlertDialog.Builder(this);
         final View popupView = getLayoutInflater().inflate(R.layout.denied_access, null);
 
-        okButton = popupView.findViewById(R.id.okBtn);
+        Button okButton = popupView.findViewById(R.id.okBtn);
 
         dialogBuilder.setView(popupView);
         dialog = dialogBuilder.create();
@@ -383,8 +371,8 @@ public class SearchActivity extends AppCompatActivity {
         dialogBuilder = new AlertDialog.Builder(this);
         final View popupView = getLayoutInflater().inflate(R.layout.veg_popup, null);
 
-        yesButton = popupView.findViewById(R.id.okBtn);
-        noButton = popupView.findViewById(R.id.noBtn);
+        Button yesButton = popupView.findViewById(R.id.okBtn);
+        Button noButton = popupView.findViewById(R.id.noBtn);
 
         dialogBuilder.setView(popupView);
         dialog = dialogBuilder.create();
@@ -491,7 +479,7 @@ public class SearchActivity extends AppCompatActivity {
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-            View view = getLayoutInflater().inflate(R.layout.category_list_data, null);
+            @SuppressLint({"ViewHolder", "InflateParams"}) View view = getLayoutInflater().inflate(R.layout.category_list_data, null);
 
             TextView category = view.findViewById(R.id.cat);
             ImageView image = view.findViewById(R.id.image);

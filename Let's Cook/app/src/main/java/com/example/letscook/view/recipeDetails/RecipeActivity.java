@@ -10,29 +10,27 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
-import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toolbar;
 import android.widget.ViewFlipper;
 
 import com.blogspot.atifsoftwares.animatoolib.Animatoo;
-import com.example.letscook.adapter.MainAdapter;
 import com.example.letscook.adapter.ProductsViewAdapter;
+import com.example.letscook.constants.Messages;
 import com.example.letscook.database.photo.Photo;
 import com.example.letscook.database.product.Product;
 import com.example.letscook.database.recipe.Recipe;
 import com.example.letscook.database.relationships.UserMarksRecipeCrossRef;
+import com.example.letscook.database.relationships.UserMarksRecipes;
 import com.example.letscook.database.relationships.UserViewsRecipeCrossRef;
 import com.example.letscook.database.typeconverters.DataConverter;
 import com.example.letscook.database.user.User;
@@ -45,17 +43,14 @@ import com.example.letscook.view.products.ShoppingListActivity;
 import com.example.letscook.view.recipesDashboard.RecipesActivity;
 import com.example.letscook.view.search.SearchActivity;
 import com.example.letscook.view.search.WhatToCookActivity;
-import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
+import java.util.Objects;
 
 import de.hdodenhof.circleimageview.CircleImageView;
-import technolifestyle.com.imageslider.FlipperLayout;
-import technolifestyle.com.imageslider.FlipperView;
 
 public class RecipeActivity extends AppCompatActivity {
     private int id;
@@ -65,9 +60,9 @@ public class RecipeActivity extends AppCompatActivity {
     private List<Photo> allPhotosFromRecipe = new ArrayList<>();
     private RoomDB database;
     private List<Product> productsList = new ArrayList<>();
-    private LinearLayoutManager linearLayoutManager;
-    private RecyclerView recyclerView;
-    private ProductsViewAdapter productsAdapter;
+    TextView favText;
+    CircleImageView favourite;
+    private long recipeId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,7 +72,17 @@ public class RecipeActivity extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-        setContentView(R.layout.activity_recipe);
+        // Get destination
+        boolean isAtMyRec = getIntent().getBooleanExtra("isAtMyRec", false);
+        boolean isAtApprove = getIntent().getBooleanExtra("isAtApprove", false);
+        if (isAtMyRec) {
+            setContentView(R.layout.activity_my_recipe);
+        } else if (isAtApprove) {
+            setContentView(R.layout.activity_to_approve_recipe);
+        } else {
+            setContentView(R.layout.activity_recipe);
+        }
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         // Initialize db
         database = RoomDB.getInstance(this);
@@ -87,10 +92,32 @@ public class RecipeActivity extends AppCompatActivity {
         if (email != null) {
             user = database.userDao().getUserByEmail(email);
         }
+        Button isApproved = findViewById(R.id.is_approved);
 
         // Get current recipe and its images and products
-        long recipeId = getIntent().getLongExtra("recipeId", -1);
+        recipeId = getIntent().getLongExtra("recipeId", -1);
         recipe = database.recipeDao().getRecipeById(recipeId);
+        if (isAtMyRec) {
+            if (recipe.getIsApproved()) {
+                isApproved.setBackgroundColor(Color.parseColor("#017330"));
+                isApproved.setText(Messages.APPROVED);
+            }
+        } else if (isAtApprove) {
+            findViewById(R.id.approve).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    database.recipeDao().approveRecipeById(recipeId);
+                    startActivity(new Intent(RecipeActivity.this, MainActivity.class));
+                }
+            });
+            findViewById(R.id.unapprove).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    database.recipeDao().delete(recipe);
+                    startActivity(new Intent(RecipeActivity.this, MainActivity.class));
+                }
+            });
+        }
         allPhotosFromRecipe = database.photoDao().getAllPhotosFromRecipe(recipeId);
         productsList = database.productDao().getRecipeProducts("toRecipe", recipeId);
 
@@ -99,7 +126,6 @@ public class RecipeActivity extends AppCompatActivity {
 
         // Initialize my products links
         my_products = findViewById(R.id.my_products);
-
         my_products.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.Q)
             @Override
@@ -107,7 +133,7 @@ public class RecipeActivity extends AppCompatActivity {
                 startActivity(new Intent(getApplicationContext(), MyProductsActivity.class));
                 Animatoo.animateZoom(RecipeActivity.this);
                 my_products.setTextColor(Color.parseColor("#fef6d8"));
-                my_products.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, R.drawable.ic_my_products_after,0);
+                my_products.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, R.drawable.ic_my_products_after, 0);
                 my_products.getTextCursorDrawable().setColorFilter(Color.parseColor("#fef6d8"), PorterDuff.Mode.ADD);
             }
         });
@@ -116,14 +142,14 @@ public class RecipeActivity extends AppCompatActivity {
 
         // Initialize and assign variable
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_nav);
-
         // Perform item selected list
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @SuppressLint("NonConstantResourceId")
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 id = item.getItemId();
                 Intent intent = null;
-                switch(id) {
+                switch (id) {
                     case R.id.home:
                         intent = new Intent(getApplicationContext(), MainActivity.class);
                         break;
@@ -156,55 +182,69 @@ public class RecipeActivity extends AppCompatActivity {
             images.setScaleType(ImageView.ScaleType.FIT_XY);
             flip.setInAnimation(AnimationUtils.loadAnimation(this, android.R.anim.slide_in_left));
             flip.addView(images);
-            flip.setFlipInterval(3000);
-            flip.startFlipping();
+            if (allPhotosFromRecipe.size() > 1) {
+                flip.setFlipInterval(3000);
+                flip.startFlipping();
+            }
+        }
 
-            CollapsingToolbarLayout layout = findViewById(R.id.collapsing_toolbar);
-            layout.setTitle(recipe.getName().substring(0, 1).toUpperCase() + recipe.getName().substring(1));
-            CircleImageView favourite = findViewById(R.id.favourite);
+        CollapsingToolbarLayout layout = findViewById(R.id.collapsing_toolbar);
+        layout.setTitle(recipe.getName().substring(0, 1).toUpperCase() + recipe.getName().substring(1));
+        favourite = findViewById(R.id.favourite);
+
+        // Check if recipe is mark as favourite
+        if (favourite != null) {
+            List<UserMarksRecipes> userFavRecipes = database.userDao().getUserMarksRecipes(user.getID());
+            for (Recipe rec : userFavRecipes.get(0).recipeList) {
+                if (rec.getID() == recipeId) {
+                    favourite.setImageResource(R.drawable.ic_favorite_after);
+                    favText = findViewById(R.id.text_fav);
+                    favText.setText(Messages.REMOVE_FAV);
+                }
+            }
             favourite.setOnClickListener(new View.OnClickListener() {
+                @SuppressLint("UseCompatLoadingForDrawables")
                 @Override
                 public void onClick(View v) {
-                    if (favourite.getDrawable().getConstantState() == getResources().getDrawable(R.drawable.ic_favorite_before).getConstantState())
-                    {
+                    if (favourite.getDrawable().getConstantState() == getResources().getDrawable(R.drawable.ic_favorite_before).getConstantState()) {
                         favourite.setImageResource(R.drawable.ic_favorite_after);
                         database.userDao().insertUserMarksRecipeCrossRef(new UserMarksRecipeCrossRef(user.getID(), recipe.getID()));
-                    } else
-                    {
+                    } else {
                         favourite.setImageResource(R.drawable.ic_favorite_before);
                         database.userDao().deleteUserMarksRecipeCrossRef(new UserMarksRecipeCrossRef(user.getID(), recipe.getID()));
                     }
+                    Objects.requireNonNull(RecipesActivity.recyclerView.getAdapter()).notifyDataSetChanged();
                 }
             });
-            TextView category = findViewById(R.id.category);
-            category.setText(String.format("%s",recipe.getCategory().substring(0, 1).toUpperCase() + recipe.getCategory().substring(1)));
-            category.setSelected(true);
-            category.setMovementMethod(new ScrollingMovementMethod());
-            TextView prepTime = findViewById(R.id.preparing_time);
-            prepTime.setText(String.format("%02d:%02dч.", recipe.getHours(), recipe.getMinutes()));
-            TextView portions = findViewById(R.id.portions);
-            portions.setText(String.format("%d", recipe.getPortions()));
-
-            recyclerView = findViewById(R.id.products_view);
-            linearLayoutManager = new LinearLayoutManager(this);
-            recyclerView.setLayoutManager(linearLayoutManager);
-            if (user != null) {
-                productsAdapter = new ProductsViewAdapter(RecipeActivity.this, productsList, recipe.getID(), user.getID());
-            } else {
-                productsAdapter = new ProductsViewAdapter(RecipeActivity.this, productsList, recipe.getID(), 0);
-            }
-            recyclerView.setAdapter(productsAdapter);
-
-            TextView steps = findViewById(R.id.steps);
-            steps.setText(String.format("%s", recipe.getSteps().substring(0, 1).toUpperCase() + recipe.getSteps().substring(1)));
         }
+        TextView category = findViewById(R.id.category);
+        category.setText(String.format("%s", recipe.getCategory().substring(0, 1).toUpperCase() + recipe.getCategory().substring(1)));
+        category.setSelected(true);
+        category.setMovementMethod(new ScrollingMovementMethod());
+        TextView prepTime = findViewById(R.id.preparing_time);
+        prepTime.setText(String.format("%02d:%02dч.", recipe.getHours(), recipe.getMinutes()));
+        TextView portions = findViewById(R.id.portions);
+        portions.setText(String.format("%d", recipe.getPortions()));
+
+        RecyclerView recyclerView = findViewById(R.id.products_view);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(linearLayoutManager);
+        ProductsViewAdapter productsAdapter;
+        if (user != null) {
+            productsAdapter = new ProductsViewAdapter(RecipeActivity.this, productsList, recipe.getID(), user.getID());
+        } else {
+            productsAdapter = new ProductsViewAdapter(RecipeActivity.this, productsList, recipe.getID(), 0);
+        }
+        recyclerView.setAdapter(productsAdapter);
+
+        TextView steps = findViewById(R.id.steps);
+        steps.setText(String.format("%s", recipe.getSteps().substring(0, 1).toUpperCase() + recipe.getSteps().substring(1)));
     }
 
     @Override
     protected void onStart() {
         my_products.setTextColor(Color.parseColor("#4E4E4E"));
-        my_products.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, R.drawable.ic_my_products,0);
+        my_products.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, R.drawable.ic_my_products, 0);
         super.onStart();
     }
-
 }

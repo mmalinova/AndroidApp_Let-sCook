@@ -69,16 +69,12 @@ public class SliderActivity extends AppCompatActivity {
 
         //Initialize adapter
         sliderAdp = new SliderAdp(images);
-        //Set adapter
         sliderView.setSliderAdapter(sliderAdp);
-        //Set indicator images
         sliderView.setIndicatorAnimation(IndicatorAnimationType.WORM);
-        //Set transformation animation
         sliderView.setSliderTransformAnimation(SliderAnimations.DEPTHTRANSFORMATION);
-        //Start auto cycle
         sliderView.startAutoCycle();
 
-        //When we reach to the last screen
+        // When we reach to the last screen
         sliderView.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
             @Override
             public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {

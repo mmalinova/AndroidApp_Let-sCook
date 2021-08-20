@@ -49,5 +49,4 @@
             android:contentDescription="@string/main_icon"
             android:src="@drawable/ic_add_shopping" />
     </LinearLayout>
-
 </androidx.cardview.widget.CardView>

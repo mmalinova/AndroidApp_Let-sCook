@@ -23,5 +23,4 @@
         android:text="@string/addRecipe_title"
         android:textAllCaps="true"
         android:textSize="18sp" />
-
 </RelativeLayout>

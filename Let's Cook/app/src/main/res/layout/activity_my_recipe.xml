@@ -84,17 +84,26 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
-                        android:gravity="center"
-                        android:paddingLeft="10dp"
-                        android:paddingRight="10dp">
+                        android:paddingLeft="8dp"
+                        android:paddingRight="8dp">
+
+                        <Button
+                            android:id="@+id/is_approved"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="8dp"
+                            android:text="@string/unapproved"
+                            android:textColor="@color/white"
+                            app:backgroundTint="@color/favourite" />
 
                         <TextView
                             android:id="@+id/text_fav"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:layout_marginStart="31dp"
                             android:layout_marginEnd="2dp"
+                            android:foregroundGravity="center"
+                            android:gravity="center"
                             android:text="@string/fav"
                             android:textColor="@color/inputText"
                             android:textSize="16sp"
@@ -104,6 +113,8 @@
                             android:id="@+id/favourite"
                             android:layout_width="30dp"
                             android:layout_height="30dp"
+                            android:layout_gravity="center"
+                            android:layout_marginEnd="14dp"
                             android:foregroundGravity="center"
                             android:src="@drawable/ic_favorite_before" />
                     </LinearLayout>

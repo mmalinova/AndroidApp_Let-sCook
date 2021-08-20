@@ -15,7 +15,6 @@ import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -32,7 +31,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.blogspot.atifsoftwares.animatoolib.Animatoo;
-import com.example.letscook.database.product.Product;
 import com.example.letscook.view.AddRecipeActivity;
 import com.example.letscook.R;
 import com.example.letscook.database.RoomDB;
@@ -47,10 +45,8 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -60,7 +56,6 @@ import static com.example.letscook.constants.Messages.*;
 
 public class ProfileActivity extends AppCompatActivity {
     private CircleImageView userPhoto, uploadPhoto;
-    private Bitmap bmpImage = null, selectedImage = null;
     private final int CAMERA_INTENT = 1;
     private final int SELECT_PHOTO = 2;
     private RoomDB database;
@@ -114,12 +109,11 @@ public class ProfileActivity extends AppCompatActivity {
 
         // Initialize and assign variable
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_nav);
-
         // Set home selected
         bottomNavigationView.setSelectedItemId(R.id.home);
-
         // Perform item selected list
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @SuppressLint("NonConstantResourceId")
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 Intent intent = null;
@@ -390,7 +384,7 @@ public class ProfileActivity extends AppCompatActivity {
         if (requestCode == CAMERA_INTENT) {
             if (resultCode == Activity.RESULT_OK) {
                 try {
-                    bmpImage = MediaStore.Images.Media.getBitmap(
+                    Bitmap bmpImage = MediaStore.Images.Media.getBitmap(
                             getContentResolver(), imageUri);
                     bmpImage = getResizedBitmap(bmpImage, 900, 1000);
                     userPhoto.setImageBitmap(bmpImage);
@@ -406,7 +400,7 @@ public class ProfileActivity extends AppCompatActivity {
                     assert data != null;
                     final Uri image = data.getData();
                     final InputStream stream = getContentResolver().openInputStream(image);
-                    selectedImage = BitmapFactory.decodeStream(stream);
+                    Bitmap selectedImage = BitmapFactory.decodeStream(stream);
                     selectedImage = getResizedBitmap(selectedImage, 900, 1000);
                     userPhoto.setImageBitmap(selectedImage);
                     final UserDao userDao = database.userDao();
