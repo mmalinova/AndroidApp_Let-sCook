@@ -32,4 +32,10 @@ public interface ProductDao {
     @Transaction
     @Query("SELECT * FROM product WHERE belonging = :belong AND owner_id = :sOwnerID ORDER BY name")
     List<Product> getRecipeProducts(String belong, long sOwnerID);
+
+    @Query("SELECT * FROM product WHERE is_sync = 0")
+    List<Product> getAllUnSyncProducts();
+
+    @Query("UPDATE product SET is_sync = 1 WHERE product_id = :sID")
+    void productSync(long sID);
 }

@@ -35,9 +35,18 @@ public interface RecipeDao {
     @Query("SELECT * FROM recipe WHERE is_approved = 1 AND name LIKE '%' || :sName || '%'")
     List<Recipe> getAllRecipeByName(String sName);
 
+    @Query("SELECT * FROM recipe WHERE is_approved = 1 AND category LIKE '%' || :sCategory || '%'")
+    List<Recipe> getAllRecipeByCategory(String sCategory);
+
     @Query("SELECT * FROM recipe WHERE is_approved = 1 AND category LIKE '%' || :sCategory || '%' AND vegetarian = :sVeg")
     List<Recipe> getAllRecipeByCategoryAndVeg(String sCategory, int sVeg);
 
     @Query("SELECT * FROM recipe WHERE owner_id = :sID")
     List<Recipe> getRecipesByOwnerId(long sID);
+
+    @Query("SELECT * FROM recipe WHERE is_sync = 0")
+    List<Recipe> getAllUnSyncRecipes();
+
+    @Query("UPDATE recipe SET is_sync = 1 WHERE recipe_id = :sID")
+    void recipeSync(long sID);
 }

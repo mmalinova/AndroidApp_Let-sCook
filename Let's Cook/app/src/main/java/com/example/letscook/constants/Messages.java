@@ -69,6 +69,7 @@ public class Messages {
     public static final String MY_VIEWED = "(Все още няма отваряни от теб рецепти)";
     public static final String NO_REC = "(Все още не съществува такава рецепта)";
     public static final String NO_REC_FOR_PRODUCTS = "(Не са намерени подходящи рецепти. Наличните продукти са твърде малко.)";
+    public static final String ALL_FIELDS_REQ = "Всички полета са задължителни!";
 
     public static final String BROWSE_TITLE = "Качи снимка";
     public static final String BROWSE_FROM_CAMERA = "Снимай с камерата";
@@ -76,6 +77,7 @@ public class Messages {
 
     public static final String SUCCESS_ADD = "Рецептата ти е изпратена за одобрение. Може да следиш статуса ѝ в секцията \"Моите рецепти\".\nИскаш ли да изпратиш и друга?";
     public static final String APPROVED = "Одобрена";
+    public static final String TO_MARK = "За да отбележиш рецептата като любима, трябва да влезнеш в профила си от \"Профил\" секцията!";
 
     public static final String DIALOG_MESS = "Изпращане на Email...";
     public static final String FROM = "От: ";

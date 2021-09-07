@@ -22,7 +22,7 @@ import com.example.letscook.database.user.UserDao;
 // Create database
 @Database(entities = {Product.class, Recipe.class, User.class, Photo.class,
         UserMarksRecipeCrossRef.class, UserViewsRecipeCrossRef.class},
-        version = 1, exportSchema = false)
+        version = 2, exportSchema = false)
 @TypeConverters({ConvertDate.class})
 public abstract class RoomDB extends RoomDatabase {
     // Create db instance

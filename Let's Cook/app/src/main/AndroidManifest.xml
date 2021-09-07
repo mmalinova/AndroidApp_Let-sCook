@@ -10,7 +10,7 @@
 
     <queries>
         <!-- Specific apps you interact with, eg: -->
-        <package android:name="com.example.letscook.view.profile" />
+        <package android:name="com.example.letscook.controller.profile" />
         <!-- Specific intents you query for, eg: for a custom share UI -->
         <intent>
             <action android:name="android.intent.action.SEND" />
@@ -28,16 +28,19 @@
 
     <application
         android:name="androidx.multidex.MultiDexApplication"
-
-        android:allowBackup="true"
         android:icon="@mipmap/logo"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/logo_round"
         android:supportsRtl="true"
-        android:theme="@style/MainTheme">
-
+        android:theme="@style/MainTheme"
+        android:usesCleartextTraffic="true">
+        <receiver android:name=".server_database.NetworkMonitor">
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+            </intent-filter>
+        </receiver>
         <activity
-            android:name=".view.slider.SliderActivity"
+            android:name=".controller.slider.SliderActivity"
             android:screenOrientation="portrait"
             android:theme="@style/SplashScreen">
             <intent-filter>
@@ -46,60 +49,60 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".view.register.SignUpActivity"
+            android:name=".controller.register.SignUpActivity"
             android:theme="@style/Register"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|adjustResize" />
         <activity
-            android:name=".view.home.MainActivity"
+            android:name=".controller.home.MainActivity"
             android:theme="@style/MainTheme">
             <!-- The meta-data tag is required if you support API level 15 and lower -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".view.home.MainActivity" />
+                android:value=".controller.home.MainActivity" />
         </activity>
         <activity
-            android:name=".view.login.LoginActivity" />
+            android:name=".controller.login.LoginActivity" />
         <activity
-            android:name=".view.search.WhatToCookActivity"
-            android:parentActivityName=".view.home.MainActivity"
+            android:name=".controller.search.WhatToCookActivity"
+            android:parentActivityName=".controller.home.MainActivity"
             android:windowSoftInputMode="adjustPan|adjustResize" />
         <activity
-            android:name=".view.info.TermsOfUseActivity"
-            android:parentActivityName=".view.home.MainActivity" />
+            android:name=".controller.info.TermsOfUseActivity"
+            android:parentActivityName=".controller.home.MainActivity" />
         <activity
-            android:name=".view.products.ShoppingListActivity"
-            android:parentActivityName=".view.home.MainActivity"
+            android:name=".controller.products.ShoppingListActivity"
+            android:parentActivityName=".controller.home.MainActivity"
             android:windowSoftInputMode="adjustPan|adjustResize" />
         <activity
-            android:name=".view.ContactsActivity"
-            android:parentActivityName=".view.home.MainActivity" />
+            android:name=".controller.contacts.ContactsActivity"
+            android:parentActivityName=".controller.home.MainActivity" />
         <activity
-            android:name=".view.AddRecipeActivity"
-            android:parentActivityName=".view.home.MainActivity" />
+            android:name=".controller.addRecipe.AddRecipeActivity"
+            android:parentActivityName=".controller.home.MainActivity" />
         <activity
-            android:name=".view.products.MyProductsActivity"
-            android:parentActivityName=".view.home.MainActivity"
+            android:name=".controller.products.MyProductsActivity"
+            android:parentActivityName=".controller.home.MainActivity"
             android:windowSoftInputMode="adjustPan|adjustResize" />
         <activity
-            android:name=".view.info.InfoActivity"
-            android:parentActivityName=".view.home.MainActivity" />
+            android:name=".controller.info.InfoActivity"
+            android:parentActivityName=".controller.home.MainActivity" />
         <activity
-            android:name=".view.search.SearchActivity"
-            android:parentActivityName=".view.home.MainActivity"
+            android:name=".controller.search.SearchActivity"
+            android:parentActivityName=".controller.home.MainActivity"
             android:windowSoftInputMode="adjustPan|adjustResize" />
         <activity
-            android:name=".view.profile.ProfileActivity"
-            android:parentActivityName=".view.home.MainActivity" />
+            android:name=".controller.profile.ProfileActivity"
+            android:parentActivityName=".controller.home.MainActivity" />
         <activity
-            android:name=".view.recipesDashboard.RecipesActivity" />
+            android:name=".controller.recipesDashboard.RecipesActivity" />
         <activity
-            android:name=".view.recipeDetails.RecipeActivity"
+            android:name=".controller.recipeDetails.RecipeActivity"
             android:keepScreenOn="true"
-            android:parentActivityName=".view.recipesDashboard.RecipesActivity" />
+            android:parentActivityName=".controller.recipesDashboard.RecipesActivity" />
         <activity
-            android:name=".view.info.DataPolicyActivity"
-            android:parentActivityName=".view.home.MainActivity" />
+            android:name=".controller.info.DataPolicyActivity"
+            android:parentActivityName=".controller.home.MainActivity" />
 
         <meta-data
             android:name="preloaded_fonts"

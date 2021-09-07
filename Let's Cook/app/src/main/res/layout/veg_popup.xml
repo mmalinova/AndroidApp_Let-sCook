@@ -6,7 +6,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:padding="16dp"
     android:background="@color/beige"
-    tools:context=".view.search.SearchActivity">
+    tools:context=".controller.search.SearchActivity">
 
     <TextView
         android:id="@+id/veg_question"
@@ -25,7 +25,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/veg_question"
-        android:layout_marginStart="54dp"
         android:background="@android:color/transparent"
         android:gravity="center"
         android:text="@string/yes"
@@ -40,11 +39,26 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/veg_question"
-        android:layout_marginEnd="54dp"
         android:layout_toEndOf="@id/okBtn"
         android:background="@android:color/transparent"
         android:gravity="center"
         android:text="@string/no"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        app:iconPadding="2dp"
+        app:layout_constraintEnd_toStartOf="@+id/noMatter"
+        app:layout_constraintStart_toEndOf="@+id/okBtn"
+        app:layout_constraintTop_toBottomOf="@+id/veg_question" />
+
+    <Button
+        android:id="@+id/noMatter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/veg_question"
+        android:layout_toEndOf="@id/noBtn"
+        android:background="@android:color/transparent"
+        android:gravity="center"
+        android:text="@string/noMatter"
         android:textColor="@color/black"
         android:textStyle="bold"
         app:iconPadding="2dp"

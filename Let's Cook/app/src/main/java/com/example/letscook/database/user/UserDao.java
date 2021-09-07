@@ -20,7 +20,7 @@ public interface UserDao {
     @Insert(onConflict = REPLACE)
     void register(User user);
 
-    @Query("UPDATE user SET password = :sPassword WHERE user_id = :sID")
+    @Query("UPDATE user SET password = :sPassword  WHERE user_id = :sID")
     void updatePass(long sID, String sPassword);
 
     @Query("UPDATE user SET name = :sName WHERE user_id = :sID")
@@ -56,4 +56,10 @@ public interface UserDao {
     @Transaction
     @Query("SELECT * FROM user WHERE user_id = :sID")
     List<UserViewsRecipes> getUserViewsRecipes(long sID);
+
+    @Query("SELECT * FROM user WHERE is_sync = 0")
+    List<User> getAllUnSyncUsers();
+
+    @Query("UPDATE user SET is_sync = 1 WHERE user_id = :sID")
+    void userSync(long sID);
 }

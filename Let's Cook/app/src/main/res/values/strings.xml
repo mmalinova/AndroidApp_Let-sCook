@@ -180,6 +180,7 @@
     <string name="isItVegetarian">Вегетарианска ли е рецептата?</string>
     <string name="yes">Да</string>
     <string name="no">Не</string>
+    <string name="noMatter">Без значение</string>
     <string name="recipePictures">Избери до 3 снимки:</string>
     <string name="browse">Качи снимка</string>
     <string name="h">ч.</string>

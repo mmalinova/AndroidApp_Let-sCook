@@ -22,6 +22,8 @@ public class User implements Serializable {
     private String password;
     @ColumnInfo(name = "is_admin")
     private boolean isAdmin;
+    @ColumnInfo(name = "is_sync")
+    private boolean isSync;
     @ColumnInfo(name = "photo", typeAffinity = ColumnInfo.BLOB)
     private byte[] photo;
 
@@ -57,19 +59,27 @@ public class User implements Serializable {
         this.password = password;
     }
 
-    public byte[] getPhoto() {
-        return photo;
-    }
-
-    public void setPhoto(byte[] photo) {
-        this.photo = photo;
-    }
-
     public boolean isAdmin() {
         return isAdmin;
     }
 
     public void setAdmin(boolean admin) {
         isAdmin = admin;
+    }
+
+    public boolean isSync() {
+        return isSync;
+    }
+
+    public void setSync(boolean sync) {
+        isSync = sync;
+    }
+
+    public byte[] getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(byte[] photo) {
+        this.photo = photo;
     }
 }

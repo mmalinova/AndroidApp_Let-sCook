@@ -13,6 +13,8 @@ public class Photo implements Serializable {
     private long ID;
     @ColumnInfo(name = "photo", typeAffinity = ColumnInfo.BLOB)
     private byte[] photo;
+    @ColumnInfo(name = "is_sync")
+    private boolean isSync;
     @ColumnInfo(name = "recipe_id")
     private long recipe_id;
 
@@ -30,6 +32,14 @@ public class Photo implements Serializable {
 
     public void setPhoto(byte[] image) {
         this.photo = image;
+    }
+
+    public boolean isSync() {
+        return isSync;
+    }
+
+    public void setSync(boolean sync) {
+        isSync = sync;
     }
 
     public long getRecipe_id() {

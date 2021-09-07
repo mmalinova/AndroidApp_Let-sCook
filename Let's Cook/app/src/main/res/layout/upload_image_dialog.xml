@@ -6,7 +6,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:padding="16dp"
     android:background="@color/beige"
-    tools:context=".view.profile.ProfileActivity">
+    tools:context=".controller.profile.ProfileActivity">
 
     <TextView
         android:id="@+id/choose"

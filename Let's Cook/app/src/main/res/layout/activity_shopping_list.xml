@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.products.ShoppingListActivity"
+    tools:context=".controller.products.ShoppingListActivity"
     android:layout_centerVertical="true">
     <include android:id="@+id/tool" layout="@layout/toolbar" />
 

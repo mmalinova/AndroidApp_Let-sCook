@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/backgroundBtn"
-    tools:context=".view.search.WhatToCookActivity">
+    tools:context=".controller.search.WhatToCookActivity">
 
     <include
         android:id="@+id/tool"

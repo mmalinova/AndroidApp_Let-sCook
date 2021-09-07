@@ -24,6 +24,8 @@ public class Product implements Serializable, Parcelable {
     private float quantity;
     @ColumnInfo(name = "belonging")
     private String belonging;
+    @ColumnInfo(name = "is_sync")
+    private boolean isSync;
     @ColumnInfo(name = "owner_id")
     private long ownerId;
 
@@ -89,6 +91,14 @@ public class Product implements Serializable, Parcelable {
 
     public void setBelonging(String belonging) {
         this.belonging = belonging;
+    }
+
+    public boolean isSync() {
+        return isSync;
+    }
+
+    public void setSync(boolean sync) {
+        isSync = sync;
     }
 
     public long getOwnerId() {

@@ -9,10 +9,12 @@ import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -22,11 +24,13 @@ import com.example.letscook.database.RoomDB;
 import com.example.letscook.database.relationships.UserMarksRecipeCrossRef;
 import com.example.letscook.database.relationships.UserMarksRecipes;
 import com.example.letscook.database.typeconverters.DataConverter;
-import com.example.letscook.view.recipeDetails.RecipeActivity;
+import com.example.letscook.controller.recipeDetails.RecipeActivity;
 
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+
+import static com.example.letscook.constants.Messages.TO_MARK;
 
 public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.ViewHolder> {
     private List<Recipe> recipeList;
@@ -36,6 +40,7 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
     private boolean isAtMyRec;
     private boolean isAtApprove;
     private RoomDB database;
+    private AlertDialog dialog = null;
 
     public RecycleViewAdapter(Activity context, List<Recipe> recipeList, long userId, boolean isAtFav, boolean isAtMyRec, boolean isAtApprove) {
         this.context = context;
@@ -65,14 +70,16 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
         // Check for favourite recipe
         List<UserMarksRecipes> userFavRecipes = database.userDao().getUserMarksRecipes(userId);
         boolean isMarked = false;
-        for (Recipe rec : userFavRecipes.get(0).recipeList) {
-            if (rec.getID() == recipe.getID()) {
-                holder.favourite.setImageResource(R.drawable.ic_favorite_after);
-                isMarked = true;
+        if (userFavRecipes.size() > 0) {
+            for (Recipe rec : userFavRecipes.get(0).recipeList) {
+                if (rec.getID() == recipe.getID()) {
+                    holder.favourite.setImageResource(R.drawable.ic_favorite_after);
+                    isMarked = true;
+                }
             }
-        }
-        if (!isMarked) {
-            holder.favourite.setImageResource(R.drawable.ic_favorite_before);
+            if (!isMarked) {
+                holder.favourite.setImageResource(R.drawable.ic_favorite_before);
+            }
         }
         holder.textView.setTextColor(Color.parseColor("#4E4E4E"));
         holder.textView.setText(recipe.getName());
@@ -107,22 +114,26 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
             @SuppressLint("UseCompatLoadingForDrawables")
             @Override
             public void onClick(View v) {
-                if (holder.favourite.getDrawable().getConstantState() == context.getResources().getDrawable(R.drawable.ic_favorite_before).getConstantState()) {
-                    holder.favourite.setImageResource(R.drawable.ic_favorite_after);
-                    database.userDao().insertUserMarksRecipeCrossRef(new UserMarksRecipeCrossRef(userId, recipe.getID()));
-                    notifyDataSetChanged();
-                } else {
-                    holder.favourite.setImageResource(R.drawable.ic_favorite_before);
-                    database.userDao().deleteUserMarksRecipeCrossRef(new UserMarksRecipeCrossRef(userId, recipe.getID()));
-                    notifyDataSetChanged();
-                    if (isAtFav) {
-                        notifyItemRemoved(position);
-                        recipeList.remove(recipe);
-                        if (getItemCount() <= 0) {
-                            context.findViewById(R.id.recycler_view).setVisibility(View.INVISIBLE);
-                            context.findViewById(R.id.textView).setVisibility(View.VISIBLE);
+                if (userId != 0) {
+                    if (holder.favourite.getDrawable().getConstantState() == context.getResources().getDrawable(R.drawable.ic_favorite_before).getConstantState()) {
+                        holder.favourite.setImageResource(R.drawable.ic_favorite_after);
+                        database.userDao().insertUserMarksRecipeCrossRef(new UserMarksRecipeCrossRef(userId, recipe.getID()));
+                        notifyDataSetChanged();
+                    } else {
+                        holder.favourite.setImageResource(R.drawable.ic_favorite_before);
+                        database.userDao().deleteUserMarksRecipeCrossRef(new UserMarksRecipeCrossRef(userId, recipe.getID()));
+                        notifyDataSetChanged();
+                        if (isAtFav) {
+                            notifyItemRemoved(position);
+                            recipeList.remove(recipe);
+                            if (getItemCount() <= 0) {
+                                context.findViewById(R.id.recycler_view).setVisibility(View.INVISIBLE);
+                                context.findViewById(R.id.textView).setVisibility(View.VISIBLE);
+                            }
                         }
                     }
+                } else {
+                    deniedDialog();
                 }
             }
         });
@@ -144,6 +155,26 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
             textView = itemView.findViewById(R.id.recipe_name);
             favourite = itemView.findViewById(R.id.favourite);
         }
+    }
+
+    public void deniedDialog() {
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(context);
+        final View popupView = context.getLayoutInflater().inflate(R.layout.denied_access, null);
+        TextView textView = popupView.findViewById(R.id.veg_question);
+        textView.setText(TO_MARK);
+
+        Button okButton = popupView.findViewById(R.id.okBtn);
+
+        dialogBuilder.setView(popupView);
+        dialog = dialogBuilder.create();
+        dialog.show();
+
+        okButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
     }
 
     /**

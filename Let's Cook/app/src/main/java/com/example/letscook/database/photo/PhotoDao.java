@@ -19,4 +19,10 @@ public interface PhotoDao {
 
     @Query("SELECT * FROM photo WHERE recipe_id = :sRecipe_id")
     List<Photo> getAllPhotosFromRecipe(long sRecipe_id);
+
+    @Query("SELECT * FROM photo WHERE is_sync = 0")
+    List<Photo> getAllUnSyncPhotosFromRecipe();
+
+    @Query("UPDATE photo SET is_sync = 1 WHERE photo_id = :sID")
+    void photoSync(long sID);
 }
