@@ -3,13 +3,10 @@ package com.example.letscook.controller.register;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -24,14 +21,10 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.AuthFailureError;
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
 import com.blogspot.atifsoftwares.animatoolib.Animatoo;
 import com.example.letscook.R;
 import com.example.letscook.constants.Messages;
+import com.example.letscook.database.AESCrypt;
 import com.example.letscook.database.RoomDB;
 import com.example.letscook.database.typeconverters.DataConverter;
 import com.example.letscook.database.user.User;
@@ -39,12 +32,11 @@ import com.example.letscook.database.user.UserDao;
 import com.example.letscook.controller.home.MainActivity;
 import com.example.letscook.controller.login.LoginActivity;
 
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
-import com.example.letscook.server_database.MySingleton;
-import com.example.letscook.server_database.URLs;
+import com.example.letscook.server_database.NetworkMonitor;
+import com.example.letscook.server_database.SQLiteToMySQL.UserRequests;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -65,6 +57,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import static com.example.letscook.constants.Messages.AUTH_MESS;
+import static com.example.letscook.constants.Messages.CONNECTION;
 import static com.example.letscook.constants.Messages.EMAIL_ALREADY_EXIST;
 import static com.example.letscook.constants.Messages.EMAIL_NOT_EXIST;
 import static com.example.letscook.constants.Messages.EMAIL_REQ;
@@ -81,6 +74,7 @@ public class SignUpActivity extends AppCompatActivity {
     private AlertDialog dialog;
     private Button okButton;
     private EditText editTextName;
+    private RoomDB database;
     private CallbackManager callbackManager;
     private GoogleSignInClient mGoogleSignInClient;
     private final static int RC_SIGN_IN = 123;
@@ -108,7 +102,11 @@ public class SignUpActivity extends AppCompatActivity {
         googleLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                signIn();
+                if (!NetworkMonitor.checkNetworkConnection(SignUpActivity.this)) {
+                    connDialog();
+                } else {
+                    signIn();
+                }
             }
         });
         Button fbLogin = findViewById(R.id.facebook_btn);
@@ -116,7 +114,11 @@ public class SignUpActivity extends AppCompatActivity {
         fbLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                doFBLoginForProfile();
+                if (!NetworkMonitor.checkNetworkConnection(SignUpActivity.this)) {
+                    connDialog();
+                } else {
+                    doFBLoginForProfile();
+                }
             }
         });
 
@@ -184,12 +186,6 @@ public class SignUpActivity extends AppCompatActivity {
         });
     }
 
-    public boolean checkNetworkConnection() {
-        ConnectivityManager connectivityManager = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
-        return (networkInfo != null && networkInfo.isConnected());
-    }
-
     private void createRequest() {
         // Configure Google Sign In
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -211,18 +207,13 @@ public class SignUpActivity extends AppCompatActivity {
         loginManager.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
-                Log.d("FacebookAuth", "onSuccess" + loginResult);
                 handleFacebookToken(loginResult.getAccessToken());
             }
-
             @Override
             public void onCancel() {
-                Log.d("FacebookAuth", "onCancel");
             }
-
             @Override
             public void onError(FacebookException error) {
-                Log.d("FacebookAuth", "onError" + error);
                 Toast.makeText(SignUpActivity.this, AUTH_MESS, Toast.LENGTH_SHORT).show();
 
             }
@@ -244,8 +235,7 @@ public class SignUpActivity extends AppCompatActivity {
                 new GraphRequest.GraphJSONObjectCallback() {
                     @Override
                     public void onCompleted(
-                            JSONObject object,
-                            GraphResponse response) {
+                            JSONObject object, GraphResponse response) {
                         try {
                             String id = object.getString("id");
                             String first_name = object.getString("first_name");
@@ -263,13 +253,12 @@ public class SignUpActivity extends AppCompatActivity {
                             }
                             userToReg.setName(first_name);
                             userToReg.setEmail(email);
-                            userToReg.setPassword(id);
+                            userToReg.setPassword(AESCrypt.encrypt(id));
                             if (image != null) {
                                 userToReg.setPhoto(DataConverter.imageToByteArray(image));
                             }
-
                             // Initialize db
-                            RoomDB database = RoomDB.getInstance(getBaseContext());
+                            database = RoomDB.getInstance(getBaseContext());
                             final UserDao userDao = database.userDao();
                             if (getIntent().getIntExtra("forgottenPassword", 0) == 1) {
                                 String finalEmail = email;
@@ -296,41 +285,12 @@ public class SignUpActivity extends AppCompatActivity {
                                                     required.setVisibility(View.VISIBLE);
                                                 }
                                             });
-//                                            if (checkNetworkConnection()) {
-//                                                StringRequest stringRequest = new StringRequest(Request.Method.POST, URLs.SERVER_URL,
-//                                                        new Response.Listener<String>() {
-//                                                            @Override
-//                                                            public void onResponse(String response) {
-//                                                                try {
-//                                                                    JSONObject jsonObject = new JSONObject(response);
-//                                                                    String stringResponse = jsonObject.getString("response");
-//                                                                    if (response.equals("OK")) {
-//                                                                        userDao.updatePass(user.getID(), id, true);
-//                                                                    } else {
-//                                                                        userDao.updatePass(user.getID(), id, false);
-//                                                                    }
-//                                                                } catch (JSONException e) {
-//                                                                    e.printStackTrace();
-//                                                                }
-//                                                            }
-//                                                        }, new Response.ErrorListener() {
-//                                                    @Override
-//                                                    public void onErrorResponse(VolleyError error) {
-//                                                        userDao.updatePass(user.getID(), id, false);
-//                                                    }
-//                                                })
-//                                                {
-//                                                    @Override
-//                                                    protected Map<String, String> getParams() throws AuthFailureError {
-//                                                        Map<String, String> params = new HashMap<>();
-//                                                        params.put("password", id);
-//                                                        return params;
-//                                                    }
-//                                                };
-//                                                MySingleton.getInstance(SignUpActivity.this).addToRequestQueue(stringRequest);
-//                                            } else {
-                                                userDao.updatePass(user.getID(), id);
-                                            //}
+                                            try {
+                                                userDao.updatePass(user.getID(), AESCrypt.encrypt(id));
+                                                UserRequests.userPATCH(SignUpActivity.this, user, null, null, null, AESCrypt.encrypt(id));
+                                            } catch (Exception e) {
+                                                e.printStackTrace();
+                                            }
                                             startActivity(new Intent(SignUpActivity.this, MainActivity.class));
                                             SharedPreferences sharedPreferences = getSharedPreferences("PREFERENCE", MODE_PRIVATE);
                                             SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -357,6 +317,8 @@ public class SignUpActivity extends AppCompatActivity {
                                                 }
                                             });
                                             userDao.register(userToReg);
+                                            User registeredUser = userDao.getUserByEmail(finalEmail2);
+                                            UserRequests.userPOST(SignUpActivity.this, registeredUser);
                                             startActivity(new Intent(SignUpActivity.this, MainActivity.class));
                                             SharedPreferences sharedPreferences = getSharedPreferences("PREFERENCE", MODE_PRIVATE);
                                             SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -378,7 +340,9 @@ public class SignUpActivity extends AppCompatActivity {
                                 editor.putBoolean("remember", true);
                                 editor.apply();
                             }
-                        } catch (JSONException e) {
+                        } catch (JSONException | NoSuchAlgorithmException e) {
+                            e.printStackTrace();
+                        } catch (Exception e) {
                             e.printStackTrace();
                         }
                     }
@@ -389,7 +353,11 @@ public class SignUpActivity extends AppCompatActivity {
         request.executeAsync();
     }
 
-    public void userRegistration(View view) {
+    public void userRegistration(View view) throws Exception {
+        if (!NetworkMonitor.checkNetworkConnection(SignUpActivity.this)) {
+            connDialog();
+            return;
+        }
         User userToReg = new User();
         // Get the information
         allFieldsReq = findViewById(R.id.allReq_textView);
@@ -483,7 +451,7 @@ public class SignUpActivity extends AppCompatActivity {
         } else {
             userToReg.setAdmin(false);
         }
-        userToReg.setPassword(password);
+        userToReg.setPassword(AESCrypt.encrypt(password));
         // Initialize db
         RoomDB database = RoomDB.getInstance(this);
         final UserDao userDao = database.userDao();
@@ -510,7 +478,12 @@ public class SignUpActivity extends AppCompatActivity {
                                 required.setVisibility(View.VISIBLE);
                             }
                         });
-                        userDao.updatePass(user.getID(), password);
+                        try {
+                            userDao.updatePass(user.getID(), AESCrypt.encrypt(password));
+                            UserRequests.userPATCH(SignUpActivity.this, user, null, null, null, AESCrypt.encrypt(password));
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                         startActivity(new Intent(SignUpActivity.this, MainActivity.class));
                         SharedPreferences sharedPreferences = getSharedPreferences("PREFERENCE", MODE_PRIVATE);
                         SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -535,6 +508,8 @@ public class SignUpActivity extends AppCompatActivity {
                             }
                         });
                         userDao.register(userToReg);
+                        User registeredUser = userDao.getUserByEmail(email);
+                        UserRequests.userPOST(SignUpActivity.this, registeredUser);
                         startActivity(new Intent(SignUpActivity.this, MainActivity.class));
                         SharedPreferences sharedPreferences = getSharedPreferences("PREFERENCE", MODE_PRIVATE);
                         SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -559,6 +534,27 @@ public class SignUpActivity extends AppCompatActivity {
         final View popupView = getLayoutInflater().inflate(R.layout.terms_popup, null);
 
         okButton = popupView.findViewById(R.id.register_okBtn);
+
+        dialogBuilder.setView(popupView);
+        dialog = dialogBuilder.create();
+        dialog.show();
+
+        okButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Close the dialog
+                dialog.dismiss();
+            }
+        });
+    }
+
+    public void connDialog() {
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+        final View popupView = getLayoutInflater().inflate(R.layout.denied_access, null);
+        TextView textView = popupView.findViewById(R.id.veg_question);
+        textView.setText(CONNECTION);
+
+        okButton = popupView.findViewById(R.id.okBtn);
 
         dialogBuilder.setView(popupView);
         dialog = dialogBuilder.create();
@@ -605,26 +601,24 @@ public class SignUpActivity extends AppCompatActivity {
                 GoogleSignInAccount account = task.getResult(ApiException.class);
                 assert account != null;
                 authWithGoogle(account);
-            } catch (ApiException e) {
+            } catch (ApiException | NoSuchAlgorithmException e) {
                 Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
     }
 
-    private void authWithGoogle(GoogleSignInAccount acc) {
+    private void authWithGoogle(GoogleSignInAccount acc) throws Exception {
         reg(acc.getDisplayName(), acc.getEmail(), acc.getId(), acc.getPhotoUrl());
     }
 
-    private void reg(String name, String email, String id, Uri photoUrl) {
+    private void reg(String name, String email, String id, Uri photoUrl) throws Exception {
         User userToReg = new User();
         userToReg.setName(name);
         userToReg.setEmail(email);
-        if (userToReg.getEmail().equals("malinova29@gmail.com")) {
-            userToReg.setAdmin(true);
-        } else {
-            userToReg.setAdmin(false);
-        }
-        userToReg.setPassword(id);
+        userToReg.setAdmin(userToReg.getEmail().equals("malinova29@gmail.com"));
+        userToReg.setPassword(AESCrypt.encrypt(id));
 
         final Bitmap[] image = new Bitmap[1];
         Thread thread = new Thread(new Runnable(){
@@ -641,7 +635,6 @@ public class SignUpActivity extends AppCompatActivity {
         if (image[0] != null) {
             userToReg.setPhoto(DataConverter.imageToByteArray(image[0]));
         }
-
         // Initialize db
         RoomDB database = RoomDB.getInstance(getBaseContext());
         final UserDao userDao = database.userDao();
@@ -669,6 +662,7 @@ public class SignUpActivity extends AppCompatActivity {
                             }
                         });
                         userDao.updatePass(user.getID(), userToReg.getPassword());
+                        UserRequests.userPATCH(SignUpActivity.this, user, null, null, null, userToReg.getPassword());
                         startActivity(new Intent(SignUpActivity.this, MainActivity.class));
                         SharedPreferences sharedPreferences = getSharedPreferences("PREFERENCE", MODE_PRIVATE);
                         SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -693,6 +687,8 @@ public class SignUpActivity extends AppCompatActivity {
                             }
                         });
                         userDao.register(userToReg);
+                        User registeredUser = userDao.getUserByEmail(userToReg.getEmail());
+                        UserRequests.userPOST(SignUpActivity.this, registeredUser);
                         startActivity(new Intent(SignUpActivity.this, MainActivity.class));
                         SharedPreferences sharedPreferences = getSharedPreferences("PREFERENCE", MODE_PRIVATE);
                         SharedPreferences.Editor editor = sharedPreferences.edit();

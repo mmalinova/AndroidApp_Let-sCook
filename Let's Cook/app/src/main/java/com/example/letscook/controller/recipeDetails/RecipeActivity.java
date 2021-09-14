@@ -30,7 +30,6 @@ import com.example.letscook.database.photo.Photo;
 import com.example.letscook.database.product.Product;
 import com.example.letscook.database.recipe.Recipe;
 import com.example.letscook.database.relationships.UserMarksRecipeCrossRef;
-import com.example.letscook.database.relationships.UserMarksRecipes;
 import com.example.letscook.database.relationships.UserViewsRecipeCrossRef;
 import com.example.letscook.database.typeconverters.DataConverter;
 import com.example.letscook.database.user.User;
@@ -43,6 +42,8 @@ import com.example.letscook.controller.products.ShoppingListActivity;
 import com.example.letscook.controller.recipesDashboard.RecipesActivity;
 import com.example.letscook.controller.search.SearchActivity;
 import com.example.letscook.controller.search.WhatToCookActivity;
+import com.example.letscook.server_database.NetworkMonitor;
+import com.example.letscook.server_database.SQLiteToMySQL.RecipeRequests;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -72,11 +73,23 @@ public class RecipeActivity extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
+        // Initialize db
+        database = RoomDB.getInstance(this);
+        // Get the user
+        String email = getSharedPreferences("PREFERENCE", MODE_PRIVATE).getString("email", null);
+        if (email != null) {
+            user = database.userDao().getUserByEmail(email);
+        }
+
         // Get destination
         boolean isAtMyRec = getIntent().getBooleanExtra("isAtMyRec", false);
         boolean isAtApprove = getIntent().getBooleanExtra("isAtApprove", false);
         if (isAtMyRec) {
-            setContentView(R.layout.activity_my_recipe);
+            if (user.isAdmin()) {
+                setContentView(R.layout.activity_recipe);
+            } else {
+                setContentView(R.layout.activity_my_recipe);
+            }
         } else if (isAtApprove) {
             setContentView(R.layout.activity_to_approve_recipe);
         } else {
@@ -84,20 +97,12 @@ public class RecipeActivity extends AppCompatActivity {
         }
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
-        // Initialize db
-        database = RoomDB.getInstance(this);
-
-        // Get the user
-        String email = getSharedPreferences("PREFERENCE", MODE_PRIVATE).getString("email", null);
-        if (email != null) {
-            user = database.userDao().getUserByEmail(email);
-        }
         Button isApproved = findViewById(R.id.is_approved);
 
         // Get current recipe and its images and products
         recipeId = getIntent().getLongExtra("recipeId", -1);
         recipe = database.recipeDao().getRecipeById(recipeId);
-        if (isAtMyRec) {
+        if (isAtMyRec && !user.isAdmin()) {
             if (recipe.isApproved()) {
                 isApproved.setBackgroundColor(Color.parseColor("#017330"));
                 isApproved.setText(Messages.APPROVED);
@@ -107,6 +112,10 @@ public class RecipeActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     database.recipeDao().approveRecipeById(recipeId);
+                    if (NetworkMonitor.checkNetworkConnection(RecipeActivity.this)) {
+                        recipe.setIsApproved(true);
+                        RecipeRequests.recipePOST(RecipeActivity.this, recipe, database.userDao().getUserByServerID(recipe.getOwnerID()));
+                    }
                     startActivity(new Intent(RecipeActivity.this, MainActivity.class));
                 }
             });
@@ -118,12 +127,17 @@ public class RecipeActivity extends AppCompatActivity {
                 }
             });
         }
-        allPhotosFromRecipe = database.photoDao().getAllPhotosFromRecipe(recipeId);
-        productsList = database.productDao().getRecipeProducts("toRecipe", recipeId);
+        allPhotosFromRecipe = database.photoDao().getAllPhotosFromRecipe(recipeId, recipe.getServerID());
+        productsList = database.productDao().getRecipeProducts("toRecipe", recipeId, recipe.getServerID());
 
-        // Set as the recipe as viewed recipe
+        // Set the recipe as viewed recipe
+        database.recipeDao().insert(recipe);
         if (user != null) {
-            database.userDao().insertUserViewsRecipeCrossRef(new UserViewsRecipeCrossRef(user.getID(), recipe.getID()));
+            UserViewsRecipeCrossRef byUserIDAndRecipeID = database.userViewsRecipeDao().getByLocalAndServerIDs(user.getID(), user.getServerID(), recipe.getID(), recipe.getServerID());
+            if (byUserIDAndRecipeID == null) {
+                UserViewsRecipeCrossRef userViewsRecipeCrossRef = new UserViewsRecipeCrossRef(user.getID(), recipe.getID(), false, 0);
+                database.userDao().insertUserViewsRecipeCrossRef(userViewsRecipeCrossRef);
+            }
         }
 
         // Initialize my products links
@@ -197,9 +211,10 @@ public class RecipeActivity extends AppCompatActivity {
         // Check if recipe is mark as favourite
         if (user != null) {
             if (favourite != null) {
-                List<UserMarksRecipes> userFavRecipes = database.userDao().getUserMarksRecipes(user.getID());
-                for (Recipe rec : userFavRecipes.get(0).recipeList) {
-                    if (rec.getID() == recipeId) {
+                List<UserMarksRecipeCrossRef> recipesMark = database.userMarksRecipeDao().getRecipes(user.getID(), user.getServerID());
+                for (UserMarksRecipeCrossRef userMarksRecipeCrossRef : recipesMark) {
+                    Recipe recipeByLocalOrServerId = database.recipeDao().getRecipeByLocalOrServerId(userMarksRecipeCrossRef.getRecipe_id());
+                    if (recipeByLocalOrServerId.getID() == recipeId && !userMarksRecipeCrossRef.isDeleted()) {
                         favourite.setImageResource(R.drawable.ic_favorite_after);
                         favText = findViewById(R.id.text_fav);
                         favText.setText(Messages.REMOVE_FAV);
@@ -211,10 +226,19 @@ public class RecipeActivity extends AppCompatActivity {
                     public void onClick(View v) {
                         if (favourite.getDrawable().getConstantState() == getResources().getDrawable(R.drawable.ic_favorite_before).getConstantState()) {
                             favourite.setImageResource(R.drawable.ic_favorite_after);
-                            database.userDao().insertUserMarksRecipeCrossRef(new UserMarksRecipeCrossRef(user.getID(), recipe.getID()));
+                            database.userDao().insertUserMarksRecipeCrossRef(new UserMarksRecipeCrossRef(user.getID(), recipe.getID(), false, 0, false));
                         } else {
                             favourite.setImageResource(R.drawable.ic_favorite_before);
-                            database.userDao().deleteUserMarksRecipeCrossRef(new UserMarksRecipeCrossRef(user.getID(), recipe.getID()));
+                            UserMarksRecipeCrossRef byUserIDAndRecipeID = database.userMarksRecipeDao().getByLocalAndServerIDs(user.getID(), user.getServerID(), recipe.getID(), recipe.getServerID());
+                            if (byUserIDAndRecipeID.isIs_sync()) {
+                                byUserIDAndRecipeID.setDeleted(true);
+                                byUserIDAndRecipeID.setIs_sync(false);
+                                byUserIDAndRecipeID.setUser_id(database.userDao().getUserByServerID(byUserIDAndRecipeID.getUser_id()).getID());
+                                byUserIDAndRecipeID.setRecipe_id(database.recipeDao().getRecipeByServerId(byUserIDAndRecipeID.getRecipe_id()).getID());
+                                database.userDao().insertUserMarksRecipeCrossRef(byUserIDAndRecipeID);
+                            } else {
+                                database.userDao().deleteUserMarksRecipeCrossRef(byUserIDAndRecipeID);
+                            }
                         }
                         Objects.requireNonNull(RecipesActivity.recyclerView.getAdapter()).notifyDataSetChanged();
                     }

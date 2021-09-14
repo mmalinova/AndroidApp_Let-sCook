@@ -28,6 +28,8 @@ public class Product implements Serializable, Parcelable {
     private boolean isSync;
     @ColumnInfo(name = "owner_id")
     private long ownerId;
+    @ColumnInfo(name = "product_MySQL_id")
+    private long serverID;
 
     public Product() {
     }
@@ -107,6 +109,14 @@ public class Product implements Serializable, Parcelable {
 
     public void setOwnerId(long ownerId) {
         this.ownerId = ownerId;
+    }
+
+    public long getServerID() {
+        return serverID;
+    }
+
+    public void setServerID(long serverID) {
+        this.serverID = serverID;
     }
 
     @Override

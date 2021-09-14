@@ -12,6 +12,7 @@ import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import com.example.letscook.R;
+import com.example.letscook.database.AESCrypt;
 import com.example.letscook.database.RoomDB;
 import com.example.letscook.database.user.User;
 import com.example.letscook.database.user.UserDao;
@@ -73,7 +74,6 @@ public class LoginActivity extends AppCompatActivity {
         // Get the information
         TextView required = findViewById(R.id.reqTextView);
         required.setVisibility(View.INVISIBLE);
-
         TextView email = findViewById(R.id.email_editText);
         TextView password = findViewById(R.id.password_editText);
 
@@ -104,28 +104,33 @@ public class LoginActivity extends AppCompatActivity {
                             required.setVisibility(View.VISIBLE);
                         }
                     });
-                } else if (!user.getPassword().equals(userPass)) {
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            required.setText(WRONG_PASS);
-                            required.setVisibility(View.VISIBLE);
-                        }
-                    });
                 } else {
-                    String name = user.getName();
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            required.setText(LOGIN);
-                            required.setVisibility(View.VISIBLE);
+                    try {
+                        if (!user.getPassword().equals(AESCrypt.encrypt(userPass))) {
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    required.setText(WRONG_PASS);
+                                    required.setVisibility(View.VISIBLE);
+                                }
+                            });
+                        } else {
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    required.setText(LOGIN);
+                                    required.setVisibility(View.VISIBLE);
+                                }
+                            });
+                            SharedPreferences sharedPreferences = getSharedPreferences("PREFERENCE", MODE_PRIVATE);
+                            SharedPreferences.Editor editor = sharedPreferences.edit();
+                            editor.putString("email", userEmail);
+                            editor.apply();
+                            startActivity(new Intent(LoginActivity.this, MainActivity.class));
                         }
-                    });
-                    SharedPreferences sharedPreferences = getSharedPreferences("PREFERENCE", MODE_PRIVATE);
-                    SharedPreferences.Editor editor = sharedPreferences.edit();
-                    editor.putString("email", userEmail);
-                    editor.apply();
-                    startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         }).start();

@@ -22,9 +22,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.blogspot.atifsoftwares.animatoolib.Animatoo;
+import com.example.letscook.database.AESCrypt;
 import com.example.letscook.database.photo.Photo;
 import com.example.letscook.database.product.Product;
+import com.example.letscook.database.relationships.UserMarksRecipeCrossRef;
 import com.example.letscook.database.relationships.UserMarksRecipes;
+import com.example.letscook.database.relationships.UserViewsRecipeCrossRef;
 import com.example.letscook.database.relationships.UserViewsRecipes;
 import com.example.letscook.controller.addRecipe.AddRecipeActivity;
 import com.example.letscook.database.typeconverters.DataConverter;
@@ -146,7 +149,7 @@ public class RecipesActivity extends AppCompatActivity {
                 case MY_RECIPES:
                     textView.setText(MY_RES);
                     textView.setVisibility(View.VISIBLE);
-                    dataList = database.recipeDao().getRecipesByOwnerId(userId);
+                    dataList = database.recipeDao().getRecipesByOwnerId(userId, user.getServerID());
                     isAtMyRec = true;
                     if (dataList.size() > 0) {
                         textView.setVisibility(View.INVISIBLE);
@@ -154,21 +157,33 @@ public class RecipesActivity extends AppCompatActivity {
                     }
                     break;
                 case FAV_RECIPES:
+                    dataList = new ArrayList<>();
                     textView.setText(MY_FAV);
                     textView.setVisibility(View.VISIBLE);
-                    List<UserMarksRecipes> userFavRecipes = database.userDao().getUserMarksRecipes(userId);
+                    List<UserMarksRecipeCrossRef> recipesMark = database.userMarksRecipeDao().getRecipes(user.getID(), user.getServerID());
+                    for (UserMarksRecipeCrossRef userMarksRecipeCrossRef : recipesMark) {
+                        Recipe recipeByLocalOrServerId = database.recipeDao().getRecipeByLocalOrServerId(userMarksRecipeCrossRef.getRecipe_id());
+                        if (recipeByLocalOrServerId != null && !userMarksRecipeCrossRef.isDeleted()) {
+                            dataList.add(recipeByLocalOrServerId);
+                        }
+                    }
                     isAtFav = true;
-                    dataList = userFavRecipes.get(0).recipeList;
                     if (dataList.size() > 0) {
                         textView.setVisibility(View.INVISIBLE);
                         recyclerView.setVisibility(View.VISIBLE);
                     }
                     break;
                 case LAST_VIEW:
+                    dataList = new ArrayList<>();
                     textView.setText(MY_VIEWED);
                     textView.setVisibility(View.VISIBLE);
-                    List<UserViewsRecipes> userViewsRecipes = database.userDao().getUserViewsRecipes(userId);
-                    dataList = userViewsRecipes.get(0).recipeList;
+                    List<UserViewsRecipeCrossRef> recipes = database.userViewsRecipeDao().getRecipes(user.getID(), user.getServerID());
+                    for (UserViewsRecipeCrossRef userViewsRecipeCrossRef : recipes) {
+                        Recipe recipeByLocalOrServerId = database.recipeDao().getRecipeByLocalOrServerId(userViewsRecipeCrossRef.getRecipe_id());
+                        if (recipeByLocalOrServerId != null) {
+                            dataList.add(recipeByLocalOrServerId);
+                        }
+                    }
                     if (dataList.size() > 0) {
                         textView.setVisibility(View.INVISIBLE);
                         recyclerView.setVisibility(View.VISIBLE);
@@ -189,7 +204,7 @@ public class RecipesActivity extends AppCompatActivity {
                         dataList = database.recipeDao().getAllRecipeByCategoryAndVeg(category, veg);
                     }
                     for (Recipe recipe : dataList) {
-                        List<Product> products = database.productDao().getRecipeProducts("toRecipe", recipe.getID());
+                        List<Product> products = database.productDao().getRecipeProducts("toRecipe", recipe.getID(), recipe.getServerID());
                         if (products.size() > productsList.size() + productsNeed) {
                             textView.setVisibility(View.VISIBLE);
                         } else {
@@ -432,36 +447,41 @@ public class RecipesActivity extends AppCompatActivity {
                             required.setVisibility(View.VISIBLE);
                         }
                     });
-                } else if (!user.getPassword().equals(userPass)) {
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            required.setText(WRONG_PASS);
-                            required.setVisibility(View.VISIBLE);
-                        }
-                    });
                 } else {
-                    String name = user.getName();
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            required.setText(LOGIN);
-                            required.setVisibility(View.VISIBLE);
+                    try {
+                        if (!user.getPassword().equals(AESCrypt.encrypt(userPass))) {
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    required.setText(WRONG_PASS);
+                                    required.setVisibility(View.VISIBLE);
+                                }
+                            });
+                        } else {
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    required.setText(LOGIN);
+                                    required.setVisibility(View.VISIBLE);
+                                }
+                            });
+                            SharedPreferences sharedPreferences = getSharedPreferences("PREFERENCE", MODE_PRIVATE);
+                            SharedPreferences.Editor editor = sharedPreferences.edit();
+                            editor.putString("email", userEmail);
+                            editor.apply();
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    if (navigationView != null && navigationView.getVisibility() == View.VISIBLE) {
+                                        hideNavView();
+                                        navigationView = null;
+                                    }
+                                }
+                            });
                         }
-                    });
-                    SharedPreferences sharedPreferences = getSharedPreferences("PREFERENCE", MODE_PRIVATE);
-                    SharedPreferences.Editor editor = sharedPreferences.edit();
-                    editor.putString("email", userEmail);
-                    editor.apply();
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            if (navigationView != null && navigationView.getVisibility() == View.VISIBLE) {
-                                hideNavView();
-                                navigationView = null;
-                            }
-                        }
-                    });
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         }).start();

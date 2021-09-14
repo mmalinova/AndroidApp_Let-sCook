@@ -17,9 +17,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginLeft="16dp"
             android:layout_marginEnd="16dp"
-            android:layout_marginRight="16dp"
             android:fontFamily="serif-monospace"
             android:importantForAutofill="no"
             android:padding="@dimen/cardview_default_radius"
@@ -36,6 +34,20 @@
             app:layout_constraintHorizontal_bias="0.522"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/internet_conn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
+            android:text="@string/internet"
+            android:textColor="@color/secondLink"
+            android:textSize="11sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@id/allReq_textView"
+            app:layout_constraintEnd_toEndOf="@+id/register_textView"
+            app:layout_constraintStart_toStartOf="@+id/register_textView"
+            app:layout_constraintTop_toBottomOf="@+id/register_textView" />
 
         <TextView
             android:id="@+id/allReq_textView"
@@ -344,5 +356,6 @@
             android:textStyle="bold"
             app:layout_constraintStart_toEndOf="@+id/politics_text"
             app:layout_constraintTop_toBottomOf="@+id/terms_textView" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

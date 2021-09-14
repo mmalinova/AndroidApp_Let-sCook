@@ -2,6 +2,7 @@ package com.example.letscook.controller.profile;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -21,6 +22,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Matrix;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.MenuItem;
@@ -41,11 +43,13 @@ import com.example.letscook.controller.search.SearchActivity;
 import com.example.letscook.controller.products.ShoppingListActivity;
 import com.example.letscook.controller.search.WhatToCookActivity;
 import com.example.letscook.controller.home.MainActivity;
+import com.example.letscook.server_database.SQLiteToMySQL.UserRequests;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.util.Base64;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -206,9 +210,11 @@ public class ProfileActivity extends AppCompatActivity {
                         }
                         if (!uName.equals("")) {
                             database.userDao().updateName(sID, uName);
+                            UserRequests.userPATCH(ProfileActivity.this, user, uName, null, null, null);
                         }
                         if (!uEmail.equals("")) {
                             database.userDao().updateEmail(sID, uEmail);
+                            UserRequests.userPATCH(ProfileActivity.this, user, null, uEmail, null, null);
                         }
                         // Notify
                         required.setVisibility(View.INVISIBLE);
@@ -271,6 +277,7 @@ public class ProfileActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         userDao.removePhoto(user.getID());
+                        UserRequests.userPATCH(ProfileActivity.this, user, null, null, null, null);
                     }
                 }).start();
                 dialog.dismiss();
@@ -320,6 +327,7 @@ public class ProfileActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         userDao.removePhoto(user.getID());
+                        UserRequests.userPATCH(ProfileActivity.this, user, null, null, null, null);
                     }
                 }).start();
                 dialog.dismiss();
@@ -364,6 +372,7 @@ public class ProfileActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         userDao.removePhoto(user.getID());
+                        UserRequests.userPATCH(ProfileActivity.this, user, null, null, null, null);
                     }
                 }).start();
                 dialog.dismiss();
@@ -377,6 +386,7 @@ public class ProfileActivity extends AppCompatActivity {
         });
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -389,6 +399,7 @@ public class ProfileActivity extends AppCompatActivity {
                     userPhoto.setImageBitmap(bmpImage);
                     final UserDao userDao = database.userDao();
                     userDao.setPhoto(user.getID(), DataConverter.imageToByteArray(bmpImage));
+                    UserRequests.userPATCH(ProfileActivity.this, user, null, null, Base64.getEncoder().encodeToString(DataConverter.imageToByteArray(bmpImage)), null);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -404,6 +415,7 @@ public class ProfileActivity extends AppCompatActivity {
                     userPhoto.setImageBitmap(selectedImage);
                     final UserDao userDao = database.userDao();
                     userDao.setPhoto(user.getID(), DataConverter.imageToByteArray(selectedImage));
+                    UserRequests.userPATCH(ProfileActivity.this, user, null, null, Base64.getEncoder().encodeToString(DataConverter.imageToByteArray(selectedImage)), null);
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
                 }

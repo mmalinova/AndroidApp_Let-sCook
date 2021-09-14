@@ -20,6 +20,7 @@ import android.widget.TextView;
 
 import com.blogspot.atifsoftwares.animatoolib.Animatoo;
 import com.example.letscook.controller.addRecipe.AddRecipeActivity;
+import com.example.letscook.database.AESCrypt;
 import com.example.letscook.database.RoomDB;
 import com.example.letscook.database.typeconverters.DataConverter;
 import com.example.letscook.database.user.User;
@@ -262,36 +263,41 @@ public class DataPolicyActivity extends AppCompatActivity {
                             required.setVisibility(View.VISIBLE);
                         }
                     });
-                } else if (!user.getPassword().equals(userPass)) {
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            required.setText(WRONG_PASS);
-                            required.setVisibility(View.VISIBLE);
-                        }
-                    });
                 } else {
-                    String name = user.getName();
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            required.setText(LOGIN);
-                            required.setVisibility(View.VISIBLE);
+                    try {
+                        if (!user.getPassword().equals(AESCrypt.encrypt(userPass))) {
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    required.setText(WRONG_PASS);
+                                    required.setVisibility(View.VISIBLE);
+                                }
+                            });
+                        } else {
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    required.setText(LOGIN);
+                                    required.setVisibility(View.VISIBLE);
+                                }
+                            });
+                            SharedPreferences sharedPreferences = getSharedPreferences("PREFERENCE", MODE_PRIVATE);
+                            SharedPreferences.Editor editor = sharedPreferences.edit();
+                            editor.putString("email", userEmail);
+                            editor.apply();
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    if (navigationView != null && navigationView.getVisibility() == View.VISIBLE) {
+                                        hideNavView();
+                                        navigationView = null;
+                                    }
+                                }
+                            });
                         }
-                    });
-                    SharedPreferences sharedPreferences = getSharedPreferences("PREFERENCE", MODE_PRIVATE);
-                    SharedPreferences.Editor editor = sharedPreferences.edit();
-                    editor.putString("email", userEmail);
-                    editor.apply();
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            if (navigationView != null && navigationView.getVisibility() == View.VISIBLE) {
-                                hideNavView();
-                                navigationView = null;
-                            }
-                        }
-                    });
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         }).start();

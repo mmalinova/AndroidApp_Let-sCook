@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -41,6 +40,7 @@ import com.example.letscook.controller.profile.ProfileActivity;
 import com.example.letscook.controller.search.SearchActivity;
 import com.example.letscook.controller.search.WhatToCookActivity;
 import com.example.letscook.server_database.NetworkMonitor;
+import com.example.letscook.server_database.SQLiteToMySQL.ProductRequests;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 
@@ -178,7 +178,7 @@ public class MyProductsActivity extends AppCompatActivity implements AdapterView
                 .getString("email", null);
         user = database.userDao().getUserByEmail(userEmail);
         // Store db value in product list
-        dataList = database.productDao().getUserProducts("myProducts", user.getID());
+        dataList = database.productDao().getUserProducts("myProducts", user.getID(), user.getServerID());
         if (dataList.size() > 0) {
             textView.setVisibility(View.INVISIBLE);
             recyclerView.setVisibility(View.VISIBLE);
@@ -188,7 +188,7 @@ public class MyProductsActivity extends AppCompatActivity implements AdapterView
         }
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(linearLayoutManager);
-        mainAdapter = new MainAdapter(MyProductsActivity.this, dataList, "myProducts", user.getID());
+        mainAdapter = new MainAdapter(MyProductsActivity.this, dataList, "myProducts", user.getID(), user.getServerID());
         recyclerView.setAdapter(mainAdapter);
 
         Button deleteAll = findViewById(R.id.delAllProd);
@@ -242,7 +242,7 @@ public class MyProductsActivity extends AppCompatActivity implements AdapterView
                     spinner.setSelection(0);
                     quantity.setText("");
                     dataList.clear();
-                    dataList.addAll(database.productDao().getUserProducts("myProducts", user.getID()));
+                    dataList.addAll(database.productDao().getUserProducts("myProducts", user.getID(), user.getServerID()));
                     if (dataList.size() > 0) {
                         textView.setVisibility(View.INVISIBLE);
                         recyclerView.setVisibility(View.VISIBLE);
@@ -348,8 +348,17 @@ public class MyProductsActivity extends AppCompatActivity implements AdapterView
             @Override
             public void onClick(View v) {
                 database.productDao().deleteAll(dataList);
+                if (NetworkMonitor.checkNetworkConnection(MyProductsActivity.this)) {
+                    ProductRequests.deleteAllProducts(MyProductsActivity.this, "myProducts");
+                } else {
+                    for (Product prod : dataList) {
+                        prod.setSync(false);
+                        prod.setBelonging("deleted");
+                        database.productDao().insert(prod);
+                    }
+                }
                 dataList.clear();
-                dataList.addAll(database.productDao().getUserProducts("myProducts", user.getID()));
+                dataList.addAll(database.productDao().getUserProducts("myProducts", user.getID(), user.getServerID()));
                 if (dataList.size() > 0) {
                     textView.setVisibility(View.INVISIBLE);
                     recyclerView.setVisibility(View.VISIBLE);

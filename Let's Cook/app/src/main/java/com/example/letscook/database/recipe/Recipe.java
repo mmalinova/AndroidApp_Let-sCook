@@ -42,6 +42,8 @@ public class Recipe implements Serializable {
     private boolean isSync;
     @ColumnInfo(name = "owner_id")
     private long ownerID;
+    @ColumnInfo(name = "recipe_MySQL_id")
+    private long serverID;
 
     public long getID() {
         return ID;
@@ -145,5 +147,13 @@ public class Recipe implements Serializable {
 
     public void setOwnerID(long ownerID) {
         this.ownerID = ownerID;
+    }
+
+    public long getServerID() {
+        return serverID;
+    }
+
+    public void setServerID(long serverID) {
+        this.serverID = serverID;
     }
 }

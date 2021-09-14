@@ -18,6 +18,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.letscook.R;
 import com.example.letscook.database.product.Product;
 import com.example.letscook.database.RoomDB;
+import com.example.letscook.server_database.NetworkMonitor;
+import com.example.letscook.server_database.SQLiteToMySQL.ProductRequests;
 
 import java.util.Arrays;
 import java.util.List;
@@ -42,12 +44,14 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
     private RoomDB database;
     private String listType;
     private long ownerId;
+    private long serverId;
 
-    public MainAdapter(Activity context, List<Product> productList, String listType, long ownerId) {
+    public MainAdapter(Activity context, List<Product> productList, String listType, long ownerId, long serverId) {
         this.context = context;
         this.productList = productList;
         this.listType = listType;
         this.ownerId = ownerId;
+        this.serverId = serverId;
         notifyDataSetChanged();
     }
 
@@ -128,9 +132,10 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
                         }
                         // Update in database
                         database.productDao().update(sID, uName, uMeasure_unit, uQuantity);
+                        ProductRequests.productPATCH(context, product, uName, uMeasure_unit, String.valueOf(uQuantity));
                         // Notify
                         productList.clear();
-                        productList.addAll(database.productDao().getUserProducts(listType, ownerId));
+                        productList.addAll(database.productDao().getUserProducts(listType, ownerId, serverId));
                         notifyDataSetChanged();
                         nameReq.setVisibility(View.INVISIBLE);
                         quantityReq.setVisibility(View.INVISIBLE);
@@ -151,7 +156,14 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
             @Override
             public void onClick(View v) {
                 Product p = productList.get(holder.getAdapterPosition());
-                database.productDao().delete(p);
+                if (NetworkMonitor.checkNetworkConnection(context)) {
+                    ProductRequests.productDELETE(context, p);
+                } else {
+                    database.productDao().delete(p);
+                    p.setSync(false);
+                    p.setBelonging("deleted");
+                    database.productDao().insert(p);
+                }
                 // Notify
                 int position = holder.getAdapterPosition();
                 productList.remove(position);

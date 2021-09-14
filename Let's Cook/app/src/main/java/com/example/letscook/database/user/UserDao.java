@@ -32,6 +32,9 @@ public interface UserDao {
     @Query("SELECT * FROM user WHERE email = :sEmail")
     User getUserByEmail(String sEmail);
 
+    @Query("SELECT * FROM user WHERE user_id = :sID")
+    User getUserByID(long sID);
+
     @Query("UPDATE user SET photo = :sPhoto WHERE user_id = :sID")
     void setPhoto(long sID, byte[] sPhoto);
 
@@ -45,21 +48,22 @@ public interface UserDao {
     @Delete
     void deleteUserMarksRecipeCrossRef(UserMarksRecipeCrossRef crossRef);
 
-    @Transaction
-    @Query("SELECT * FROM user WHERE user_id = :sID")
-    List<UserMarksRecipes> getUserMarksRecipes(long sID);
-
     // Many-to-many relationship
     @Insert(onConflict = REPLACE)
     void insertUserViewsRecipeCrossRef(UserViewsRecipeCrossRef crossRef);
-
-    @Transaction
-    @Query("SELECT * FROM user WHERE user_id = :sID")
-    List<UserViewsRecipes> getUserViewsRecipes(long sID);
 
     @Query("SELECT * FROM user WHERE is_sync = 0")
     List<User> getAllUnSyncUsers();
 
     @Query("UPDATE user SET is_sync = 1 WHERE user_id = :sID")
     void userSync(long sID);
+
+    @Query("UPDATE user SET is_sync = 0 WHERE user_id = :sID")
+    void userUnSync(long sID);
+
+    @Query("UPDATE user SET user_MySQL_id = :serverID WHERE user_id = :sID")
+    void setServerID(long sID, long serverID);
+
+    @Query("SELECT * FROM user WHERE user_MySQL_id = :sID")
+    User getUserByServerID(long sID);
 }

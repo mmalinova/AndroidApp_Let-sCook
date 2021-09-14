@@ -16,7 +16,9 @@ public class Photo implements Serializable {
     @ColumnInfo(name = "is_sync")
     private boolean isSync;
     @ColumnInfo(name = "recipe_id")
-    private long recipe_id;
+    private long recipeId;
+    @ColumnInfo(name = "photo_MySQL_id")
+    private long serverID;
 
     public long getID() {
         return ID;
@@ -42,11 +44,19 @@ public class Photo implements Serializable {
         isSync = sync;
     }
 
-    public long getRecipe_id() {
-        return recipe_id;
+    public long getRecipeId() {
+        return recipeId;
     }
 
-    public void setRecipe_id(long recipe_id) {
-        this.recipe_id = recipe_id;
+    public void setRecipeId(long recipeId) {
+        this.recipeId = recipeId;
+    }
+
+    public long getServerID() {
+        return serverID;
+    }
+
+    public void setServerID(long serverID) {
+        this.serverID = serverID;
     }
 }

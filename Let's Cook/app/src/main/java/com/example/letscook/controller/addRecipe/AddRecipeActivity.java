@@ -35,10 +35,6 @@ import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
 import com.blogspot.atifsoftwares.animatoolib.Animatoo;
 import com.example.letscook.R;
 import com.example.letscook.database.RoomDB;
@@ -46,7 +42,6 @@ import com.example.letscook.database.photo.Photo;
 import com.example.letscook.database.product.Product;
 import com.example.letscook.database.recipe.Recipe;
 import com.example.letscook.database.recipe.RecipeDao;
-import com.example.letscook.database.typeconverters.ConvertDate;
 import com.example.letscook.database.typeconverters.DataConverter;
 import com.example.letscook.database.user.User;
 import com.example.letscook.controller.home.MainActivity;
@@ -55,21 +50,16 @@ import com.example.letscook.controller.products.ShoppingListActivity;
 import com.example.letscook.controller.profile.ProfileActivity;
 import com.example.letscook.controller.search.SearchActivity;
 import com.example.letscook.controller.search.WhatToCookActivity;
-import com.example.letscook.server_database.MySingleton;
 import com.example.letscook.server_database.NetworkMonitor;
-import com.example.letscook.server_database.URLs;
+import com.example.letscook.server_database.SQLiteToMySQL.RecipeRequests;
+import com.example.letscook.server_database.SQLiteToMySQL.UserRequests;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -102,7 +92,7 @@ public class AddRecipeActivity extends AppCompatActivity implements AdapterView.
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_recipe);
 
-        // Initialize profile  and my products links
+        // Initialize profile and my products links
         profile = findViewById(R.id.profile);
         my_products = findViewById(R.id.my_products);
 
@@ -355,129 +345,38 @@ public class AddRecipeActivity extends AppCompatActivity implements AdapterView.
                 recipe.setHours(hour);
                 recipe.setMinutes(min);
                 recipe.setImage(photos.get(0).getPhoto());
-                if (user.isAdmin()) {
-                    recipe.setIsApproved(true);
-                } else {
-                    recipe.setIsApproved(false);
-                }
+                recipe.setIsApproved(user.isAdmin());
                 Date currentTime = Calendar.getInstance().getTime();
                 recipe.setCreatedOn(currentTime);
-                recipe.setOwnerID(user.getID());
+                if (user.getServerID() > 0) {
+                    recipe.setOwnerID(user.getServerID());
+                } else {
+                    if (NetworkMonitor.checkNetworkConnection(AddRecipeActivity.this)) {
+                        UserRequests.userPOST(AddRecipeActivity.this, user);
+                        recipe.setOwnerID(user.getServerID());
+                    } else {
+                        recipe.setSync(false);
+                    }
+                }
                 database.recipeDao().insert(recipe);
                 Recipe rec = database.recipeDao().getRecipeByName(name);
-                if (NetworkMonitor.checkNetworkConnection(AddRecipeActivity.this)) {
-                    StringRequest stringRequest = new StringRequest(Request.Method.POST, URLs.RECIPES_URL,
-                            new Response.Listener<String>() {
-                                @Override
-                                public void onResponse(String response) {
-                                    try {
-                                        JSONObject jsonObject = new JSONObject(response);
-                                        String stringResponse = jsonObject.getString("response");
-                                        if (stringResponse.equals("OK")) {
-                                            database.recipeDao().recipeSync(rec.getID());
-                                            // Get recipe ID from MySQL
-                                        }
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
-                                    }
-                                }
-                            }, new Response.ErrorListener() {
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
-                        }
-                    }) {
-                        @Override
-                        protected Map<String, String> getParams() {
-                            Map<String, String> params = new HashMap<>();
-                            params.put("name", rec.getName());
-                            params.put("category", rec.getCategory());
-                            params.put("vegetarian", String.valueOf(rec.getVegetarian()));
-                            params.put("image", String.valueOf(DataConverter.byteArrayToImage(rec.getImage())));
-                            params.put("portions", String.valueOf(rec.getPortions()));
-                            params.put("steps", rec.getSteps());
-                            params.put("hours", String.valueOf(rec.getHours()));
-                            params.put("minutes", String.valueOf(rec.getMinutes()));
-                            params.put("created_on", String.valueOf(ConvertDate.dateToTimestamp(rec.getCreatedOn())));
-                            params.put("is_approved", String.valueOf(rec.isApproved() ? 1 : 0));
-                            params.put("is_SQLite_sync", "1");
-                            params.put("owner_id", String.valueOf(rec.getOwnerID()));
-                            return params;
-                        }
-                    };
-                    MySingleton.getInstance(AddRecipeActivity.this).addToRequestQueue(stringRequest);
-                }
-                for (Photo photo : photos) {
-                    photo.setRecipe_id(rec.getID());
-                    database.photoDao().insert(photo);
+                if (rec.isApproved()) {
                     if (NetworkMonitor.checkNetworkConnection(AddRecipeActivity.this)) {
-                        StringRequest stringRequest = new StringRequest(Request.Method.POST, URLs.PHOTOS_URL,
-                                new Response.Listener<String>() {
-                                    @Override
-                                    public void onResponse(String response) {
-                                        try {
-                                            JSONObject jsonObject = new JSONObject(response);
-                                            String stringResponse = jsonObject.getString("response");
-                                            if (stringResponse.equals("OK")) {
-                                                database.photoDao().photoSync(photo.getID());
-                                            }
-                                        } catch (JSONException e) {
-                                            e.printStackTrace();
-                                        }
-                                    }
-                                }, new Response.ErrorListener() {
-                            @Override
-                            public void onErrorResponse(VolleyError error) {
-                            }
-                        }) {
-                            @Override
-                            protected Map<String, String> getParams() {
-                                Map<String, String> params = new HashMap<>();
-                                params.put("photo", String.valueOf(DataConverter.byteArrayToImage(photo.getPhoto())));
-                                params.put("is_SQLite_sync", "1");
-                                params.put("recipe_id", String.valueOf(//Set ID));
-                                return params;
-                            }
-                        };
-                        MySingleton.getInstance(AddRecipeActivity.this).addToRequestQueue(stringRequest);
+                        RecipeRequests.recipePOST(AddRecipeActivity.this, rec, user);
+                        rec = database.recipeDao().getRecipeByName(rec.getName());
+                    }
+                }
+                int count = 0;
+                for (Photo photo : photos) {
+                    if (count < 3) {
+                        photo.setRecipeId(rec.getID());
+                        database.photoDao().insert(photo);
+                        count++;
                     }
                 }
                 for (Product product : productList) {
                     product.setOwnerId(rec.getID());
                     database.productDao().insert(product);
-                    if (NetworkMonitor.checkNetworkConnection(AddRecipeActivity.this)) {
-                        StringRequest stringRequest = new StringRequest(Request.Method.POST, URLs.PRODUCTS_URL,
-                                new Response.Listener<String>() {
-                                    @Override
-                                    public void onResponse(String response) {
-                                        try {
-                                            JSONObject jsonObject = new JSONObject(response);
-                                            String stringResponse = jsonObject.getString("response");
-                                            if (stringResponse.equals("OK")) {
-                                                database.productDao().productSync(product.getID());
-                                            }
-                                        } catch (JSONException e) {
-                                            e.printStackTrace();
-                                        }
-                                    }
-                                }, new Response.ErrorListener() {
-                            @Override
-                            public void onErrorResponse(VolleyError error) {
-                            }
-                        }) {
-                            @Override
-                            protected Map<String, String> getParams() {
-                                Map<String, String> params = new HashMap<>();
-                                params.put("name", product.getName());
-                                params.put("measure_unit", product.getMeasureUnit());
-                                params.put("quantity", String.valueOf(product.getQuantity()));
-                                params.put("belonging", product.getBelonging());
-                                params.put("is_SQLite_sync", "1");
-                                params.put("owner_id", String.valueOf(//Set ID));
-                                return params;
-                            }
-                        };
-                        MySingleton.getInstance(AddRecipeActivity.this).addToRequestQueue(stringRequest);
-                    }
                 }
                 if (user.isAdmin()) {
                     startActivity(new Intent(getApplicationContext(), MainActivity.class));

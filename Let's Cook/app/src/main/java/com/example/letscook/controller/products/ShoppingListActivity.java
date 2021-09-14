@@ -38,6 +38,8 @@ import com.example.letscook.controller.home.MainActivity;
 import com.example.letscook.controller.profile.ProfileActivity;
 import com.example.letscook.controller.search.SearchActivity;
 import com.example.letscook.controller.search.WhatToCookActivity;
+import com.example.letscook.server_database.NetworkMonitor;
+import com.example.letscook.server_database.SQLiteToMySQL.ProductRequests;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
@@ -167,7 +169,7 @@ public class ShoppingListActivity extends AppCompatActivity implements AdapterVi
                 .getString("email", null);
         user = database.userDao().getUserByEmail(userEmail);
         // Store db value in product list
-        dataList = database.productDao().getUserProducts("shoppingList", user.getID());
+        dataList = database.productDao().getUserProducts("shoppingList", user.getID(), user.getServerID());
         if (dataList.size() > 0) {
             textView.setVisibility(View.INVISIBLE);
             recyclerView.setVisibility(View.VISIBLE);
@@ -177,7 +179,7 @@ public class ShoppingListActivity extends AppCompatActivity implements AdapterVi
         }
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(linearLayoutManager);
-        mainAdapter = new MainAdapter(ShoppingListActivity.this, dataList, "shoppingList", user.getID());
+        mainAdapter = new MainAdapter(ShoppingListActivity.this, dataList, "shoppingList", user.getID(), user.getServerID());
         recyclerView.setAdapter(mainAdapter);
 
         Button deleteAll = findViewById(R.id.delAllProd);
@@ -231,7 +233,7 @@ public class ShoppingListActivity extends AppCompatActivity implements AdapterVi
                     spinner.setSelection(0);
                     quantity.setText("");
                     dataList.clear();
-                    dataList.addAll(database.productDao().getUserProducts("shoppingList", user.getID()));
+                    dataList.addAll(database.productDao().getUserProducts("shoppingList", user.getID(), user.getServerID()));
                     if (dataList.size() > 0) {
                         textView.setVisibility(View.INVISIBLE);
                         recyclerView.setVisibility(View.VISIBLE);
@@ -321,8 +323,17 @@ public class ShoppingListActivity extends AppCompatActivity implements AdapterVi
             @Override
             public void onClick(View v) {
                 database.productDao().deleteAll(dataList);
+                if (NetworkMonitor.checkNetworkConnection(ShoppingListActivity.this)) {
+                    ProductRequests.deleteAllProducts(ShoppingListActivity.this, "shoppingList");
+                } else {
+                    for (Product prod : dataList) {
+                        prod.setSync(false);
+                        prod.setBelonging("deleted");
+                        database.productDao().insert(prod);
+                    }
+                }
                 dataList.clear();
-                dataList.addAll(database.productDao().getUserProducts("shoppingList", user.getID()));
+                dataList.addAll(database.productDao().getUserProducts("shoppingList", user.getID(), user.getServerID()));
                 if (dataList.size() > 0) {
                     textView.setVisibility(View.INVISIBLE);
                     recyclerView.setVisibility(View.VISIBLE);

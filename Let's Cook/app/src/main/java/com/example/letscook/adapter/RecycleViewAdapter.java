@@ -68,19 +68,19 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
         // Initialize database
         database = RoomDB.getInstance(context);
         // Check for favourite recipe
-        List<UserMarksRecipes> userFavRecipes = database.userDao().getUserMarksRecipes(userId);
         boolean isMarked = false;
-        if (userFavRecipes.size() > 0) {
-            for (Recipe rec : userFavRecipes.get(0).recipeList) {
-                if (rec.getID() == recipe.getID()) {
-                    holder.favourite.setImageResource(R.drawable.ic_favorite_after);
-                    isMarked = true;
-                }
-            }
-            if (!isMarked) {
-                holder.favourite.setImageResource(R.drawable.ic_favorite_before);
+        List<UserMarksRecipeCrossRef> recipesMark = database.userMarksRecipeDao().getRecipes(userId, database.userDao().getUserByID(userId).getServerID());
+        for (UserMarksRecipeCrossRef userMarksRecipeCrossRef : recipesMark) {
+            Recipe recipeByLocalOrServerId = database.recipeDao().getRecipeByLocalOrServerId(userMarksRecipeCrossRef.getRecipe_id());
+            if (recipeByLocalOrServerId.getID() == recipe.getID() && !userMarksRecipeCrossRef.isDeleted()) {
+                holder.favourite.setImageResource(R.drawable.ic_favorite_after);
+                isMarked = true;
             }
         }
+        if (!isMarked) {
+            holder.favourite.setImageResource(R.drawable.ic_favorite_before);
+        }
+
         holder.textView.setTextColor(Color.parseColor("#4E4E4E"));
         holder.textView.setText(recipe.getName());
         holder.imageView.setImageBitmap(DataConverter.byteArrayToImage(recipe.getImage()));
@@ -117,11 +117,20 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
                 if (userId != 0) {
                     if (holder.favourite.getDrawable().getConstantState() == context.getResources().getDrawable(R.drawable.ic_favorite_before).getConstantState()) {
                         holder.favourite.setImageResource(R.drawable.ic_favorite_after);
-                        database.userDao().insertUserMarksRecipeCrossRef(new UserMarksRecipeCrossRef(userId, recipe.getID()));
+                        database.userDao().insertUserMarksRecipeCrossRef(new UserMarksRecipeCrossRef(userId, recipe.getID(), false, 0, false));
                         notifyDataSetChanged();
                     } else {
                         holder.favourite.setImageResource(R.drawable.ic_favorite_before);
-                        database.userDao().deleteUserMarksRecipeCrossRef(new UserMarksRecipeCrossRef(userId, recipe.getID()));
+                        UserMarksRecipeCrossRef byUserIDAndRecipeID = database.userMarksRecipeDao().getByLocalAndServerIDs(userId, database.userDao().getUserByID(userId).getServerID(), recipe.getID(), recipe.getServerID());
+                        if (byUserIDAndRecipeID.isIs_sync()) {
+                            byUserIDAndRecipeID.setDeleted(true);
+                            byUserIDAndRecipeID.setIs_sync(false);
+                            byUserIDAndRecipeID.setUser_id(database.userDao().getUserByServerID(byUserIDAndRecipeID.getUser_id()).getID());
+                            byUserIDAndRecipeID.setRecipe_id(database.recipeDao().getRecipeByServerId(byUserIDAndRecipeID.getRecipe_id()).getID());
+                            database.userDao().insertUserMarksRecipeCrossRef(byUserIDAndRecipeID);
+                        } else {
+                            database.userDao().deleteUserMarksRecipeCrossRef(byUserIDAndRecipeID);
+                        }
                         notifyDataSetChanged();
                         if (isAtFav) {
                             notifyItemRemoved(position);

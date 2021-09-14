@@ -14,6 +14,7 @@ public class Messages {
     public static final String WRONG_PASS = "Грешна парола!";
     public static final String LOGIN = "Влизане...Моля, изчакайте!";
     public static final String REGISTER = "Регистриране...Моля, изчакайте!";
+    public static final String CONNECTION = "Моля, включете Интернет връзка!";
 
     public static final String WHAT_TO_COOK = "Какво да сготвя";
     public static final String WHAT_TO_COOK_INFO = "Тук може да добавиш всички продукти, с които разполагаш или да приложиш вече готовия твой списък. Огледай се добре - според тях ще бъдат филтрирани рецептите, които може да сготвиш!";

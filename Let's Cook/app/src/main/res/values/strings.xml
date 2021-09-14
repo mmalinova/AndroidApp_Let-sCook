@@ -12,6 +12,7 @@
     <string name="denied">За достъп до тази секция трябва да влезнеш в профила си от \"Профил\" секцията!</string>
     <!-- Sign up activity -->
     <string name="reg_question"><a href="">Регистриране?</a></string>
+    <string name="internet">За регистрацията в приложението е нужна Интернет връзка!</string>
     <string name="skip_btn">Пропусни</string>
     <string name="registrationText">Регистрация</string>
     <string name="nameЕditText">Потребителско име*</string>

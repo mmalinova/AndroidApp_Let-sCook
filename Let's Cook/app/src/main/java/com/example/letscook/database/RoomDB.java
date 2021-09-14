@@ -14,7 +14,9 @@ import com.example.letscook.database.product.ProductDao;
 import com.example.letscook.database.recipe.Recipe;
 import com.example.letscook.database.recipe.RecipeDao;
 import com.example.letscook.database.relationships.UserMarksRecipeCrossRef;
+import com.example.letscook.database.relationships.UserMarksRecipeDao;
 import com.example.letscook.database.relationships.UserViewsRecipeCrossRef;
+import com.example.letscook.database.relationships.UserViewsRecipeDao;
 import com.example.letscook.database.typeconverters.ConvertDate;
 import com.example.letscook.database.user.User;
 import com.example.letscook.database.user.UserDao;
@@ -22,7 +24,7 @@ import com.example.letscook.database.user.UserDao;
 // Create database
 @Database(entities = {Product.class, Recipe.class, User.class, Photo.class,
         UserMarksRecipeCrossRef.class, UserViewsRecipeCrossRef.class},
-        version = 2, exportSchema = false)
+        version = 1, exportSchema = false)
 @TypeConverters({ConvertDate.class})
 public abstract class RoomDB extends RoomDatabase {
     // Create db instance
@@ -45,4 +47,6 @@ public abstract class RoomDB extends RoomDatabase {
     public abstract RecipeDao recipeDao();
     public abstract UserDao userDao();
     public abstract PhotoDao photoDao();
+    public abstract UserViewsRecipeDao userViewsRecipeDao();
+    public abstract UserMarksRecipeDao userMarksRecipeDao();
 }

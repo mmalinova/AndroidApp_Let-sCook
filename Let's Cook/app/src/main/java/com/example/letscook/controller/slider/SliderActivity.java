@@ -6,9 +6,13 @@ import android.os.Bundle;
 
 import com.blogspot.atifsoftwares.animatoolib.Animatoo;
 import com.example.letscook.R;
+import com.example.letscook.controller.AppController;
 import com.example.letscook.controller.home.MainActivity;
 import com.example.letscook.controller.register.SignUpActivity;
 import com.example.letscook.adapter.SliderAdp;
+import com.example.letscook.database.RoomDB;
+import com.example.letscook.database.typeconverters.DataConverter;
+import com.example.letscook.database.user.User;
 import com.example.letscook.server_database.NetworkMonitor;
 import com.smarteist.autoimageslider.IndicatorView.animation.type.IndicatorAnimationType;
 import com.smarteist.autoimageslider.SliderAnimations;
@@ -42,7 +46,14 @@ public class SliderActivity extends AppCompatActivity {
         // Synchronize with MySQL
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
-        registerReceiver(new NetworkMonitor(), intentFilter);
+        NetworkMonitor networkMonitor = new NetworkMonitor();
+
+        AppController.getInstance().setOnVisibilityChangeListener(new AppController.ValueChangeListener() {
+            @Override
+            public void onChanged(Boolean value) {
+                registerReceiver(networkMonitor, intentFilter);
+            }
+        });
 
         //Make the activity on full screen
         requestWindowFeature(Window.FEATURE_NO_TITLE);

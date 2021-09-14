@@ -26,6 +26,8 @@ public class User implements Serializable {
     private boolean isSync;
     @ColumnInfo(name = "photo", typeAffinity = ColumnInfo.BLOB)
     private byte[] photo;
+    @ColumnInfo(name = "user_MySQL_id")
+    private long serverID;
 
     public long getID() {
         return ID;
@@ -81,5 +83,13 @@ public class User implements Serializable {
 
     public void setPhoto(byte[] photo) {
         this.photo = photo;
+    }
+
+    public long getServerID() {
+        return serverID;
+    }
+
+    public void setServerID(long serverID) {
+        this.serverID = serverID;
     }
 }

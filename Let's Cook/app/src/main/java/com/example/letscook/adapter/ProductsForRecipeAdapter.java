@@ -40,8 +40,6 @@ public class ProductsForRecipeAdapter extends RecyclerView.Adapter<ProductsForRe
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         // Initialize products data
         Product product = productList.get(position);
-        // Initialize database
-        RoomDB database = RoomDB.getInstance(context);
         holder.name.setTextColor(Color.parseColor("#4E4E4E"));
         holder.name.setText(String.valueOf(product.getName()));
         holder.quantity.setTextColor(Color.parseColor("#4E4E4E"));

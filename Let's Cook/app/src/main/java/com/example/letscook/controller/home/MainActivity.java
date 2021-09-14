@@ -22,6 +22,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.blogspot.atifsoftwares.animatoolib.Animatoo;
+import com.example.letscook.database.AESCrypt;
+import com.example.letscook.database.photo.Photo;
 import com.example.letscook.database.recipe.Recipe;
 import com.example.letscook.controller.addRecipe.AddRecipeActivity;
 import com.example.letscook.controller.contacts.ContactsActivity;
@@ -86,6 +88,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 navigationView = findViewById(R.id.login_view);
             }
         }
+
         findViewById(R.id.constraint).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -409,36 +412,41 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             required.setVisibility(View.VISIBLE);
                         }
                     });
-                } else if (!user.getPassword().equals(userPass)) {
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            required.setText(WRONG_PASS);
-                            required.setVisibility(View.VISIBLE);
-                        }
-                    });
                 } else {
-                    String name = user.getName();
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            required.setText(LOGIN);
-                            required.setVisibility(View.VISIBLE);
+                    try {
+                        if (!user.getPassword().equals(AESCrypt.encrypt(userPass))) {
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    required.setText(WRONG_PASS);
+                                    required.setVisibility(View.VISIBLE);
+                                }
+                            });
+                        } else {
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    required.setText(LOGIN);
+                                    required.setVisibility(View.VISIBLE);
+                                }
+                            });
+                            SharedPreferences sharedPreferences = getSharedPreferences("PREFERENCE", MODE_PRIVATE);
+                            SharedPreferences.Editor editor = sharedPreferences.edit();
+                            editor.putString("email", userEmail);
+                            editor.apply();
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    if (navigationView != null && navigationView.getVisibility() == View.VISIBLE) {
+                                        startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                                        navigationView = null;
+                                    }
+                                }
+                            });
                         }
-                    });
-                    SharedPreferences sharedPreferences = getSharedPreferences("PREFERENCE", MODE_PRIVATE);
-                    SharedPreferences.Editor editor = sharedPreferences.edit();
-                    editor.putString("email", userEmail);
-                    editor.apply();
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            if (navigationView != null && navigationView.getVisibility() == View.VISIBLE) {
-                                startActivity(new Intent(getApplicationContext(), MainActivity.class));
-                                navigationView = null;
-                            }
-                        }
-                    });
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         }).start();
