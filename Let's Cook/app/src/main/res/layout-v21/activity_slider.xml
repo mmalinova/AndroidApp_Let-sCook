@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".controller.slider.SliderActivity"
     android:background="@color/black">
-
     <com.smarteist.autoimageslider.SliderView
         android:id="@+id/slider_view"
         android:layout_width="match_parent"
@@ -25,9 +24,7 @@
         app:sliderIndicatorUnselectedColor="@color/white"
         app:sliderScrollTimeInSec="4"
         app:sliderStartAutoCycle="false">
-
     </com.smarteist.autoimageslider.SliderView>
-
     <Button
         android:id="@+id/btn_slider"
         android:layout_width="193dp"
@@ -55,7 +52,6 @@
         app:layout_constraintEnd_toEndOf="@+id/slider_view"
         app:layout_constraintStart_toStartOf="@+id/slider_view"
         app:layout_constraintTop_toTopOf="@+id/slider_view" />
-
     <Button
         android:id="@+id/skip_btn"
         android:layout_width="wrap_content"
@@ -75,5 +71,4 @@
         app:iconPadding="1dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -5,7 +5,6 @@
     android:paddingLeft="14dp"
     android:paddingRight="14dp"
     android:background="@color/listBackground">
-
     <TextView
         android:id="@+id/cat"
         android:layout_width="wrap_content"
@@ -15,7 +14,6 @@
         android:text="@string/breakfast"
         android:textColor="@color/inputText"
         android:textSize="24sp" />
-
     <ImageView
         android:id="@+id/image"
         android:layout_width="95dp"
@@ -25,7 +23,6 @@
         android:layout_toEndOf="@id/cat"
         android:src="@drawable/breakfast"
         android:contentDescription="@string/main_src" />
-
     <ImageView
         android:id="@+id/forward"
         android:layout_width="40dp"

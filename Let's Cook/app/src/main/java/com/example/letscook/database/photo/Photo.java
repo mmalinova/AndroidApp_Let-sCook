@@ -23,39 +23,30 @@ public class Photo implements Serializable {
     public long getID() {
         return ID;
     }
-
     public void setID(long ID) {
         this.ID = ID;
     }
-
     public byte[] getPhoto() {
         return photo;
     }
-
     public void setPhoto(byte[] image) {
         this.photo = image;
     }
-
     public boolean isSync() {
         return isSync;
     }
-
     public void setSync(boolean sync) {
         isSync = sync;
     }
-
     public long getRecipeId() {
         return recipeId;
     }
-
     public void setRecipeId(long recipeId) {
         this.recipeId = recipeId;
     }
-
     public long getServerID() {
         return serverID;
     }
-
     public void setServerID(long serverID) {
         this.serverID = serverID;
     }

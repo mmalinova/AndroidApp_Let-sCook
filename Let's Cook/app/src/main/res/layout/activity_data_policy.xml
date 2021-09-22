@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".controller.info.TermsOfUseActivity">
     <include android:id="@+id/tool" layout="@layout/toolbar" />
-
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/login_view"
         android:layout_width="wrap_content"
@@ -15,7 +14,6 @@
         android:layout_gravity="end"
         app:headerLayout="@layout/main_login"
         android:visibility="invisible"/>
-
     <ScrollView
         android:id="@+id/scroll"
         android:layout_width="match_parent"
@@ -23,7 +21,6 @@
         android:layout_below="@id/tool"
         android:layout_above="@id/bottom_nav"
         android:background="@color/background">
-
         <RelativeLayout
             android:id="@+id/layout"
             android:layout_width="match_parent"
@@ -34,7 +31,6 @@
                 layout="@layout/action_bar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
-
             <TextView
                 android:id="@+id/policy_info"
                 android:layout_width="match_parent"
@@ -47,7 +43,6 @@
                 android:layout_marginRight="16dp"
                 android:text="@string/policy_info"
                 android:textColor="@color/black"/>
-
             <TextView
                 android:id="@+id/data_title"
                 android:layout_width="match_parent"
@@ -61,7 +56,6 @@
                 android:text="@string/data_title"
                 android:textColor="@color/black"
                 android:textStyle="bold" />
-
             <TextView
                 android:id="@+id/data_info"
                 android:layout_width="match_parent"
@@ -73,7 +67,6 @@
                 android:layout_marginEnd="16dp"
                 android:layout_marginRight="16dp"
                 android:layout_below="@id/data_title"/>
-
             <TextView
                 android:id="@+id/processing_title"
                 android:layout_width="match_parent"
@@ -87,7 +80,6 @@
                 android:text="@string/processing_title"
                 android:textColor="@color/black"
                 android:textStyle="bold" />
-
             <TextView
                 android:id="@+id/processing_info"
                 android:layout_width="match_parent"
@@ -99,7 +91,6 @@
                 android:layout_marginEnd="16dp"
                 android:layout_marginRight="16dp"
                 android:layout_below="@id/processing_title"/>
-
             <TextView
                 android:id="@+id/providing_title"
                 android:layout_width="match_parent"
@@ -113,7 +104,6 @@
                 android:text="@string/providing_title"
                 android:textColor="@color/black"
                 android:textStyle="bold" />
-
             <TextView
                 android:id="@+id/providing_info"
                 android:layout_width="match_parent"
@@ -125,7 +115,6 @@
                 android:layout_marginEnd="16dp"
                 android:layout_marginRight="16dp"
                 android:layout_below="@id/providing_title"/>
-
             <TextView
                 android:id="@+id/rights_title"
                 android:layout_width="match_parent"
@@ -139,7 +128,6 @@
                 android:textStyle="bold"
                 android:text="@string/rights_title"
                 android:textColor="@color/black" />
-
             <TextView
                 android:id="@+id/rights_info"
                 android:layout_width="match_parent"
@@ -151,7 +139,6 @@
                 android:layout_marginEnd="16dp"
                 android:layout_marginRight="16dp"
                 android:layout_below="@id/rights_title"/>
-
             <TextView
                 android:id="@+id/connection_title"
                 android:layout_width="match_parent"
@@ -165,7 +152,6 @@
                 android:text="@string/connection_title"
                 android:textColor="@color/black"
                 android:textStyle="bold" />
-
             <TextView
                 android:id="@+id/connection_info"
                 android:layout_width="match_parent"
@@ -179,7 +165,6 @@
                 android:layout_below="@id/connection_title"/>
         </RelativeLayout>
     </ScrollView>
-
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

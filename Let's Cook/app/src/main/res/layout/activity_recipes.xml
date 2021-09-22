@@ -9,7 +9,6 @@
     <include
         android:id="@+id/tool"
         layout="@layout/toolbar" />
-
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/login_view"
         android:layout_width="wrap_content"
@@ -18,7 +17,6 @@
         android:background="@color/background"
         android:visibility="invisible"
         app:headerLayout="@layout/main_login" />
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraint"
         android:layout_width="match_parent"
@@ -31,7 +29,6 @@
             layout="@layout/action_bar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
-
         <TextView
             android:id="@+id/textView"
             android:layout_width="wrap_content"
@@ -49,7 +46,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/action_bar" />
-
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_view"
             android:layout_width="match_parent"
@@ -64,7 +60,6 @@
             app:layout_constraintTop_toBottomOf="@+id/action_bar"
             tools:listitem="@layout/recipes_list_data" />
     </androidx.constraintlayout.widget.ConstraintLayout>
-
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_nav"
         android:layout_width="match_parent"

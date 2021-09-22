@@ -7,7 +7,6 @@
     android:padding="16dp"
     android:background="@color/beige"
     tools:context=".controller.search.SearchActivity">
-
     <TextView
         android:id="@+id/textViewCategory"
         android:layout_width="wrap_content"
@@ -19,7 +18,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
     <RadioGroup
         android:id="@+id/radioGroup"
         android:layout_width="wrap_content"
@@ -30,7 +28,6 @@
         app:layout_constraintEnd_toEndOf="@+id/textViewCategory"
         app:layout_constraintStart_toStartOf="@+id/textViewCategory"
         app:layout_constraintTop_toBottomOf="@id/textViewCategory">
-
         <RadioButton
             android:id="@+id/radio_breakfast"
             android:layout_width="wrap_content"
@@ -39,7 +36,6 @@
             android:text="@string/breakfast"
             android:textColor="@color/black"
             android:textSize="15sp" />
-
         <RadioButton
             android:id="@+id/radio_lunch"
             android:layout_width="wrap_content"
@@ -50,7 +46,6 @@
             android:textColor="@color/black"
             android:textSize="15sp" />
     </RadioGroup>
-
     <RadioGroup
         android:id="@+id/secondRadioGroup"
         android:layout_width="wrap_content"
@@ -60,7 +55,6 @@
         app:layout_constraintEnd_toEndOf="@+id/radioGroup"
         app:layout_constraintStart_toStartOf="@+id/radioGroup"
         app:layout_constraintTop_toBottomOf="@+id/radioGroup">
-
         <RadioButton
             android:id="@+id/radio_dinner"
             android:layout_width="wrap_content"
@@ -69,7 +63,6 @@
             android:text="@string/lunch"
             android:textColor="@color/black"
             android:textSize="15sp" />
-
         <RadioButton
             android:id="@+id/radio_dessert"
             android:layout_width="wrap_content"

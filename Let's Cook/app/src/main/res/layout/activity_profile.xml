@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -7,13 +6,11 @@
     android:layout_height="match_parent"
     tools:context=".controller.profile.ProfileActivity"
     android:background="@color/background">
-
     <RelativeLayout
         android:id="@+id/top_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/beige">
-
         <ImageView
             android:id="@+id/logo"
             android:layout_width="76dp"
@@ -25,7 +22,6 @@
             android:cropToPadding="false"
             android:src="@drawable/ic_logo_toolbar"
             android:contentDescription="@string/logo" />
-
         <TextView
             android:id="@+id/bar_text"
             android:layout_width="wrap_content"
@@ -39,7 +35,6 @@
             android:textColor="@color/black"
             android:textSize="20sp"
             android:textStyle="italic" />
-
         <TextView
             android:id="@+id/smile"
             android:layout_width="wrap_content"
@@ -53,20 +48,16 @@
             android:text="&#128578;"
             android:textSize="28sp"
             android:textStyle="italic" />
-
     </RelativeLayout>
-
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@id/bottom_nav"
         android:layout_below="@id/top_bar"
         android:fillViewport="true">
-
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-
             <FrameLayout
                 android:id="@+id/frame"
                 android:layout_width="200dp"
@@ -75,7 +66,6 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
-
                 <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/user_photo"
                     android:layout_width="200dp"
@@ -84,7 +74,6 @@
                     android:contentDescription="@string/photo_desc"
                     android:src="@drawable/ic_profile_photo"
                     app:civ_border_width="1dp" />
-
                 <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/photo"
                     android:layout_width="35dp"
@@ -92,7 +81,6 @@
                     android:layout_gravity="top|end"
                     android:src="@drawable/ic_photo_camera" />
             </FrameLayout>
-
             <TextView
                 android:id="@+id/data"
                 android:layout_width="wrap_content"
@@ -103,7 +91,6 @@
                 android:textColor="@color/black"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/frame" />
-
             <TextView
                 android:id="@+id/userName"
                 android:layout_width="wrap_content"
@@ -114,7 +101,6 @@
                 android:textColor="@color/black"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/data" />
-
             <TextView
                 android:id="@+id/name"
                 android:layout_width="0dp"
@@ -128,7 +114,6 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/userName"
                 app:layout_constraintTop_toTopOf="@+id/userName" />
-
             <TextView
                 android:id="@+id/userEmail"
                 android:layout_width="wrap_content"
@@ -139,7 +124,6 @@
                 android:textColor="@color/black"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/name" />
-
             <TextView
                 android:id="@+id/email"
                 android:layout_width="0dp"
@@ -156,7 +140,6 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/userEmail"
                 app:layout_constraintTop_toTopOf="@+id/userEmail" />
-
             <Button
                 android:id="@+id/exit_btn"
                 android:layout_width="wrap_content"
@@ -170,19 +153,16 @@
                 app:backgroundTint="@color/beige"
                 app:layout_constraintStart_toStartOf="@+id/userEmail"
                 app:layout_constraintTop_toBottomOf="@+id/email" />
-
             <androidx.coordinatorlayout.widget.CoordinatorLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 app:layout_constraintTop_toBottomOf="@id/exit_btn"
                 app:layout_constraintEnd_toEndOf="parent"
                 tools:layout_editor_absoluteX="0dp">
-
                 <FrameLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="bottom|end">
-
                     <com.google.android.material.floatingactionbutton.FloatingActionButton
                         android:id="@+id/floating_btn"
                         android:layout_width="wrap_content"
@@ -196,7 +176,6 @@
                         android:src="@drawable/ic_edit"
                         app:backgroundTint="@color/beige"
                         app:tint="@color/yellow_icon" />
-
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -210,7 +189,6 @@
             </androidx.coordinatorlayout.widget.CoordinatorLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
-
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

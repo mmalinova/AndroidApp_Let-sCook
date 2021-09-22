@@ -62,7 +62,6 @@ public class DataPolicyActivity extends AppCompatActivity {
         // Initialize profile  and my products links
         profile = findViewById(R.id.profile);
         my_products = findViewById(R.id.my_products);
-
         // Initialize db
         database = RoomDB.getInstance(this);
         // Set view according session storage
@@ -82,7 +81,6 @@ public class DataPolicyActivity extends AppCompatActivity {
                 navigationView = findViewById(R.id.login_view);
             }
         }
-
         findViewById(R.id.layout).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

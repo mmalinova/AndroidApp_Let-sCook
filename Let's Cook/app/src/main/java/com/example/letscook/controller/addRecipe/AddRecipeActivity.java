@@ -95,7 +95,6 @@ public class AddRecipeActivity extends AppCompatActivity implements AdapterView.
         // Initialize profile and my products links
         profile = findViewById(R.id.profile);
         my_products = findViewById(R.id.my_products);
-
         // Initialize db
         database = RoomDB.getInstance(this);
         // Set view according session storage
@@ -112,7 +111,6 @@ public class AddRecipeActivity extends AppCompatActivity implements AdapterView.
                 }
             }
         }
-
         profile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -130,7 +128,6 @@ public class AddRecipeActivity extends AppCompatActivity implements AdapterView.
                 my_products.setColorFilter(Color.parseColor("#FFFEF6D8"));
             }
         });
-
         // Initialize action bar variables
         ImageView backIcon = findViewById(R.id.back_icon);
         TextView actionText = findViewById(R.id.action_bar_text);
@@ -278,7 +275,6 @@ public class AddRecipeActivity extends AppCompatActivity implements AdapterView.
                 addProduct.setEnabled(false);
             }
         });
-
         steps = findViewById(R.id.editTextPrep);
         steps.addTextChangedListener(watcher);
         steps.setOnTouchListener(new View.OnTouchListener() {
@@ -297,7 +293,6 @@ public class AddRecipeActivity extends AppCompatActivity implements AdapterView.
         hours.addTextChangedListener(watcher);
         minutes = findViewById(R.id.editTextMin);
         minutes.addTextChangedListener(watcher);
-
         addRecipe = findViewById(R.id.addBtn);
         addRecipe.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -385,7 +380,6 @@ public class AddRecipeActivity extends AppCompatActivity implements AdapterView.
                 }
             }
         });
-
         // Initialize and assign variable
         bottomNavigationView = findViewById(R.id.bottom_nav);
         // Set selected

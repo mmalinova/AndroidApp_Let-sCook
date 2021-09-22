@@ -22,7 +22,6 @@ import com.example.letscook.R;
 import com.example.letscook.database.recipe.Recipe;
 import com.example.letscook.database.RoomDB;
 import com.example.letscook.database.relationships.UserMarksRecipeCrossRef;
-import com.example.letscook.database.relationships.UserMarksRecipes;
 import com.example.letscook.database.typeconverters.DataConverter;
 import com.example.letscook.controller.recipeDetails.RecipeActivity;
 
@@ -80,7 +79,6 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
         if (!isMarked) {
             holder.favourite.setImageResource(R.drawable.ic_favorite_before);
         }
-
         holder.textView.setTextColor(Color.parseColor("#4E4E4E"));
         holder.textView.setText(recipe.getName());
         holder.imageView.setImageBitmap(DataConverter.byteArrayToImage(recipe.getImage()));

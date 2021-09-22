@@ -183,7 +183,6 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        // Initialize variable
         TextView name, quantity, unit;
         ImageView edit, delete;
 

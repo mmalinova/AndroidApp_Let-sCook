@@ -10,9 +10,6 @@ import com.example.letscook.controller.AppController;
 import com.example.letscook.controller.home.MainActivity;
 import com.example.letscook.controller.register.SignUpActivity;
 import com.example.letscook.adapter.SliderAdp;
-import com.example.letscook.database.RoomDB;
-import com.example.letscook.database.typeconverters.DataConverter;
-import com.example.letscook.database.user.User;
 import com.example.letscook.server_database.NetworkMonitor;
 import com.smarteist.autoimageslider.IndicatorView.animation.type.IndicatorAnimationType;
 import com.smarteist.autoimageslider.SliderAnimations;
@@ -28,7 +25,6 @@ import android.view.animation.AnimationUtils;
 import android.widget.Button;
 
 public class SliderActivity extends AppCompatActivity {
-    //Initialize variables
     SliderView sliderView;
     int[] images = {R.drawable.firsth, R.drawable.second, R.drawable.third, R.drawable.fourth, R.drawable.fifth,
             R.drawable.sixth, R.drawable.seventh, R.drawable.eight, R.drawable.nineth, R.drawable.last};
@@ -79,12 +75,10 @@ public class SliderActivity extends AppCompatActivity {
             //must finish this activity (the login activity will not be shown when click back in main activity)
             finish();
         }
-
         sliderView = findViewById(R.id.slider_view);
         btnSkip = findViewById(R.id.skip_btn);
         btnRegister = findViewById(R.id.btn_slider);
         btnAnim = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.button_animation);
-
         //Initialize adapter
         sliderAdp = new SliderAdp(images);
         sliderView.setSliderAdapter(sliderAdp);
@@ -105,14 +99,12 @@ public class SliderActivity extends AppCompatActivity {
                 }
             }
         });
-
         btnSkip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 sliderView.setCurrentPagePosition(images.length - 1);
             }
         });
-
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -7,12 +7,10 @@
     android:layout_height="match_parent"
     android:background="@color/beige"
     tools:context=".controller.register.SignUpActivity">
-
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="16dp">
-
         <TextView
             android:id="@+id/ownership"
             android:layout_width="match_parent"
@@ -20,7 +18,6 @@
             android:text="@string/ownership"
             android:textColor="@color/black"
             android:textStyle="bold" />
-
         <TextView
             android:id="@+id/ownership_info"
             android:layout_width="match_parent"
@@ -28,7 +25,6 @@
             android:text="@string/ownership_info"
             android:textColor="@color/black"
             android:layout_below="@id/ownership"/>
-
         <TextView
             android:id="@+id/general_terms"
             android:layout_width="match_parent"
@@ -37,7 +33,6 @@
             android:textColor="@color/black"
             android:textStyle="bold"
             android:layout_below="@id/ownership_info"/>
-
         <TextView
             android:id="@+id/general_terms_info"
             android:layout_width="match_parent"
@@ -45,7 +40,6 @@
             android:text="@string/general_terms_info"
             android:textColor="@color/black"
             android:layout_below="@id/general_terms"/>
-
         <TextView
             android:id="@+id/liable"
             android:layout_width="match_parent"
@@ -54,7 +48,6 @@
             android:textColor="@color/black"
             android:textStyle="bold"
             android:layout_below="@id/general_terms_info"/>
-
         <TextView
             android:id="@+id/liable_info"
             android:layout_width="match_parent"
@@ -62,7 +55,6 @@
             android:text="@string/liable_info"
             android:textColor="@color/black"
             android:layout_below="@id/liable"/>
-
         <TextView
             android:id="@+id/confidentiality"
             android:layout_width="match_parent"
@@ -71,7 +63,6 @@
             android:textColor="@color/black"
             android:textStyle="bold"
             android:layout_below="@id/liable_info"/>
-
         <TextView
             android:id="@+id/confidentiality_info"
             android:layout_width="match_parent"
@@ -79,7 +70,6 @@
             android:text="@string/confidentiality_info"
             android:textColor="@color/black"
             android:layout_below="@id/confidentiality"/>
-
         <Button
             android:id="@+id/register_okBtn"
             android:layout_width="wrap_content"

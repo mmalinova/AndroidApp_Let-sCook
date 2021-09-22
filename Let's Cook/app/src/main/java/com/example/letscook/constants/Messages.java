@@ -85,6 +85,5 @@ public class Messages {
     public static final String ERROR = "Няма подходящи инсталирани клиентси приложения!";
     public static final String ERROR_TITLE = "Грешка при изпращане";
     public static final String FEEDBACK = "Обратна връзка за приложението \"Да сготвим\"";
-
     public static final String AUTH_MESS = "За съжаление потребителят не е разпознат...";
 }

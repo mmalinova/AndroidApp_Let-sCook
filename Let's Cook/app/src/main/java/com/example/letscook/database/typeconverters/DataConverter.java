@@ -4,7 +4,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.StrictMode;
 import android.util.Base64;
-
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -17,11 +16,9 @@ public class DataConverter {
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
         return stream.toByteArray();
     }
-
     public static Bitmap byteArrayToImage(byte[] array) {
         return BitmapFactory.decodeByteArray(array, 0, array.length);
     }
-
     public static Bitmap getBitmapFromURL(String src) {
         try {
             URL url = new URL(src);
@@ -37,7 +34,6 @@ public class DataConverter {
             return null;
         }
     }
-
     public static String getStringImage(Bitmap bmp) {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         bmp.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);

@@ -21,20 +21,16 @@ import com.example.letscook.database.typeconverters.ConvertDate;
 import com.example.letscook.database.user.User;
 import com.example.letscook.database.user.UserDao;
 
-// Create database
 @Database(entities = {Product.class, Recipe.class, User.class, Photo.class,
         UserMarksRecipeCrossRef.class, UserViewsRecipeCrossRef.class},
         version = 1, exportSchema = false)
 @TypeConverters({ConvertDate.class})
 public abstract class RoomDB extends RoomDatabase {
-    // Create db instance
     private static RoomDB database;
-    // Define db name
     private static final String DATABASE_NAME = "LetsCookDB";
 
     public synchronized static RoomDB getInstance(Context context) {
         if (database == null) {
-            // Initialize db
             database = Room.databaseBuilder(context.getApplicationContext(), RoomDB.class, DATABASE_NAME)
                     .allowMainThreadQueries()
                     .fallbackToDestructiveMigration()
@@ -42,7 +38,6 @@ public abstract class RoomDB extends RoomDatabase {
         }
         return database;
     }
-    // DAO
     public abstract ProductDao productDao();
     public abstract RecipeDao recipeDao();
     public abstract UserDao userDao();

@@ -1,7 +1,6 @@
 package com.example.letscook.server_database.SQLiteToMySQL;
 
 import android.content.Context;
-
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -11,14 +10,10 @@ import com.example.letscook.database.relationships.UserViewsRecipeCrossRef;
 import com.example.letscook.server_database.MySingleton;
 import com.example.letscook.server_database.NetworkMonitor;
 import com.example.letscook.server_database.URLs;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.util.HashMap;
 import java.util.Map;
-
-import static com.example.letscook.server_database.URLs.RECIPES_URL;
 import static com.example.letscook.server_database.URLs.VIEWS_URL;
 
 public class RecipeViewsRequests {

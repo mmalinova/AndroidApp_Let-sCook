@@ -80,7 +80,6 @@ public class MyProductsActivity extends AppCompatActivity implements AdapterView
         profile = findViewById(R.id.profile);
         my_products = findViewById(R.id.my_products);
         my_products.setColorFilter(Color.parseColor("#FFFEF6D8"));
-
         // Initialize db
         database = RoomDB.getInstance(this);
         // Set view according session storage
@@ -97,7 +96,6 @@ public class MyProductsActivity extends AppCompatActivity implements AdapterView
                 }
             }
         }
-
         profile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

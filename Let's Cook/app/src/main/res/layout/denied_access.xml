@@ -7,7 +7,6 @@
     android:padding="16dp"
     android:background="@color/beige"
     tools:context=".controller.search.SearchActivity">
-
     <TextView
         android:id="@+id/veg_question"
         android:layout_width="wrap_content"
@@ -19,7 +18,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
     <Button
         android:id="@+id/okBtn"
         android:layout_width="wrap_content"

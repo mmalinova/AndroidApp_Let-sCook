@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".controller.info.InfoActivity">
     <include android:id="@+id/tool" layout="@layout/toolbar" />
-
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/login_view"
         android:layout_width="wrap_content"
@@ -15,25 +14,21 @@
         android:layout_gravity="end"
         app:headerLayout="@layout/main_login"
         android:visibility="invisible"/>
-
     <ScrollView
         android:background="@color/background"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/tool"
         android:layout_above="@id/bottom_nav">
-
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-
             <include
                 android:id="@+id/action_bar"
                 layout="@layout/action_bar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
-
             <ImageView
                 android:id="@+id/imageView"
                 android:layout_width="196dp"
@@ -43,7 +38,6 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/action_bar"
                 app:srcCompat="@drawable/my_photo" />
-
             <TextView
                 android:id="@+id/textView"
                 android:layout_width="match_parent"
@@ -54,7 +48,6 @@
                 android:textColor="@color/black"
                 app:layout_constraintStart_toEndOf="@+id/imageView"
                 app:layout_constraintTop_toBottomOf="@id/action_bar" />
-
             <TextView
                 android:id="@+id/textView2"
                 android:layout_width="wrap_content"
@@ -75,7 +68,6 @@
                 app:layout_constraintTop_toBottomOf="@+id/imageView" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
-
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.letscook.R;
 import com.example.letscook.database.product.Product;
-import com.example.letscook.database.RoomDB;
 
 import java.util.List;
 
@@ -56,7 +55,6 @@ public class ProductsForRecipeAdapter extends RecyclerView.Adapter<ProductsForRe
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        // Initialize variable
         TextView name, quantity, unit;
 
         public ViewHolder(@NonNull View itemView) {

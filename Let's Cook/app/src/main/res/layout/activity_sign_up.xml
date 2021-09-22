@@ -5,13 +5,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/background">
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="50dp"
         tools:context=".controller.register.SignUpActivity">
-
         <TextView
             android:id="@+id/register_textView"
             android:layout_width="wrap_content"
@@ -34,7 +32,6 @@
             app:layout_constraintHorizontal_bias="0.522"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
-
         <TextView
             android:id="@+id/internet_conn"
             android:layout_width="wrap_content"
@@ -48,7 +45,6 @@
             app:layout_constraintEnd_toEndOf="@+id/register_textView"
             app:layout_constraintStart_toStartOf="@+id/register_textView"
             app:layout_constraintTop_toBottomOf="@+id/register_textView" />
-
         <TextView
             android:id="@+id/allReq_textView"
             android:layout_width="wrap_content"
@@ -63,7 +59,6 @@
             app:layout_constraintBottom_toTopOf="@id/username_editText"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/register_textView" />
-
         <TextView
             android:id="@+id/reqTextView"
             android:layout_width="wrap_content"
@@ -78,7 +73,6 @@
             app:layout_constraintBottom_toTopOf="@id/username_editText"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/register_textView" />
-
         <TextView
             android:id="@+id/textView"
             android:layout_width="wrap_content"
@@ -94,7 +88,6 @@
             app:layout_constraintEnd_toEndOf="@+id/email_editText"
             app:layout_constraintStart_toStartOf="@+id/email_editText"
             app:layout_constraintTop_toBottomOf="@+id/register_textView" />
-
         <EditText
             android:id="@+id/username_editText"
             android:layout_width="match_parent"
@@ -121,7 +114,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/allReq_textView" />
-
         <EditText
             android:id="@+id/email_editText"
             android:layout_width="match_parent"
@@ -147,7 +139,6 @@
             app:layout_constraintEnd_toEndOf="@+id/username_editText"
             app:layout_constraintStart_toStartOf="@+id/username_editText"
             app:layout_constraintTop_toBottomOf="@+id/username_editText" />
-
         <EditText
             android:id="@+id/password_editText"
             android:layout_width="match_parent"
@@ -173,7 +164,6 @@
             app:layout_constraintEnd_toEndOf="@+id/email_editText"
             app:layout_constraintStart_toStartOf="@+id/email_editText"
             app:layout_constraintTop_toBottomOf="@+id/email_editText" />
-
         <EditText
             android:id="@+id/rePass_editText"
             android:layout_width="match_parent"
@@ -199,7 +189,6 @@
             app:layout_constraintEnd_toEndOf="@+id/password_editText"
             app:layout_constraintStart_toStartOf="@+id/password_editText"
             app:layout_constraintTop_toBottomOf="@+id/password_editText" />
-
         <CheckBox
             android:id="@+id/reg_checkBox"
             android:layout_width="match_parent"
@@ -212,7 +201,6 @@
             app:layout_constraintEnd_toEndOf="@+id/rePass_editText"
             app:layout_constraintStart_toStartOf="@+id/rePass_editText"
             app:layout_constraintTop_toBottomOf="@+id/rePass_editText" />
-
         <Button
             android:id="@+id/register_btn"
             android:layout_width="match_parent"
@@ -232,7 +220,6 @@
             app:layout_constraintEnd_toEndOf="@+id/reg_checkBox"
             app:layout_constraintStart_toStartOf="@+id/reg_checkBox"
             app:layout_constraintTop_toBottomOf="@+id/reg_checkBox" />
-
         <TextView
             android:id="@+id/haveAccount_textView"
             android:layout_width="wrap_content"
@@ -246,7 +233,6 @@
             android:textStyle="bold|italic"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/register_btn" />
-
         <Button
             android:id="@+id/google_btn"
             android:layout_width="match_parent"
@@ -275,7 +261,6 @@
             app:layout_constraintEnd_toEndOf="@+id/register_btn"
             app:layout_constraintStart_toStartOf="@+id/register_btn"
             app:layout_constraintTop_toBottomOf="@+id/register_btn" />
-
         <Button
             android:id="@+id/facebook_btn"
             android:layout_width="match_parent"
@@ -304,7 +289,6 @@
             app:layout_constraintEnd_toEndOf="@+id/google_btn"
             app:layout_constraintStart_toStartOf="@+id/google_btn"
             app:layout_constraintTop_toBottomOf="@+id/google_btn" />
-
         <TextView
             android:id="@+id/with_register"
             android:layout_width="wrap_content"
@@ -316,7 +300,6 @@
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/facebook_btn" />
-
         <TextView
             android:id="@+id/terms_textView"
             android:layout_width="wrap_content"
@@ -331,7 +314,6 @@
             android:textStyle="bold"
             app:layout_constraintStart_toEndOf="@+id/with_register"
             app:layout_constraintTop_toBottomOf="@+id/facebook_btn" />
-
         <TextView
             android:id="@+id/politics_text"
             android:layout_width="wrap_content"
@@ -342,7 +324,6 @@
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="@+id/with_register"
             app:layout_constraintTop_toBottomOf="@+id/with_register" />
-
         <TextView
             android:id="@+id/data_policy"
             android:layout_width="wrap_content"
@@ -356,6 +337,5 @@
             android:textStyle="bold"
             app:layout_constraintStart_toEndOf="@+id/politics_text"
             app:layout_constraintTop_toBottomOf="@+id/terms_textView" />
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

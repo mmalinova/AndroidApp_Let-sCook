@@ -80,7 +80,6 @@ public class RecipeActivity extends AppCompatActivity {
         if (email != null) {
             user = database.userDao().getUserByEmail(email);
         }
-
         // Get destination
         boolean isAtMyRec = getIntent().getBooleanExtra("isAtMyRec", false);
         boolean isAtApprove = getIntent().getBooleanExtra("isAtApprove", false);

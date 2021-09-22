@@ -12,7 +12,6 @@ public class SliderAdp extends SliderViewAdapter<SliderAdp.Holder> {
     //Initialize variables
     int[] images;
 
-    //Create constructor
     public SliderAdp(int[] images) {
         this.images = images;
     }
@@ -37,7 +36,6 @@ public class SliderAdp extends SliderViewAdapter<SliderAdp.Holder> {
     }
 
     public static class Holder extends SliderViewAdapter.ViewHolder {
-        //Initialize variables
         ImageView imageView;
 
         public Holder(View itemView) {

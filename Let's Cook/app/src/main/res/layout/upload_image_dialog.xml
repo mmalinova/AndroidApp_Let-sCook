@@ -7,7 +7,6 @@
     android:padding="16dp"
     android:background="@color/beige"
     tools:context=".controller.profile.ProfileActivity">
-
     <TextView
         android:id="@+id/choose"
         android:layout_width="wrap_content"
@@ -19,7 +18,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
     <TextView
         android:id="@+id/gallery"
         android:layout_width="wrap_content"
@@ -35,7 +33,6 @@
         app:layout_constraintEnd_toEndOf="@+id/choose"
         app:layout_constraintStart_toStartOf="@+id/choose"
         app:layout_constraintTop_toBottomOf="@+id/choose" />
-
     <TextView
         android:id="@+id/takeAPhoto"
         android:layout_width="wrap_content"
@@ -51,7 +48,6 @@
         app:layout_constraintEnd_toEndOf="@+id/gallery"
         app:layout_constraintStart_toStartOf="@+id/gallery"
         app:layout_constraintTop_toBottomOf="@+id/gallery" />
-
     <TextView
         android:id="@+id/remove"
         android:layout_width="wrap_content"

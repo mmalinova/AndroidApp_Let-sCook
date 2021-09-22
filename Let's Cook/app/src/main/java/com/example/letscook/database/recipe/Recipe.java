@@ -4,14 +4,10 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
-
-
 import com.example.letscook.database.typeconverters.ConvertDate;
-
 import java.io.Serializable;
 import java.util.Date;
 
-//Define table
 @Entity(tableName = "recipe")
 public class Recipe implements Serializable {
     @PrimaryKey(autoGenerate = true)
@@ -48,111 +44,84 @@ public class Recipe implements Serializable {
     public long getID() {
         return ID;
     }
-
     public void setID(long ID) {
         this.ID = ID;
     }
-
     public String getName() {
         return name;
     }
-
     public void setName(String name) {
         this.name = name;
     }
-
     public String getCategory() {
         return category;
     }
-
     public void setCategory(String category) {
         this.category = category;
     }
-
     public int getVegetarian() {
         return vegetarian;
     }
-
     public void setVegetarian(int vegetarian) {
         this.vegetarian = vegetarian;
     }
-
     public byte[] getImage() {
         return image;
     }
-
     public void setImage(byte[] image) {
         this.image = image;
     }
-
     public int getPortions() {
         return portions;
     }
-
     public void setPortions(int portions) {
         this.portions = portions;
     }
-
     public String getSteps() {
         return steps;
     }
-
     public void setSteps(String steps) {
         this.steps = steps;
     }
-
     public int getHours() {
         return hours;
     }
-
     public void setHours(int hours) {
         this.hours = hours;
     }
-
     public int getMinutes() {
         return minutes;
     }
-
     public void setMinutes(int minutes) {
         this.minutes = minutes;
     }
-
     public Date getCreatedOn() {
         return createdOn;
     }
-
     public void setCreatedOn(Date createdOn) {
         this.createdOn = createdOn;
     }
-
     public boolean isApproved() {
         return isApproved;
     }
-
     public void setIsApproved(boolean isApproved) {
         this.isApproved = isApproved;
     }
-
     public boolean isSync() {
         return isSync;
     }
-
     public void setSync(boolean sync) {
         isSync = sync;
     }
-
     public long getOwnerID() {
         return ownerID;
     }
-
     public void setOwnerID(long ownerID) {
         this.ownerID = ownerID;
     }
-
     public long getServerID() {
         return serverID;
     }
-
     public void setServerID(long serverID) {
         this.serverID = serverID;
     }

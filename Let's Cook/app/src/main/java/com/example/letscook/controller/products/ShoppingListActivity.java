@@ -76,7 +76,6 @@ public class ShoppingListActivity extends AppCompatActivity implements AdapterVi
         // Initialize profile  and my products links
         profile = findViewById(R.id.profile);
         my_products = findViewById(R.id.my_products);
-
         // Initialize db
         database = RoomDB.getInstance(this);
         // Set view according session storage
@@ -93,7 +92,6 @@ public class ShoppingListActivity extends AppCompatActivity implements AdapterVi
                 }
             }
         }
-
         profile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

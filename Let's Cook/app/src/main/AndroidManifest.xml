@@ -1,17 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     package="com.example.letscook">
-
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.CAMERA"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-
     <queries>
-        <!-- Specific apps you interact with, eg: -->
         <package android:name="com.example.letscook.controller.profile" />
-        <!-- Specific intents you query for, eg: for a custom share UI -->
         <intent>
             <action android:name="android.intent.action.SEND" />
             <data android:mimeType="image/jpeg" />
@@ -25,10 +20,6 @@
             <data android:mimeType="image/jpeg" />
         </intent>
     </queries>
-
-    <!--
-    android:name="androidx.multidex.MultiDexApplication"
-    -->
     <application
         android:name=".controller.AppController"
         android:icon="@mipmap/logo"
@@ -36,7 +27,9 @@
         android:roundIcon="@mipmap/logo_round"
         android:supportsRtl="true"
         android:theme="@style/MainTheme"
-        android:usesCleartextTraffic="true">
+        android:usesCleartextTraffic="true"
+        android:hardwareAccelerated="false"
+        android:largeHeap="true">
         <receiver android:name=".server_database.NetworkMonitor">
             <intent-filter>
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
@@ -106,14 +99,11 @@
         <activity
             android:name=".controller.info.DataPolicyActivity"
             android:parentActivityName=".controller.home.MainActivity" />
-
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
 
         <meta-data android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id"/>
-
     </application>
-
 </manifest>

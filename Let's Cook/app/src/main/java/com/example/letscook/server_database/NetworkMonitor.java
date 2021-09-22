@@ -6,9 +6,7 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
-
 import androidx.annotation.RequiresApi;
-
 import com.example.letscook.database.RoomDB;
 import com.example.letscook.database.photo.Photo;
 import com.example.letscook.database.photo.PhotoDao;
@@ -53,6 +51,7 @@ public class NetworkMonitor extends BroadcastReceiver {
         MySQLToSQLiteSync(context, database, productDao, recipeDao, userDao, photoDao, userViewsRecipeDao, userMarksRecipeDao);
         SQLiteToMySQLSync(context, database, productDao, recipeDao, userDao, photoDao, userViewsRecipeDao, userMarksRecipeDao);
     }
+
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void MySQLToSQLiteSync(Context context, RoomDB database, ProductDao productDao, RecipeDao recipeDao, UserDao userDao, PhotoDao photoDao,

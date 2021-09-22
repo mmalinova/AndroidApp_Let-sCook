@@ -23,7 +23,6 @@ import android.widget.TextView;
 
 import com.blogspot.atifsoftwares.animatoolib.Animatoo;
 import com.example.letscook.database.AESCrypt;
-import com.example.letscook.database.photo.Photo;
 import com.example.letscook.database.recipe.Recipe;
 import com.example.letscook.controller.addRecipe.AddRecipeActivity;
 import com.example.letscook.controller.contacts.ContactsActivity;
@@ -88,7 +87,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 navigationView = findViewById(R.id.login_view);
             }
         }
-
         findViewById(R.id.constraint).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -134,7 +132,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 });
             }
         }
-
         // Initialize cards
         CardView whatToCookCard = findViewById(R.id.whatToCook_card);
         CardView searchCard = findViewById(R.id.search_card);

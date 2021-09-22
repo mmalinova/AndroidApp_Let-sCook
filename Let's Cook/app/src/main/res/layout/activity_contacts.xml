@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".controller.contacts.ContactsActivity">
     <include android:id="@+id/tool" layout="@layout/toolbar" />
-
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/login_view"
         android:layout_width="wrap_content"
@@ -15,19 +14,16 @@
         android:layout_gravity="end"
         app:headerLayout="@layout/main_login"
         android:visibility="invisible"/>
-
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/tool"
         android:layout_above="@id/bottom_nav"
         android:background="@color/background">
-
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraint"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-
             <include
                 android:id="@+id/action_bar"
                 layout="@layout/action_bar"
@@ -35,7 +31,6 @@
                 android:layout_height="wrap_content"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
-
             <TextView
                 android:id="@+id/textView"
                 android:layout_width="wrap_content"
@@ -48,7 +43,6 @@
                 android:textSize="16sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/action_bar" />
-
             <TextView
                 android:id="@+id/textViewFb"
                 android:layout_width="wrap_content"
@@ -64,7 +58,6 @@
                 android:textSize="14sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView" />
-
             <TextView
                 android:id="@+id/textViewLi"
                 android:layout_width="wrap_content"
@@ -80,7 +73,6 @@
                 android:textSize="14sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textViewFb" />
-
             <TextView
                 android:id="@+id/textViewInst"
                 android:layout_width="wrap_content"
@@ -96,7 +88,6 @@
                 android:textSize="14sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textViewLi" />
-
             <TextView
                 android:id="@+id/textViewForm"
                 android:layout_width="wrap_content"
@@ -109,7 +100,6 @@
                 android:textSize="16sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textViewInst" />
-
             <TextView
                 android:id="@+id/textViewReq"
                 android:layout_width="wrap_content"
@@ -122,7 +112,6 @@
                 android:textSize="14sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textViewForm" />
-
             <EditText
                 android:id="@+id/textViewName"
                 android:layout_width="match_parent"
@@ -148,7 +137,6 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textViewReq" />
-
             <EditText
                 android:id="@+id/textViewMess"
                 android:layout_width="0dp"
@@ -178,7 +166,6 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textViewName" />
-
             <Button
                 android:id="@+id/button"
                 android:layout_width="match_parent"
@@ -200,7 +187,6 @@
                 app:layout_constraintStart_toStartOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
-
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

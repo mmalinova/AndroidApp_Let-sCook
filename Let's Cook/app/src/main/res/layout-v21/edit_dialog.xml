@@ -6,11 +6,9 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/background">
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-
         <TextView
             android:id="@+id/firstTextView"
             android:layout_width="wrap_content"
@@ -23,7 +21,6 @@
             app:layout_constraintBottom_toTopOf="@+id/editName"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
-
         <TextView
             android:id="@+id/secondTextView"
             android:layout_width="wrap_content"
@@ -36,7 +33,6 @@
             app:layout_constraintBottom_toTopOf="@+id/editName"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
-
         <TextView
             android:id="@+id/thirdTextView"
             android:layout_width="wrap_content"
@@ -48,7 +44,6 @@
             app:layout_constraintBottom_toTopOf="@+id/editName"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
-
         <EditText
             android:id="@+id/editName"
             android:layout_width="0dp"
@@ -72,7 +67,6 @@
             app:layout_constraintHorizontal_chainStyle="spread"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/thirdTextView" />
-
         <EditText
             android:id="@+id/editQuantity"
             android:layout_width="0dp"
@@ -95,7 +89,6 @@
             app:layout_constraintEnd_toStartOf="@+id/editUnit"
             app:layout_constraintStart_toEndOf="@+id/editName"
             app:layout_constraintTop_toBottomOf="@+id/thirdTextView" />
-
         <EditText
             android:id="@+id/editUnit"
             android:layout_width="0dp"
@@ -118,7 +111,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/editQuantity"
             app:layout_constraintTop_toBottomOf="@+id/thirdTextView" />
-
         <Button
             android:id="@+id/update"
             android:layout_width="wrap_content"

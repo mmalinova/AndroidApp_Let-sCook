@@ -1,7 +1,6 @@
 package com.example.letscook.server_database.MySQLToSQLite;
 
 import android.content.Context;
-
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -12,7 +11,6 @@ import com.example.letscook.database.relationships.UserViewsRecipeDao;
 import com.example.letscook.database.user.UserDao;
 import com.example.letscook.server_database.MySingleton;
 import com.example.letscook.server_database.NetworkMonitor;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;

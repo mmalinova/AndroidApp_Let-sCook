@@ -1,26 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-
     <item
         android:id="@+id/home"
         android:title="@string/home"
         android:icon="@drawable/ic_home"/>
-
     <item
         android:id="@+id/what_to_cook"
         android:title="@string/whatToCook_title"
         android:icon="@drawable/ic_question"/>
-
     <item
         android:id="@+id/add_recipe"
         android:title="@string/addRecipe_title"
         android:icon="@drawable/ic_add"/>
-
     <item
         android:id="@+id/search"
         android:title="@string/search_title"
         android:icon="@drawable/ic_search"/>
-
     <item
         android:id="@+id/shopping_list"
         android:title="@string/shoppingList_title"

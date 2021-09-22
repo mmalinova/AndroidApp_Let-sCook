@@ -2,30 +2,24 @@ package com.example.letscook.server_database.MySQLToSQLite;
 
 import android.content.Context;
 import android.os.Build;
-
 import androidx.annotation.RequiresApi;
-
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.example.letscook.database.RoomDB;
 import com.example.letscook.database.photo.PhotoDao;
-import com.example.letscook.database.product.Product;
 import com.example.letscook.database.product.ProductDao;
 import com.example.letscook.database.recipe.Recipe;
 import com.example.letscook.database.recipe.RecipeDao;
 import com.example.letscook.database.typeconverters.ConvertDate;
 import com.example.letscook.server_database.MySingleton;
 import com.example.letscook.server_database.NetworkMonitor;
-import com.example.letscook.server_database.URLs;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Base64;
-
 import static com.example.letscook.server_database.URLs.*;
 
 public class RecipesRequest {

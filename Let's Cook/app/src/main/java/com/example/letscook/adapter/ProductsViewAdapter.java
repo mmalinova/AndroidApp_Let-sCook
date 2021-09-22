@@ -78,7 +78,6 @@ public class ProductsViewAdapter extends RecyclerView.Adapter<ProductsViewAdapte
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        // Initialize variable
         TextView name, quantity, unit;
         ImageView add;
 

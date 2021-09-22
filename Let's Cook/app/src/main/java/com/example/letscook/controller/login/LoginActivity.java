@@ -19,7 +19,6 @@ import com.example.letscook.database.user.UserDao;
 import com.example.letscook.controller.home.MainActivity;
 import com.example.letscook.controller.register.SignUpActivity;
 
-
 import static com.example.letscook.constants.Messages.EMAIL_NOT_EXIST;
 import static com.example.letscook.constants.Messages.EMAIL_REQ;
 import static com.example.letscook.constants.Messages.LOGIN;
@@ -41,7 +40,6 @@ public class LoginActivity extends AppCompatActivity {
                 startActivity(new Intent(this, MainActivity.class));
             }
         }
-
         findViewById(R.id.forgotten_pass).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -50,7 +48,6 @@ public class LoginActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
         CheckBox checked = findViewById(R.id.checkBox);
         checked.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override

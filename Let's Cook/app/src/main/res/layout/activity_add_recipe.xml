@@ -9,7 +9,6 @@
     <include
         android:id="@+id/tool"
         layout="@layout/toolbar" />
-
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -19,19 +18,16 @@
         android:layout_marginBottom="0dp"
         android:background="@color/background"
         android:fillViewport="true">
-
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraint"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingBottom="16dp">
-
             <include
                 android:id="@+id/action_bar"
                 layout="@layout/action_bar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
-
             <TextView
                 android:id="@+id/textViewRequired"
                 android:layout_width="wrap_content"
@@ -43,7 +39,6 @@
                 android:textSize="14sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/action_bar" />
-
             <TextView
                 android:id="@+id/textView"
                 android:layout_width="wrap_content"
@@ -55,7 +50,6 @@
                 android:textSize="16sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textViewRequired" />
-
             <EditText
                 android:id="@+id/editTextName"
                 android:layout_width="0dp"
@@ -79,7 +73,6 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/textView"
                 app:layout_constraintTop_toBottomOf="@+id/textViewRequired" />
-
             <TextView
                 android:id="@+id/textViewCategory"
                 android:layout_width="wrap_content"
@@ -96,7 +89,6 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/editTextName" />
-
             <RadioGroup
                 android:id="@+id/radioGroup"
                 android:layout_width="0dp"
@@ -106,7 +98,6 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textViewCategory">
-
                 <RadioButton
                     android:id="@+id/radio_breakfast"
                     android:layout_width="wrap_content"
@@ -114,7 +105,6 @@
                     android:layout_marginEnd="1dp"
                     android:text="@string/breakfast"
                     android:textColor="@color/black" />
-
                 <RadioButton
                     android:id="@+id/radio_dinner"
                     android:layout_width="wrap_content"
@@ -123,7 +113,6 @@
                     android:text="@string/dinner"
                     android:textColor="@color/black" />
             </RadioGroup>
-
             <RadioGroup
                 android:id="@+id/secondRadioGroup"
                 android:layout_width="0dp"
@@ -133,7 +122,6 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/radioGroup">
-
                 <RadioButton
                     android:id="@+id/radio_lunch"
                     android:layout_width="wrap_content"
@@ -141,7 +129,6 @@
                     android:layout_marginEnd="1dp"
                     android:text="@string/lunch"
                     android:textColor="@color/black" />
-
                 <RadioButton
                     android:id="@+id/radio_dessert"
                     android:layout_width="wrap_content"
@@ -150,7 +137,6 @@
                     android:text="@string/dessert"
                     android:textColor="@color/black" />
             </RadioGroup>
-
             <TextView
                 android:id="@+id/textViewVeg"
                 android:layout_width="wrap_content"
@@ -166,7 +152,6 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/secondRadioGroup" />
-
             <RadioGroup
                 android:id="@+id/radioGroupVeg"
                 android:layout_width="0dp"
@@ -176,7 +161,6 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textViewVeg">
-
                 <RadioButton
                     android:id="@+id/radio_yes"
                     android:layout_width="wrap_content"
@@ -184,7 +168,6 @@
                     android:layout_margin="4dp"
                     android:text="@string/yes"
                     android:textColor="@color/black" />
-
                 <RadioButton
                     android:id="@+id/radio_no"
                     android:layout_width="wrap_content"
@@ -193,7 +176,6 @@
                     android:text="@string/no"
                     android:textColor="@color/black" />
             </RadioGroup>
-
             <TextView
                 android:id="@+id/textViewPhoto"
                 android:layout_width="wrap_content"
@@ -209,7 +191,6 @@
                 app:layout_constraintHorizontal_chainStyle="packed"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/radioGroupVeg" />
-
             <Button
                 android:id="@+id/uploadBtn"
                 android:layout_width="wrap_content"
@@ -224,7 +205,6 @@
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/textViewPhoto"
                 app:layout_constraintTop_toBottomOf="@+id/radioGroupVeg" />
-
             <ImageView
                 android:id="@+id/firstRecipeImg"
                 android:layout_width="100dp"
@@ -236,7 +216,6 @@
                 app:layout_constraintHorizontal_chainStyle="packed"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/uploadBtn" />
-
             <ImageView
                 android:id="@+id/secondRecipeImg"
                 android:layout_width="100dp"
@@ -248,7 +227,6 @@
                 app:layout_constraintHorizontal_chainStyle="packed"
                 app:layout_constraintStart_toEndOf="@id/firstRecipeImg"
                 app:layout_constraintTop_toBottomOf="@+id/uploadBtn" />
-
             <ImageView
                 android:id="@+id/thirdRecipeImg"
                 android:layout_width="100dp"
@@ -260,7 +238,6 @@
                 app:layout_constraintHorizontal_chainStyle="packed"
                 app:layout_constraintStart_toEndOf="@id/secondRecipeImg"
                 app:layout_constraintTop_toBottomOf="@+id/uploadBtn" />
-
             <TextView
                 android:id="@+id/count"
                 android:layout_width="wrap_content"
@@ -277,7 +254,6 @@
                 app:layout_constraintHorizontal_chainStyle="packed"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/firstRecipeImg" />
-
             <EditText
                 android:id="@+id/editTextPortion"
                 android:layout_width="170dp"
@@ -304,7 +280,6 @@
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/count"
                 app:layout_constraintTop_toBottomOf="@+id/secondRecipeImg" />
-
             <TextView
                 android:id="@+id/textViewProd"
                 android:layout_width="wrap_content"
@@ -321,7 +296,6 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/editTextPortion" />
-
             <EditText
                 android:id="@+id/editTextProd"
                 android:layout_width="0dp"
@@ -346,7 +320,6 @@
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textViewProd" />
-
             <EditText
                 android:id="@+id/editTextQuantity"
                 android:layout_width="0dp"
@@ -371,7 +344,6 @@
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/editTextProd"
                 app:layout_constraintTop_toBottomOf="@+id/textViewProd" />
-
             <Spinner
                 android:id="@+id/spinner"
                 android:layout_width="0dp"
@@ -384,7 +356,6 @@
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/editTextQuantity"
                 app:layout_constraintTop_toBottomOf="@+id/textViewProd" />
-
             <Button
                 android:id="@+id/addProduct"
                 android:layout_width="wrap_content"
@@ -399,7 +370,6 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/editTextQuantity" />
-
             <TextView
                 android:id="@+id/textViewPrep"
                 android:layout_width="wrap_content"
@@ -414,7 +384,6 @@
                 app:layout_constraintHorizontal_chainStyle="packed"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/addProduct" />
-
             <EditText
                 android:id="@+id/editTextPrep"
                 android:layout_width="0dp"
@@ -445,7 +414,6 @@
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/textViewPrep"
                 app:layout_constraintTop_toBottomOf="@+id/addProduct" />
-
             <TextView
                 android:id="@+id/textViewTime"
                 android:layout_width="wrap_content"
@@ -462,7 +430,6 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/editTextPrep" />
-
             <EditText
                 android:id="@+id/editTextH"
                 android:layout_width="120dp"
@@ -492,7 +459,6 @@
                 app:layout_constraintHorizontal_chainStyle="packed"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textViewTime" />
-
             <EditText
                 android:id="@+id/editTextMin"
                 android:layout_width="120dp"
@@ -521,7 +487,6 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/textViewDel"
                 app:layout_constraintTop_toBottomOf="@+id/textViewTime" />
-
             <TextView
                 android:id="@+id/textViewDel"
                 android:layout_width="wrap_content"
@@ -534,7 +499,6 @@
                 app:layout_constraintEnd_toStartOf="@+id/editTextMin"
                 app:layout_constraintStart_toEndOf="@+id/editTextH"
                 app:layout_constraintTop_toBottomOf="@+id/textViewTime" />
-
             <Button
                 android:id="@+id/addBtn"
                 android:layout_width="match_parent"
@@ -551,7 +515,6 @@
                 app:layout_constraintStart_toStartOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
-
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_nav"
         android:layout_width="match_parent"

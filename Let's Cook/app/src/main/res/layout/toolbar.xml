@@ -4,7 +4,6 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/beige">
-
     <ImageView
         android:id="@+id/my_products"
         android:layout_width="40dp"
@@ -16,7 +15,6 @@
         android:layout_marginTop="18dp"
         android:src="@drawable/ic_my_products"
         android:contentDescription="@string/availableProducts_title" />
-
     <ImageView
         android:layout_width="76dp"
         android:layout_height="57dp"
@@ -24,7 +22,6 @@
         android:cropToPadding="false"
         android:src="@drawable/ic_logo_toolbar"
         android:contentDescription="@string/logo" />
-
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/profile"
         android:layout_width="40dp"

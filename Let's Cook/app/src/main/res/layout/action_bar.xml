@@ -4,7 +4,6 @@
     android:layout_height="wrap_content"
     android:background="@color/beige"
     android:padding="16dp">
-
     <ImageView
         android:id="@+id/back_icon"
         android:layout_width="wrap_content"
@@ -12,7 +11,6 @@
         android:gravity="center_vertical"
         android:src="@drawable/ic_back"
         android:contentDescription="@string/back_arrow" />
-
     <TextView
         android:id="@+id/action_bar_text"
         android:layout_width="wrap_content"

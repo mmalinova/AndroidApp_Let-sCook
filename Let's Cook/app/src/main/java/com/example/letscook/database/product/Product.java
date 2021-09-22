@@ -33,7 +33,6 @@ public class Product implements Serializable, Parcelable {
 
     public Product() {
     }
-
     protected Product(Parcel in) {
         ID = in.readLong();
         name = in.readString();
@@ -42,7 +41,6 @@ public class Product implements Serializable, Parcelable {
         belonging = in.readString();
         ownerId = in.readLong();
     }
-
     public static final Creator<Product> CREATOR = new Creator<Product>() {
         @Override
         public Product createFromParcel(Parcel in) {
@@ -54,76 +52,58 @@ public class Product implements Serializable, Parcelable {
             return new Product[size];
         }
     };
-
     public long getID() {
         return ID;
     }
-
     public void setID(long ID) {
         this.ID = ID;
     }
-
     public String getName() {
         return name;
     }
-
     public void setName(String name) {
         this.name = name;
     }
-
     public String getMeasureUnit() {
         return measureUnit;
     }
-
     public void setMeasureUnit(String measure_unit) {
         this.measureUnit = measure_unit;
     }
-
     public float getQuantity() {
         return quantity;
     }
-
     public void setQuantity(float quantity) {
         this.quantity = quantity;
     }
-
     public String getBelonging() {
         return belonging;
     }
-
     public void setBelonging(String belonging) {
         this.belonging = belonging;
     }
-
     public boolean isSync() {
         return isSync;
     }
-
     public void setSync(boolean sync) {
         isSync = sync;
     }
-
     public long getOwnerId() {
         return ownerId;
     }
-
     public void setOwnerId(long ownerId) {
         this.ownerId = ownerId;
     }
-
     public long getServerID() {
         return serverID;
     }
-
     public void setServerID(long serverID) {
         this.serverID = serverID;
     }
-
     @Override
     public int describeContents() {
         return 0;
     }
-
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeLong(ID);

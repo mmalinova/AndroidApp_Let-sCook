@@ -6,13 +6,11 @@
     android:layout_height="match_parent"
     tools:context=".controller.login.LoginActivity"
     android:background="@color/background">
-
     <RelativeLayout
         android:id="@+id/action_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/beige">
-
         <ImageView
             android:layout_width="76dp"
             android:layout_height="57dp"
@@ -23,7 +21,6 @@
             android:cropToPadding="false"
             android:src="@drawable/ic_logo_toolbar"
             android:contentDescription="@string/logo" />
-
         <TextView
             android:id="@+id/bar_text"
             android:layout_width="wrap_content"
@@ -34,13 +31,11 @@
             android:textAllCaps="true"
             android:textSize="18sp" />
     </RelativeLayout>
-
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/action_bar"
         android:fillViewport="true">
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -49,7 +44,6 @@
             android:layout_marginBottom="16dp"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp">
-
             <TextView
                 android:id="@+id/reqTextView"
                 android:layout_width="wrap_content"
@@ -59,7 +53,6 @@
                 android:text=""
                 android:textColor="@color/white"
                 android:visibility="invisible" />
-
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -67,7 +60,6 @@
                 android:hint="@string/emailEditText"
                 android:textColorHint="@color/inputText"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
-
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/email_editText"
                     android:layout_width="match_parent"
@@ -77,9 +69,7 @@
                     android:inputType="textEmailAddress"
                     android:textColor="@color/inputText"
                     android:textColorHint="@color/inputText" />
-
             </com.google.android.material.textfield.TextInputLayout>
-
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -90,7 +80,6 @@
                 app:passwordToggleEnabled="true"
                 app:passwordToggleTint="@color/inputText"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
-
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/password_editText"
                     android:layout_width="match_parent"
@@ -101,14 +90,12 @@
                     android:textColor="@color/inputText"
                     android:textColorHint="@color/black" />
             </com.google.android.material.textfield.TextInputLayout>
-
             <CheckBox
                 android:id="@+id/checkBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/rememberMe"
                 android:textColor="@color/inputText" />
-
             <Button
                 android:id="@+id/login_btn"
                 android:layout_width="match_parent"
@@ -118,7 +105,6 @@
                 android:text="@string/login_btn"
                 android:textColor="@color/inputText"
                 app:backgroundTint="@color/backgroundBtn" />
-
             <TextView
                 android:id="@+id/new_pass"
                 android:layout_width="wrap_content"
@@ -127,7 +113,6 @@
                 android:text="@string/new_pass"
                 android:textColor="@color/inputText"
                 android:textSize="14sp" />
-
             <TextView
                 android:id="@+id/forgotten_pass"
                 android:layout_width="wrap_content"
