@@ -23,8 +23,8 @@ public class ProductRequests {
     public static void productPOST(Context context, Product product, User user, Recipe recipe, int index) {
         if (NetworkMonitor.checkNetworkConnection(context)) {
             if (!product.isSync()) {
-                String uri = String.format(PRODUCTS_URL + "?owner_id=%1$s",
-                        product.getOwnerId());
+                String uri = String.format(PRODUCTS_URL + "?owner_id=%1$s&belonging=%2$s",
+                        product.getOwnerId(), product.getBelonging());
                 StringRequest stringRequest = new StringRequest(Request.Method.GET, uri,
                         new Response.Listener<String>() {
                             @Override
@@ -82,8 +82,8 @@ public class ProductRequests {
 
     public static void productGET(Context context, Product product, User user, Recipe recipe, int index) {
         if (NetworkMonitor.checkNetworkConnection(context)) {
-            String uri = String.format(PRODUCTS_URL + "?owner_id=%1$s",
-                    product.getOwnerId());
+            String uri = String.format(PRODUCTS_URL + "?owner_id=%1$s&belonging=%2$s",
+                    product.getOwnerId(), product.getBelonging());
             StringRequest stringRequest = new StringRequest(Request.Method.GET, uri,
                     new Response.Listener<String>() {
                         @Override

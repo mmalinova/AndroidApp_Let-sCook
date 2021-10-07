@@ -3,9 +3,13 @@ package com.example.letscook.server_database.SQLiteToMySQL;
 import android.content.Context;
 import android.os.Build;
 import androidx.annotation.RequiresApi;
+
+import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.Response;
+import com.android.volley.ServerError;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.HttpHeaderParser;
 import com.android.volley.toolbox.StringRequest;
 import com.example.letscook.database.RoomDB;
 import com.example.letscook.database.photo.Photo;
@@ -15,6 +19,8 @@ import com.example.letscook.server_database.NetworkMonitor;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.io.UnsupportedEncodingException;
 import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
@@ -53,6 +59,21 @@ public class PhotoRequests {
                                                 }, new Response.ErrorListener() {
                                             @Override
                                             public void onErrorResponse(VolleyError error) {
+                                                NetworkResponse response = error.networkResponse;
+                                                if (error instanceof ServerError && response != null) {
+                                                    try {
+                                                        String res = new String(response.data,
+                                                                HttpHeaderParser.parseCharset(response.headers, "utf-8"));
+                                                        // Now you can use any deserializer to make sense of data
+                                                        JSONObject obj = new JSONObject(res);
+                                                    } catch (UnsupportedEncodingException e1) {
+                                                        // Couldn't properly decode data to string
+                                                        e1.printStackTrace();
+                                                    } catch (JSONException e2) {
+                                                        // returned data is not JSONObject?
+                                                        e2.printStackTrace();
+                                                    }
+                                                }
                                             }
                                         }) {
                                             @Override
@@ -72,6 +93,21 @@ public class PhotoRequests {
                         }, new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
+                        NetworkResponse response = error.networkResponse;
+                        if (error instanceof ServerError && response != null) {
+                            try {
+                                String res = new String(response.data,
+                                        HttpHeaderParser.parseCharset(response.headers, "utf-8"));
+                                // Now you can use any deserializer to make sense of data
+                                JSONObject obj = new JSONObject(res);
+                            } catch (UnsupportedEncodingException e1) {
+                                // Couldn't properly decode data to string
+                                e1.printStackTrace();
+                            } catch (JSONException e2) {
+                                // returned data is not JSONObject?
+                                e2.printStackTrace();
+                            }
+                        }
                     }
                 });
                 MySingleton.getInstance(context).addToRequestQueue(stringRequest);
@@ -104,6 +140,21 @@ public class PhotoRequests {
                     }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
+                    NetworkResponse response = error.networkResponse;
+                    if (error instanceof ServerError && response != null) {
+                        try {
+                            String res = new String(response.data,
+                                    HttpHeaderParser.parseCharset(response.headers, "utf-8"));
+                            // Now you can use any deserializer to make sense of data
+                            JSONObject obj = new JSONObject(res);
+                        } catch (UnsupportedEncodingException e1) {
+                            // Couldn't properly decode data to string
+                            e1.printStackTrace();
+                        } catch (JSONException e2) {
+                            // returned data is not JSONObject?
+                            e2.printStackTrace();
+                        }
+                    }
                 }
             });
             MySingleton.getInstance(context).addToRequestQueue(stringRequest);

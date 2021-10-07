@@ -18,12 +18,15 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.letscook.R;
 import com.example.letscook.database.recipe.Recipe;
 import com.example.letscook.database.RoomDB;
 import com.example.letscook.database.relationships.UserMarksRecipeCrossRef;
 import com.example.letscook.database.typeconverters.DataConverter;
 import com.example.letscook.controller.recipeDetails.RecipeActivity;
+import com.example.letscook.database.user.User;
 
 import java.util.List;
 
@@ -68,12 +71,15 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
         database = RoomDB.getInstance(context);
         // Check for favourite recipe
         boolean isMarked = false;
-        List<UserMarksRecipeCrossRef> recipesMark = database.userMarksRecipeDao().getRecipes(userId, database.userDao().getUserByID(userId).getServerID());
-        for (UserMarksRecipeCrossRef userMarksRecipeCrossRef : recipesMark) {
-            Recipe recipeByLocalOrServerId = database.recipeDao().getRecipeByLocalOrServerId(userMarksRecipeCrossRef.getRecipe_id());
-            if (recipeByLocalOrServerId.getID() == recipe.getID() && !userMarksRecipeCrossRef.isDeleted()) {
-                holder.favourite.setImageResource(R.drawable.ic_favorite_after);
-                isMarked = true;
+        User user = database.userDao().getUserByID(userId);
+        if (user != null) {
+            List<UserMarksRecipeCrossRef> recipesMark = database.userMarksRecipeDao().getRecipes(userId, user.getServerID());
+            for (UserMarksRecipeCrossRef userMarksRecipeCrossRef : recipesMark) {
+                Recipe recipeByLocalOrServerId = database.recipeDao().getRecipeByLocalOrServerId(userMarksRecipeCrossRef.getRecipe_id());
+                if (recipeByLocalOrServerId.getID() == recipe.getID() && !userMarksRecipeCrossRef.isDeleted()) {
+                    holder.favourite.setImageResource(R.drawable.ic_favorite_after);
+                    isMarked = true;
+                }
             }
         }
         if (!isMarked) {
@@ -81,7 +87,8 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
         }
         holder.textView.setTextColor(Color.parseColor("#4E4E4E"));
         holder.textView.setText(recipe.getName());
-        holder.imageView.setImageBitmap(DataConverter.byteArrayToImage(recipe.getImage()));
+        //holder.imageView.setImageBitmap(DataConverter.byteArrayToImage(recipe.getImage()));
+        Glide.with(context).load(recipe.getImage()).diskCacheStrategy(DiskCacheStrategy.ALL).into(holder.imageView);
         holder.imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

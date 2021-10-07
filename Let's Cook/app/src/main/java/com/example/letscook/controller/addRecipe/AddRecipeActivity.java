@@ -36,6 +36,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.blogspot.atifsoftwares.animatoolib.Animatoo;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.letscook.R;
 import com.example.letscook.database.RoomDB;
 import com.example.letscook.database.photo.Photo;
@@ -586,15 +588,18 @@ public class AddRecipeActivity extends AppCompatActivity implements AdapterView.
                     bmpImage = getResizedBitmap(bmpImage, 900, 1000);
                     switch (count) {
                         case 0:
-                            firstRecImg.setImageBitmap(bmpImage);
+                            //firstRecImg.setImageBitmap(bmpImage);
+                            Glide.with(this).load(bmpImage).diskCacheStrategy(DiskCacheStrategy.ALL).into(firstRecImg);
                             count++;
                             break;
                         case 1:
-                            secondRecImg.setImageBitmap(bmpImage);
+                            //secondRecImg.setImageBitmap(bmpImage);
+                            Glide.with(this).load(bmpImage).diskCacheStrategy(DiskCacheStrategy.ALL).into(secondRecImg);
                             count++;
                             break;
                         case 2:
-                            thirdRecImg.setImageBitmap(bmpImage);
+                            //thirdRecImg.setImageBitmap(bmpImage);
+                            Glide.with(this).load(bmpImage).diskCacheStrategy(DiskCacheStrategy.ALL).into(thirdRecImg);
                             count++;
                             break;
                     }
@@ -616,15 +621,18 @@ public class AddRecipeActivity extends AppCompatActivity implements AdapterView.
                     final RecipeDao recipeDao = database.recipeDao();
                     switch (count) {
                         case 0:
-                            firstRecImg.setImageBitmap(selectedImage);
+                            //firstRecImg.setImageBitmap(selectedImage);
+                            Glide.with(this).load(selectedImage).diskCacheStrategy(DiskCacheStrategy.ALL).into(firstRecImg);
                             count++;
                             break;
                         case 1:
-                            secondRecImg.setImageBitmap(selectedImage);
+                            //secondRecImg.setImageBitmap(selectedImage);
+                            Glide.with(this).load(selectedImage).diskCacheStrategy(DiskCacheStrategy.ALL).into(secondRecImg);
                             count++;
                             break;
                         case 2:
-                            thirdRecImg.setImageBitmap(selectedImage);
+                            //thirdRecImg.setImageBitmap(selectedImage);
+                            Glide.with(this).load(selectedImage).diskCacheStrategy(DiskCacheStrategy.ALL).into(thirdRecImg);
                             count++;
                             break;
                     }

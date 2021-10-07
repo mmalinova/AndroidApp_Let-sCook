@@ -197,9 +197,9 @@ public class RecipesActivity extends AppCompatActivity {
                 case APPROPRIATE_MESS:
                     textView.setText(NO_REC_FOR_PRODUCTS);
                     if (veg < 0) {
-                        dataList = database.recipeDao().getAllRecipeByCategory(category);
+                        dataList = database.recipeDao().getAllRecipeByCategory(category.trim());
                     } else {
-                        dataList = database.recipeDao().getAllRecipeByCategoryAndVeg(category, veg);
+                        dataList = database.recipeDao().getAllRecipeByCategoryAndVeg(category.trim(), veg);
                     }
                     for (Recipe recipe : dataList) {
                         List<Product> products = database.productDao().getRecipeProducts("toRecipe", recipe.getID(), recipe.getServerID());

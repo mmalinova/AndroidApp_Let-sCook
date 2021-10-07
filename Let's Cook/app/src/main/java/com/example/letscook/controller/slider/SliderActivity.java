@@ -80,7 +80,7 @@ public class SliderActivity extends AppCompatActivity {
         btnRegister = findViewById(R.id.btn_slider);
         btnAnim = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.button_animation);
         //Initialize adapter
-        sliderAdp = new SliderAdp(images);
+        sliderAdp = new SliderAdp(images, SliderActivity.this);
         sliderView.setSliderAdapter(sliderAdp);
         sliderView.setIndicatorAnimation(IndicatorAnimationType.WORM);
         sliderView.setSliderTransformAnimation(SliderAnimations.DEPTHTRANSFORMATION);

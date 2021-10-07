@@ -24,6 +24,8 @@ import android.widget.TextView;
 import android.widget.ViewFlipper;
 
 import com.blogspot.atifsoftwares.animatoolib.Animatoo;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.letscook.adapter.ProductsViewAdapter;
 import com.example.letscook.constants.Messages;
 import com.example.letscook.database.photo.Photo;
@@ -193,7 +195,8 @@ public class RecipeActivity extends AppCompatActivity {
         for (int i = 0; i < allPhotosFromRecipe.size(); i++) {
             ViewFlipper flip = findViewById(R.id.flipper);
             ImageView images = new ImageView(getApplicationContext());
-            images.setImageBitmap(DataConverter.byteArrayToImage(allPhotosFromRecipe.get(i).getPhoto()));
+            //images.setImageBitmap(DataConverter.byteArrayToImage(allPhotosFromRecipe.get(i).getPhoto()));
+            Glide.with(this).load(allPhotosFromRecipe.get(i).getPhoto()).diskCacheStrategy(DiskCacheStrategy.ALL).into(images);
             images.setScaleType(ImageView.ScaleType.FIT_XY);
             flip.setInAnimation(AnimationUtils.loadAnimation(this, android.R.anim.slide_in_left));
             flip.addView(images);

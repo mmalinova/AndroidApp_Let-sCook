@@ -19,7 +19,6 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.blogspot.atifsoftwares.animatoolib.Animatoo;
 import com.example.letscook.R;
@@ -56,7 +55,6 @@ import com.google.android.gms.tasks.Task;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import static com.example.letscook.constants.Messages.AUTH_MESS;
 import static com.example.letscook.constants.Messages.CONNECTION;
 import static com.example.letscook.constants.Messages.EMAIL_ALREADY_EXIST;
 import static com.example.letscook.constants.Messages.EMAIL_NOT_EXIST;
@@ -214,7 +212,6 @@ public class SignUpActivity extends AppCompatActivity {
             }
             @Override
             public void onError(FacebookException error) {
-                Toast.makeText(SignUpActivity.this, AUTH_MESS, Toast.LENGTH_SHORT).show();
 
             }
         });
@@ -590,9 +587,8 @@ public class SignUpActivity extends AppCompatActivity {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
         callbackManager.onActivityResult(requestCode, resultCode, data);
+        super.onActivityResult(requestCode, resultCode, data);
         // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
         if (requestCode == RC_SIGN_IN) {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
@@ -602,7 +598,6 @@ public class SignUpActivity extends AppCompatActivity {
                 assert account != null;
                 authWithGoogle(account);
             } catch (ApiException | NoSuchAlgorithmException e) {
-                Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
             } catch (Exception e) {
                 e.printStackTrace();
             }

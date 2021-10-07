@@ -54,7 +54,7 @@ public class NetworkMonitor extends BroadcastReceiver {
 
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    private void MySQLToSQLiteSync(Context context, RoomDB database, ProductDao productDao, RecipeDao recipeDao, UserDao userDao, PhotoDao photoDao,
+    public static void MySQLToSQLiteSync(Context context, RoomDB database, ProductDao productDao, RecipeDao recipeDao, UserDao userDao, PhotoDao photoDao,
                                    UserViewsRecipeDao userViewsRecipeDao, UserMarksRecipeDao userMarksRecipeDao) {
         UsersRequest.userGET(context);
         PhotosRequest.photoGET(context);
@@ -65,7 +65,7 @@ public class NetworkMonitor extends BroadcastReceiver {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    private void SQLiteToMySQLSync(Context context, RoomDB database, ProductDao productDao, RecipeDao recipeDao, UserDao userDao, PhotoDao photoDao,
+    public static void SQLiteToMySQLSync(Context context, RoomDB database, ProductDao productDao, RecipeDao recipeDao, UserDao userDao, PhotoDao photoDao,
                                    UserViewsRecipeDao userViewsRecipeDao, UserMarksRecipeDao userMarksRecipeDao) {
         if (checkNetworkConnection(context)) {
             List<Product> unSyncProducts = productDao.getAllUnSyncProducts();

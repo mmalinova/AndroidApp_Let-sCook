@@ -1,19 +1,25 @@
 package com.example.letscook.adapter;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.letscook.R;
+import com.example.letscook.controller.slider.SliderActivity;
 import com.smarteist.autoimageslider.SliderViewAdapter;
 
 public class SliderAdp extends SliderViewAdapter<SliderAdp.Holder> {
     //Initialize variables
     int[] images;
+    Context context;
 
-    public SliderAdp(int[] images) {
+    public SliderAdp(int[] images, Context context) {
         this.images = images;
+        this.context = context;
     }
 
     @Override
@@ -27,7 +33,7 @@ public class SliderAdp extends SliderViewAdapter<SliderAdp.Holder> {
     @Override
     public void onBindViewHolder(Holder viewHolder, int position) {
         //Set image on image view
-        viewHolder.imageView.setImageResource(images[position]);
+        Glide.with(context).load(images[position]).diskCacheStrategy(DiskCacheStrategy.ALL).into(viewHolder.imageView);
     }
 
     @Override

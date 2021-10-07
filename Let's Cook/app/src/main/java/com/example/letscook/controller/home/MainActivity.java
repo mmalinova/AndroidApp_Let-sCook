@@ -1,6 +1,7 @@
 package com.example.letscook.controller.home;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
@@ -8,8 +9,10 @@ import androidx.cardview.widget.CardView;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.SpannableString;
 import android.text.style.UnderlineSpan;
@@ -22,6 +25,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.blogspot.atifsoftwares.animatoolib.Animatoo;
+import com.example.letscook.controller.AppController;
 import com.example.letscook.database.AESCrypt;
 import com.example.letscook.database.recipe.Recipe;
 import com.example.letscook.controller.addRecipe.AddRecipeActivity;
@@ -41,6 +45,7 @@ import com.example.letscook.controller.search.SearchActivity;
 import com.example.letscook.controller.products.ShoppingListActivity;
 import com.example.letscook.controller.info.TermsOfUseActivity;
 import com.example.letscook.controller.search.WhatToCookActivity;
+import com.example.letscook.server_database.NetworkMonitor;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 
@@ -59,6 +64,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private RoomDB database;
     private User user;
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,6 +76,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         // Initialize db
         database = RoomDB.getInstance(this);
+        if(NetworkMonitor.checkNetworkConnection(MainActivity.this)) {
+            NetworkMonitor.MySQLToSQLiteSync(MainActivity.this, database, database.productDao(), database.recipeDao(), database.userDao(),
+                    database.photoDao(), database.userViewsRecipeDao(), database.userMarksRecipeDao());
+            NetworkMonitor.SQLiteToMySQLSync(MainActivity.this, database, database.productDao(), database.recipeDao(), database.userDao(),
+                    database.photoDao(), database.userViewsRecipeDao(), database.userMarksRecipeDao());
+        }
         // Set view according session storage
         String e = getSharedPreferences("PREFERENCE", MODE_PRIVATE).getString("email", null);
         if (e == null) {
@@ -467,8 +479,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         });
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onStart() {
+        if(NetworkMonitor.checkNetworkConnection(MainActivity.this)) {
+            NetworkMonitor.MySQLToSQLiteSync(MainActivity.this, database, database.productDao(), database.recipeDao(), database.userDao(),
+                    database.photoDao(), database.userViewsRecipeDao(), database.userMarksRecipeDao());
+            NetworkMonitor.SQLiteToMySQLSync(MainActivity.this, database, database.productDao(), database.recipeDao(), database.userDao(),
+                    database.photoDao(), database.userViewsRecipeDao(), database.userMarksRecipeDao());
+        }
         profile.setBorderColor(Color.parseColor("#000000"));
         my_products.setColorFilter(Color.parseColor("#000000"));
         // Set view according session storage
@@ -493,8 +512,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onStart();
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onResume() {
+        if(NetworkMonitor.checkNetworkConnection(MainActivity.this)) {
+            NetworkMonitor.MySQLToSQLiteSync(MainActivity.this, database, database.productDao(), database.recipeDao(), database.userDao(),
+                    database.photoDao(), database.userViewsRecipeDao(), database.userMarksRecipeDao());
+            NetworkMonitor.SQLiteToMySQLSync(MainActivity.this, database, database.productDao(), database.recipeDao(), database.userDao(),
+                    database.photoDao(), database.userViewsRecipeDao(), database.userMarksRecipeDao());
+        }
         profile.setBorderColor(Color.parseColor("#000000"));
         my_products.setColorFilter(Color.parseColor("#000000"));
         // Set view according session storage
