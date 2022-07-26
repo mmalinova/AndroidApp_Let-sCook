@@ -174,7 +174,7 @@
     <string name="rights_title">Какви са Вашите права относно личните Ви данни?</string>
     <string name="rights_info">В случай, че решите да не ни предоставите личните си данни, то услугите, които сме в състояние да Ви предложим, ще бъдат ограничени.</string>
     <string name="connection_title">Как може да се свържете с нас?</string>
-    <string name="connection_info">Ако имате въпроси или коментари относно съдържаниео на настоящата Политика, може да се свържете със Собственика чрез E-mail: <b>malinova29@gmail.com/mmalinova@mydigitalassistant.bg</b> или в случай, че вече сте влезли в приложението - чрез секцията \"Контакти\".</string>
+    <string name="connection_info">Ако имате въпроси или коментари относно съдържаниео на настоящата Политика, може да се свържете със Собственика чрез E-mail: <b>malinova29@gmail.com</b> или в случай, че вече сте влезли в приложението - чрез секцията \"Контакти\".</string>
     <!-- Add recipe activity -->
     <string name="recipeName">Име на\nрецептата:</string>
     <string name="inWhichCategoryToAdd">За коя/и категория/и е най-подходящо ястието ти?</string>
