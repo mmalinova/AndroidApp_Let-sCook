@@ -22,7 +22,7 @@ Authorized access is required for the following sections:
     o Add a recipe;
     o Recently viewed.
 
-### How does it is implemented?
+## How does it is implemented?
 
 For the software implementation of the Android mobile application I use:
 1. `Programming language` - Java;
@@ -41,7 +41,7 @@ For the software implementation of the Android mobile application I use:
 
 8. `ORM` - Room;
 
-### How can use it?
+## Ho can use it?
 
 The developed mobile application can be used by anyone who wants to get ideas for cooking, to help other users with their own,
 to prepare a shopping list or simply to check what he can cook according to the products he has.
