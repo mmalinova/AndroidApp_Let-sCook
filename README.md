@@ -41,7 +41,7 @@ For the software implementation of the Android mobile application I use:
 
 8. `ORM` - Room;
 
-## Ho can use it?
+## Who can use it?
 
 The developed mobile application can be used by anyone who wants to get ideas for cooking, to help other users with their own,
 to prepare a shopping list or simply to check what he can cook according to the products he has.
